@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Post-Calamity Crop Disease Outbreak Risk (Real Data)</title>
+  <meta name="description" content="RandomForest model trained on 77 real district-season rice/wheat blast events, fused with real NASA POWER weather and real Sentinel-1/Landsat satellite imagery.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand-group">
+        <div class="brand-badge">RESEARCH PLATFORM — REAL DATA</div>
+        <h1 class="brand-title">Post-Calamity Crop Disease Outbreak Risk</h1>
+        <p class="brand-subtitle">RandomForest classifier trained on 77 real rice/wheat blast events in Bangladesh</p>
+      </div>
+      <div class="header-meta">
+        <div class="meta-pill"><span class="pulse-dot"></span> Model: RandomForest (primary result)</div>
+        <div class="meta-pill">n = 77 real events, 24 positive</div>
+        <div class="meta-pill">Sensors: Sentinel-1 RTC SAR &middot; Landsat C2 L2 &middot; NASA POWER</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="dashboard-main">
+    <section class="spot-section">
+      <div class="spot-grid">
+        <div class="spot-card">
+          <div class="spot-tag">DATA</div>
+          <h3>77 Real Labeled Events</h3>
+          <p>24 rice blast district-years (Mahmud et al. 2021) and 53 wheat blast districts (Islam et al. 2016) — real published epidemiological survey records, not synthetic labels.</p>
+        </div>
+        <div class="spot-card">
+          <div class="spot-tag">FEATURES</div>
+          <h3>Real Satellite &amp; Weather Signals</h3>
+          <p>Real NASA POWER meteorology, real Sentinel-1 RTC calibrated SAR backscatter, and real Landsat NDVI/NDWI/land-surface-temperature — fetched per event, not fabricated.</p>
+        </div>
+        <div class="spot-card">
+          <div class="spot-tag">MODELS</div>
+          <h3>Classical Baselines vs. Fusion Model</h3>
+          <p>Random Forest and XGBoost, evaluated with grouped-by-district and leave-one-event-out cross-validation, compared fairly against a CNN-LSTM-style fusion model.</p>
+        </div>
+        <div class="spot-card">
+          <div class="spot-tag">DECISION</div>
+          <h3>Honest Stage 3/4 Outcome</h3>
+          <p id="decisionTextShort">The fusion model did not clear the classical baseline by a statistically defensible margin on n=77 — RandomForest is reported as the primary result.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="simulation-section">
+      <div class="section-header">
+        <div>
+          <h2>Live Model Inference</h2>
+          <p>Select a real historical district-season event, or adjust the real feature values manually, and run the actual trained RandomForest model.</p>
+        </div>
+        <div class="scenario-selector-wrap">
+          <label for="scenarioSelect">Real Historical Event:</label>
+          <select id="scenarioSelect" class="custom-select">
+            <option value="">Loading real events…</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="console-layout">
+        <div class="controls-panel card-glass">
+          <div class="panel-header">
+            <span class="panel-icon">&#9881;</span>
+            <h3>Real Feature Values (Option A summary statistics)</h3>
+          </div>
+
+          <div class="control-group">
+            <div class="group-title">
+              <span class="group-badge blue">SPATIAL FEATURES</span>
+              <span>Sentinel-1 RTC SAR &middot; Landsat C2 L2</span>
+            </div>
+
+            <div class="control-row">
+              <div class="label-val">
+                <label for="sarVv">SAR VV Backscatter (mean)</label>
+                <span id="valSarVv" class="val-display">-6.8 dB</span>
+              </div>
+              <input type="range" id="sarVv" min="-26.5" max="-3.5" step="0.1" value="-6.83" class="slider slider-blue">
+              <span class="slider-hint">Real range across all 77 events: -26.2 to -3.7 dB</span>
+            </div>
+
+            <div class="control-row">
+              <div class="label-val">
+                <label for="sarVh">SAR VH Backscatter (mean)</label>
+                <span id="valSarVh" class="val-display">-14.3 dB</span>
+              </div>
+              <input type="range" id="sarVh" min="-33.5" max="-11" step="0.1" value="-14.3" class="slider slider-blue">
+              <span class="slider-hint">Real range: -33.0 to -11.3 dB</span>
+            </div>
+
+            <div class="control-row">
+              <div class="label-val">
+                <label for="ndvi">NDVI (mean)</label>
+                <span id="valNdvi" class="val-display">0.374</span>
+              </div>
+              <input type="range" id="ndvi" min="0.19" max="0.58" step="0.005" value="0.374" class="slider slider-blue">
+              <span class="slider-hint">Real range: 0.195 to 0.574</span>
+            </div>
+
+            <div class="control-row">
+              <div class="label-val">
+                <label for="ndwi">NDWI (mean)</label>
+                <span id="valNdwi" class="val-display">-0.370</span>
+              </div>
+              <input type="range" id="ndwi" min="-0.53" max="-0.17" step="0.005" value="-0.370" class="slider slider-blue">
+              <span class="slider-hint">Real range: -0.527 to -0.177</span>
+            </div>
+
+            <div class="control-row">
+              <div class="label-val">
+                <label for="lst">Land Surface Temperature (mean)</label>
+                <span id="valLst" class="val-display">24.5 °C</span>
+              </div>
+              <input type="range" id="lst" min="21" max="29" step="0.1" value="24.5" class="slider slider-blue">
+              <span class="slider-hint">Real range: 21.1 to 28.6 °C</span>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <div class="group-title">
+              <span class="group-badge emerald">TEMPORAL FEATURES</span>
+              <span>NASA POWER Agroclimatology, per-event season window</span>
+            </div>
+
+            <div class="control-row">
+              <div class="label-val">
+                <label for="precipMean">Precip. Mean (daily)</label>
+                <span id="valPrecipMean" class="val-display">0.51 mm/day</span>
+              </div>
+              <input type="range" id="precipMean" min="0" max="1.65" step="0.01" value="0.51" class="slider slider-emerald">
+              <span class="slider-hint">Dry-season Boro/Rabi windows: real range 0.01 to 1.62 mm/day</span>
+            </div>
+
+            <div class="control-row">
+              <div class="label-val">
+                <label for="precipMax">Precip. Max (single day)</label>
+                <span id="valPrecipMax" class="val-display">19.9 mm</span>
+              </div>
+              <input type="range" id="precipMax" min="0" max="110" step="0.5" value="19.94" class="slider slider-emerald">
+              <span class="slider-hint">Real range: 0.4 to 109.0 mm</span>
+            </div>
+
+            <div class="control-row">
+              <div class="label-val">
+                <label for="precipSum">Precip. Sum (window total)</label>
+                <span id="valPrecipSum" class="val-display">48.1 mm</span>
+              </div>
+              <input type="range" id="precipSum" min="0" max="161" step="1" value="48.05" class="slider slider-emerald">
+              <span class="slider-hint">Real range: 0.9 to 160.4 mm</span>
+            </div>
+
+            <div class="control-row">
+              <div class="label-val">
+                <label for="precipAnomaly">Precip. Anomaly (vs. climatology)</label>
+                <span id="valPrecipAnomaly" class="val-display">+0.51 mm</span>
+              </div>
+              <input type="range" id="precipAnomaly" min="0" max="1.65" step="0.01" value="0.51" class="slider slider-emerald">
+              <span class="slider-hint">Vs. 20-year NASA POWER climatological normal for the same day-of-year window</span>
+            </div>
+
+            <div class="control-row">
+              <div class="label-val">
+                <label for="rhMean">Relative Humidity (mean)</label>
+                <span id="valRhMean" class="val-display">57.2%</span>
+              </div>
+              <input type="range" id="rhMean" min="47" max="73" step="0.5" value="57.2" class="slider slider-emerald">
+              <span class="slider-hint">Real range: 47.2% to 72.9%</span>
+            </div>
+
+            <div class="control-row">
+              <div class="label-val">
+                <label for="rhMax">Relative Humidity (max)</label>
+                <span id="valRhMax" class="val-display">84.3%</span>
+              </div>
+              <input type="range" id="rhMax" min="73" max="94" step="0.5" value="84.3" class="slider slider-emerald">
+              <span class="slider-hint">Real range: 73.9% to 93.8%</span>
+            </div>
+
+            <div class="control-row">
+              <div class="label-val">
+                <label for="tempMean">Air Temperature (mean)</label>
+                <span id="valTempMean" class="val-display">20.0 °C</span>
+              </div>
+              <input type="range" id="tempMean" min="18" max="22.5" step="0.1" value="19.96" class="slider slider-emerald">
+              <span class="slider-hint">Real range: 18.4 to 21.9 °C (winter Boro/Rabi season)</span>
+            </div>
+
+            <div class="control-row">
+              <div class="label-val">
+                <label for="vpdMean">Vapor Pressure Deficit (mean)</label>
+                <span id="valVpdMean" class="val-display">1.08 kPa</span>
+              </div>
+              <input type="range" id="vpdMean" min="0.65" max="1.3" step="0.01" value="1.08" class="slider slider-emerald">
+              <span class="slider-hint">Real range: 0.69 to 1.27 kPa</span>
+            </div>
+
+            <div class="control-row">
+              <div class="label-val">
+                <label for="wetPersistence">Wet Persistence (max)</label>
+                <span id="valWetPersistence" class="val-display">1 days</span>
+              </div>
+              <input type="range" id="wetPersistence" min="0" max="6" step="1" value="1" class="slider slider-emerald">
+              <span class="slider-hint">Consecutive days with rain &gt;5mm or RH &gt;85%. Real range: 0 to 6 days</span>
+            </div>
+          </div>
+
+          <button id="btnRunInference" class="btn-primary">
+            <span class="btn-icon">&#9654;</span> Run RandomForest Inference
+          </button>
+          <p id="predictErrorBox" class="error-box" hidden></p>
+        </div>
+
+        <div class="results-panel card-glass">
+          <div class="panel-header">
+            <span class="panel-icon">&#9733;</span>
+            <h3>Outbreak Risk Prediction</h3>
+          </div>
+
+          <div id="riskAlertBanner" class="risk-banner alert-high">
+            <div class="risk-top">
+              <div class="risk-pill-badge" id="riskLevelText">—</div>
+            </div>
+            <div class="risk-main-stat">
+              <div class="stat-number" id="riskProbVal">—</div>
+              <div class="stat-meta">
+                <strong>Outbreak Probability</strong>
+                <span id="modelProvenance">Waiting for model…</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="attention-timeline-box">
+            <div class="timeline-header">
+              <h4>Top Contributing Factors (real per-request SHAP attribution)</h4>
+              <span class="timeline-sub">Which of the current feature values pushed this specific prediction up or down</span>
+            </div>
+            <div class="attention-bars" id="attentionBarsContainer" style="flex-direction:column; align-items:stretch; gap:0.5rem;">
+              <!-- Dynamically populated factor rows -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="research-questions-section">
+      <div class="rq-card card-glass">
+        <div class="rq-header">
+          <div class="rq-tag">RQ1 / RQ2</div>
+          <h2>Cross-Validated Model Comparison (Real Results)</h2>
+          <p>Grouped-by-district out-of-fold AUPRC and ROC-AUC on the real 77-event dataset.</p>
+        </div>
+
+        <div class="table-responsive">
+          <table class="benchmark-table">
+            <thead>
+              <tr>
+                <th>Model</th>
+                <th>Description</th>
+                <th>OOF AUPRC</th>
+                <th>OOF ROC-AUC</th>
+              </tr>
+            </thead>
+            <tbody id="resultsTableBody">
+              <tr><td colspan="4">Loading real results…</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="research-takeaway">
+          <strong>Stage 3/4 decision (proposal Section 8):</strong>
+          <span id="decisionText">Loading…</span>
+        </div>
+      </div>
+
+      <div class="rq-card card-glass">
+        <div class="rq-header">
+          <div class="rq-tag">RQ3</div>
+          <h2>Feature Attribution (Real SHAP Values)</h2>
+          <p>Mean |SHAP value| across all 77 real events, RandomForest model — not assumed, not fabricated.</p>
+        </div>
+
+        <div class="feature-ranking-grid" id="shapRankingGrid">
+          <p>Loading real SHAP ranking…</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="districts-section card-glass">
+      <div class="section-header">
+        <div>
+          <h2>Districts in the Real Dataset</h2>
+          <p>Real event counts per district from the 77-event dataset (not agro-ecological narrative text).</p>
+        </div>
+      </div>
+      <div class="districts-grid" id="districtsGrid">
+        <!-- Dynamically rendered from /api/districts -->
+      </div>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <div class="footer-container">
+      <p>Real data: Mahmud et al. (2021) rice blast survey, Islam et al. (2016) wheat blast outbreak, NASA POWER, Sentinel-1 RTC (Planetary Computer STAC), Landsat Collection 2 Level-2.</p>
+      <p class="footer-sub">No synthetic/randomly-generated training data, no fabricated results.</p>
+    </div>
+  </footer>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>

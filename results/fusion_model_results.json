@@ -1,0 +1,85 @@
+{
+  "n_events": 77,
+  "n_positive": 24,
+  "selected_hyperparams": {
+    "hidden_dim": 16,
+    "dropout": 0.5,
+    "weight_decay": 0.03,
+    "lr": 0.008,
+    "epochs": 60
+  },
+  "n_seeds_averaged": 5,
+  "grouped_by_district": {
+    "fold_metrics_mean_std": {
+      "auprc": [
+        0.7277047555618983,
+        0.22205703260018972
+      ],
+      "f1": [
+        0.5546031746031745,
+        0.16176028412057905
+      ],
+      "roc_auc": [
+        0.8384226884226884,
+        0.12725407970798192
+      ],
+      "recall": [
+        0.6819047619047619,
+        0.24322847428487449
+      ],
+      "brier": [
+        0.19650537073612212,
+        0.054793680434111564
+      ]
+    },
+    "raw_fold_auprc": [
+      0.9478458049886621,
+      0.790909090909091,
+      0.9617346938775508,
+      0.5213675213675213,
+      0.41666666666666663
+    ],
+    "oof_auprc": 0.5654516987487701,
+    "oof_roc_auc": 0.7775157232704402
+  },
+  "leave_one_event_out": {
+    "fold_metrics_mean_std": {
+      "auprc": [
+        NaN,
+        NaN
+      ],
+      "f1": [
+        0.2077922077922078,
+        0.4057272558912547
+      ],
+      "roc_auc": [
+        NaN,
+        NaN
+      ],
+      "recall": [
+        0.2077922077922078,
+        0.4057272558912547
+      ],
+      "brier": [
+        0.18125771538674976,
+        0.20242490833657112
+      ]
+    },
+    "raw_fold_auprc": [],
+    "oof_auprc": 0.643770108238436,
+    "oof_roc_auc": 0.7704402515723271
+  },
+  "stage_3_4_decision": {
+    "best_classical_baseline": "RandomForest",
+    "best_classical_grouped_oof_auprc": 0.7303646903780963,
+    "fusion_grouped_oof_auprc": 0.5654516987487701,
+    "per_fold_auprc_diff_mean_fusion_minus_classical": -0.018508396365539248,
+    "bootstrap_95pct_ci": [
+      -0.16367521367521373,
+      0.10371469800041226
+    ],
+    "n_folds_compared": 5,
+    "primary_result": "RandomForest",
+    "rationale": "Per proposal Section 8's stage 3/4 decision point: even after switching the temporal branch to real 90-day daily sequences, a small hyperparameter search, and 5-seed averaging per fold, the fusion model's per-fold AUPRC advantage over RandomForest is -0.019 with a bootstrapped 95% CI of [-0.164, 0.104], which includes zero \u2014 not a statistically defensible improvement on 5 folds / n=77 events. The classical baseline (RandomForest, grouped-by-district OOF AUPRC=0.730) remains the primary result. This is reported as a real negative finding after a genuine improvement attempt, not the original under-tuned architecture."
+  }
+}

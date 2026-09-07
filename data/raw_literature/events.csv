@@ -1,0 +1,78 @@
+event_id,disease,district,season_label,year,window_start,window_end,label,leaf_blast_incidence_pct,neck_blast_incidence_pct,leaf_blast_severity_pct,neck_blast_severity_pct,pct_fields_infected,avg_yield_loss_pct,affected_area_ha,note,source
+RB_Dinajpur_2017,rice_blast,Dinajpur,Boro 2017,2017,2016-12-01,2017-03-15,1,19.33,7.7,18.67,7.67,,,,LBI=19.33% >= 15%,Mahmud et al. (2021) SAJBR 4(1):01-13
+RB_Dinajpur_2018,rice_blast,Dinajpur,Boro 2018,2018,2017-12-01,2018-03-15,1,14,9.23,17,8,,,,NBI=9.23% >= 8%,Mahmud et al. (2021) SAJBR 4(1):01-13
+RB_Dinajpur_2019,rice_blast,Dinajpur,Boro 2019,2019,2018-12-01,2019-03-15,1,18.33,11.33,21.33,6.67,,,,LBI=18.33% >= 15%; NBI=11.33% >= 8%,Mahmud et al. (2021) SAJBR 4(1):01-13
+RB_Rangpur_2017,rice_blast,Rangpur,Boro 2017,2017,2016-12-01,2017-03-15,1,15.33,7.37,13.33,5,,,,LBI=15.33% >= 15%,Mahmud et al. (2021) SAJBR 4(1):01-13
+RB_Rangpur_2018,rice_blast,Rangpur,Boro 2018,2018,2017-12-01,2018-03-15,1,8.67,8.7,12,4.67,,,,NBI=8.7% >= 8%,Mahmud et al. (2021) SAJBR 4(1):01-13
+RB_Rangpur_2019,rice_blast,Rangpur,Boro 2019,2019,2018-12-01,2019-03-15,1,18,10.33,14.67,4.67,,,,LBI=18.0% >= 15%; NBI=10.33% >= 8%,Mahmud et al. (2021) SAJBR 4(1):01-13
+RB_Bogura_2017,rice_blast,Bogura,Boro 2017,2017,2016-12-01,2017-03-15,0,13.67,4.17,16,7.33,,,,LBI=13.67% < 15% and NBI=4.17% < 8%,Mahmud et al. (2021) SAJBR 4(1):01-13
+RB_Bogura_2018,rice_blast,Bogura,Boro 2018,2018,2017-12-01,2018-03-15,0,7.67,4.73,11,6.67,,,,LBI=7.67% < 15% and NBI=4.73% < 8%,Mahmud et al. (2021) SAJBR 4(1):01-13
+RB_Bogura_2019,rice_blast,Bogura,Boro 2019,2019,2018-12-01,2019-03-15,1,15.67,5.63,16.33,5.67,,,,LBI=15.67% >= 15%,Mahmud et al. (2021) SAJBR 4(1):01-13
+RB_Natore_2017,rice_blast,Natore,Boro 2017,2017,2016-12-01,2017-03-15,0,12.67,1.72,22,5.67,,,,LBI=12.67% < 15% and NBI=1.72% < 8%,Mahmud et al. (2021) SAJBR 4(1):01-13
+RB_Natore_2018,rice_blast,Natore,Boro 2018,2018,2017-12-01,2018-03-15,0,7.67,2.35,14,5.67,,,,LBI=7.67% < 15% and NBI=2.35% < 8%,Mahmud et al. (2021) SAJBR 4(1):01-13
+RB_Natore_2019,rice_blast,Natore,Boro 2019,2019,2018-12-01,2019-03-15,0,12,2.9,20.67,5,,,,LBI=12.0% < 15% and NBI=2.9% < 8%,Mahmud et al. (2021) SAJBR 4(1):01-13
+RB_Meherpur_2017,rice_blast,Meherpur,Boro 2017,2017,2016-12-01,2017-03-15,1,15,1.77,9.67,3,,,,LBI=15.0% >= 15%,Mahmud et al. (2021) SAJBR 4(1):01-13
+RB_Meherpur_2018,rice_blast,Meherpur,Boro 2018,2018,2017-12-01,2018-03-15,0,10.67,3.43,5.33,3.67,,,,LBI=10.67% < 15% and NBI=3.43% < 8%,Mahmud et al. (2021) SAJBR 4(1):01-13
+RB_Meherpur_2019,rice_blast,Meherpur,Boro 2019,2019,2018-12-01,2019-03-15,0,14.67,3.65,10.67,2.33,,,,LBI=14.67% < 15% and NBI=3.65% < 8%,Mahmud et al. (2021) SAJBR 4(1):01-13
+RB_Rajbari_2017,rice_blast,Rajbari,Boro 2017,2017,2016-12-01,2017-03-15,0,11,3.37,7.67,2,,,,LBI=11.0% < 15% and NBI=3.37% < 8%,Mahmud et al. (2021) SAJBR 4(1):01-13
+RB_Rajbari_2018,rice_blast,Rajbari,Boro 2018,2018,2017-12-01,2018-03-15,0,6.67,5.33,4,2,,,,LBI=6.67% < 15% and NBI=5.33% < 8%,Mahmud et al. (2021) SAJBR 4(1):01-13
+RB_Rajbari_2019,rice_blast,Rajbari,Boro 2019,2019,2018-12-01,2019-03-15,0,13.33,7.43,7.33,1.67,,,,LBI=13.33% < 15% and NBI=7.43% < 8%,Mahmud et al. (2021) SAJBR 4(1):01-13
+RB_Mymensingh_2017,rice_blast,Mymensingh,Boro 2017,2017,2016-12-01,2017-03-15,0,11.33,1.7,10.33,7.33,,,,LBI=11.33% < 15% and NBI=1.7% < 8%,Mahmud et al. (2021) SAJBR 4(1):01-13
+RB_Mymensingh_2018,rice_blast,Mymensingh,Boro 2018,2018,2017-12-01,2018-03-15,0,6.67,2.27,6.33,6.67,,,,LBI=6.67% < 15% and NBI=2.27% < 8%,Mahmud et al. (2021) SAJBR 4(1):01-13
+RB_Mymensingh_2019,rice_blast,Mymensingh,Boro 2019,2019,2018-12-01,2019-03-15,0,13,2.97,12,4.33,,,,LBI=13.0% < 15% and NBI=2.97% < 8%,Mahmud et al. (2021) SAJBR 4(1):01-13
+RB_Jashore_2017,rice_blast,Jashore,Boro 2017,2017,2016-12-01,2017-03-15,0,8.33,1.2,6.67,2,,,,LBI=8.33% < 15% and NBI=1.2% < 8%,Mahmud et al. (2021) SAJBR 4(1):01-13
+RB_Jashore_2018,rice_blast,Jashore,Boro 2018,2018,2017-12-01,2018-03-15,0,5,1.67,4,2.67,,,,LBI=5.0% < 15% and NBI=1.67% < 8%,Mahmud et al. (2021) SAJBR 4(1):01-13
+RB_Jashore_2019,rice_blast,Jashore,Boro 2019,2019,2018-12-01,2019-03-15,0,7.67,2.47,9.33,2.33,,,,LBI=7.67% < 15% and NBI=2.47% < 8%,Mahmud et al. (2021) SAJBR 4(1):01-13
+WB_Meherpur_2016,wheat_blast,Meherpur,2015-16,2016,2015-12-01,2016-02-28,1,,,,,70,30,9640,Highest infection; 62% of national affected area,Islam et al. (2016) BMC Biology 14:84
+WB_Chuadanga_2016,wheat_blast,Chuadanga,2015-16,2016,2015-12-01,2016-02-28,1,,,,,44,36,unknown,2nd highest infection,Islam et al. (2016) BMC Biology 14:84
+WB_Jessore_2016,wheat_blast,Jessore,2015-16,2016,2015-12-01,2016-02-28,1,,,,,37,25,unknown,3rd highest infection,Islam et al. (2016) BMC Biology 14:84
+WB_Jhenaidah_2016,wheat_blast,Jhenaidah,2015-16,2016,2015-12-01,2016-02-28,1,,,,,8,51,unknown,Highest yield loss (51%),Islam et al. (2016) BMC Biology 14:84
+WB_Bhola_2016,wheat_blast,Bhola,2015-16,2016,2015-12-01,2016-02-28,1,,,,,5,5,unknown,,Islam et al. (2016) BMC Biology 14:84
+WB_Kushtia_2016,wheat_blast,Kushtia,2015-16,2016,2015-12-01,2016-02-28,1,,,,,2,10,unknown,,Islam et al. (2016) BMC Biology 14:84
+WB_Barisal_2016,wheat_blast,Barisal,2015-16,2016,2015-12-01,2016-02-28,1,,,,,1,21,unknown,,Islam et al. (2016) BMC Biology 14:84
+WB_Pabna_2016,wheat_blast,Pabna,2015-16,2016,2015-12-01,2016-02-28,1,,,,,0.2,18,unknown,Lowest infection,Islam et al. (2016) BMC Biology 14:84
+WB_Dinajpur_2016,wheat_blast,Dinajpur,2015-16,2016,2015-12-01,2016-02-28,0,,,,,0,0,0,Wheat-growing district; not in 2016 outbreak zone,Islam et al. (2016) - inferred negative
+WB_Thakurgaon_2016,wheat_blast,Thakurgaon,2015-16,2016,2015-12-01,2016-02-28,0,,,,,0,0,0,Wheat-growing district; not in 2016 outbreak zone,Islam et al. (2016) - inferred negative
+WB_Panchagarh_2016,wheat_blast,Panchagarh,2015-16,2016,2015-12-01,2016-02-28,0,,,,,0,0,0,Wheat-growing district; not in 2016 outbreak zone,Islam et al. (2016) - inferred negative
+WB_Rangpur_2016,wheat_blast,Rangpur,2015-16,2016,2015-12-01,2016-02-28,0,,,,,0,0,0,Wheat-growing district; not in 2016 outbreak zone,Islam et al. (2016) - inferred negative
+WB_Nilphamari_2016,wheat_blast,Nilphamari,2015-16,2016,2015-12-01,2016-02-28,0,,,,,0,0,0,Wheat-growing district; not in 2016 outbreak zone,Islam et al. (2016) - inferred negative
+WB_Kurigram_2016,wheat_blast,Kurigram,2015-16,2016,2015-12-01,2016-02-28,0,,,,,0,0,0,Wheat-growing district; not in 2016 outbreak zone,Islam et al. (2016) - inferred negative
+WB_Gaibandha_2016,wheat_blast,Gaibandha,2015-16,2016,2015-12-01,2016-02-28,0,,,,,0,0,0,Wheat-growing district; not in 2016 outbreak zone,Islam et al. (2016) - inferred negative
+WB_Bogura_2016,wheat_blast,Bogura,2015-16,2016,2015-12-01,2016-02-28,0,,,,,0,0,0,Wheat-growing district; not in 2016 outbreak zone,Islam et al. (2016) - inferred negative
+WB_Joypurhat_2016,wheat_blast,Joypurhat,2015-16,2016,2015-12-01,2016-02-28,0,,,,,0,0,0,Wheat-growing district; not in 2016 outbreak zone,Islam et al. (2016) - inferred negative
+WB_Naogaon_2016,wheat_blast,Naogaon,2015-16,2016,2015-12-01,2016-02-28,0,,,,,0,0,0,Wheat-growing district; not in 2016 outbreak zone,Islam et al. (2016) - inferred negative
+WB_Rajshahi_2016,wheat_blast,Rajshahi,2015-16,2016,2015-12-01,2016-02-28,0,,,,,0,0,0,Wheat-growing district; not in 2016 outbreak zone,Islam et al. (2016) - inferred negative
+WB_Natore_2016,wheat_blast,Natore,2015-16,2016,2015-12-01,2016-02-28,0,,,,,0,0,0,Wheat-growing district; not in 2016 outbreak zone,Islam et al. (2016) - inferred negative
+WB_Sirajganj_2016,wheat_blast,Sirajganj,2015-16,2016,2015-12-01,2016-02-28,0,,,,,0,0,0,Wheat-growing district; not in 2016 outbreak zone,Islam et al. (2016) - inferred negative
+WB_Faridpur_2016,wheat_blast,Faridpur,2015-16,2016,2015-12-01,2016-02-28,0,,,,,0,0,0,Wheat-growing district; not in 2016 outbreak zone,Islam et al. (2016) - inferred negative
+WB_Rajbari_2016,wheat_blast,Rajbari,2015-16,2016,2015-12-01,2016-02-28,0,,,,,0,0,0,Wheat-growing district; not in 2016 outbreak zone,Islam et al. (2016) - inferred negative
+WB_Magura_2016,wheat_blast,Magura,2015-16,2016,2015-12-01,2016-02-28,0,,,,,0,0,0,Wheat-growing district; not in 2016 outbreak zone,Islam et al. (2016) - inferred negative
+WB_Narail_2016,wheat_blast,Narail,2015-16,2016,2015-12-01,2016-02-28,0,,,,,0,0,0,Wheat-growing district; not in 2016 outbreak zone,Islam et al. (2016) - inferred negative
+WB_Satkhira_2016,wheat_blast,Satkhira,2015-16,2016,2015-12-01,2016-02-28,0,,,,,0,0,0,Wheat-growing district; not in 2016 outbreak zone,Islam et al. (2016) - inferred negative
+WB_Khulna_2016,wheat_blast,Khulna,2015-16,2016,2015-12-01,2016-02-28,0,,,,,0,0,0,Wheat-growing district; not in 2016 outbreak zone,Islam et al. (2016) - inferred negative
+WB_Tangail_2016,wheat_blast,Tangail,2015-16,2016,2015-12-01,2016-02-28,0,,,,,0,0,0,Wheat-growing district; not in 2016 outbreak zone,Islam et al. (2016) - inferred negative
+WB_Jamalpur_2016,wheat_blast,Jamalpur,2015-16,2016,2015-12-01,2016-02-28,0,,,,,0,0,0,Wheat-growing district; not in 2016 outbreak zone,Islam et al. (2016) - inferred negative
+WB_Sherpur_2016,wheat_blast,Sherpur,2015-16,2016,2015-12-01,2016-02-28,0,,,,,0,0,0,Wheat-growing district; not in 2016 outbreak zone,Islam et al. (2016) - inferred negative
+WB_Mymensingh_2016,wheat_blast,Mymensingh,2015-16,2016,2015-12-01,2016-02-28,0,,,,,0,0,0,Wheat-growing district; not in 2016 outbreak zone,Islam et al. (2016) - inferred negative
+WB_Dhaka_2016,wheat_blast,Dhaka,2015-16,2016,2015-12-01,2016-02-28,0,,,,,0,0,0,Wheat-growing district; not in 2016 outbreak zone,Islam et al. (2016) - inferred negative
+WB_Comilla_2016,wheat_blast,Comilla,2015-16,2016,2015-12-01,2016-02-28,0,,,,,0,0,0,Wheat-growing district; not in 2016 outbreak zone,Islam et al. (2016) - inferred negative
+WB_Meherpur_2015,wheat_blast,Meherpur,2014-15,2015,2014-12-01,2015-02-28,0,,,,,0,0,0,Pre-emergence: wheat blast not yet present in Asia,Kim & Choi (2020) Front Plant Sci - observed
+WB_Chuadanga_2015,wheat_blast,Chuadanga,2014-15,2015,2014-12-01,2015-02-28,0,,,,,0,0,0,Pre-emergence: wheat blast not yet present in Asia,Kim & Choi (2020) Front Plant Sci - observed
+WB_Jessore_2015,wheat_blast,Jessore,2014-15,2015,2014-12-01,2015-02-28,0,,,,,0,0,0,Pre-emergence: wheat blast not yet present in Asia,Kim & Choi (2020) Front Plant Sci - observed
+WB_Jhenaidah_2015,wheat_blast,Jhenaidah,2014-15,2015,2014-12-01,2015-02-28,0,,,,,0,0,0,Pre-emergence: wheat blast not yet present in Asia,Kim & Choi (2020) Front Plant Sci - observed
+WB_Bhola_2015,wheat_blast,Bhola,2014-15,2015,2014-12-01,2015-02-28,0,,,,,0,0,0,Pre-emergence: wheat blast not yet present in Asia,Kim & Choi (2020) Front Plant Sci - observed
+WB_Kushtia_2015,wheat_blast,Kushtia,2014-15,2015,2014-12-01,2015-02-28,0,,,,,0,0,0,Pre-emergence: wheat blast not yet present in Asia,Kim & Choi (2020) Front Plant Sci - observed
+WB_Barisal_2015,wheat_blast,Barisal,2014-15,2015,2014-12-01,2015-02-28,0,,,,,0,0,0,Pre-emergence: wheat blast not yet present in Asia,Kim & Choi (2020) Front Plant Sci - observed
+WB_Pabna_2015,wheat_blast,Pabna,2014-15,2015,2014-12-01,2015-02-28,0,,,,,0,0,0,Pre-emergence: wheat blast not yet present in Asia,Kim & Choi (2020) Front Plant Sci - observed
+WB_Dinajpur_2015,wheat_blast,Dinajpur,2014-15,2015,2014-12-01,2015-02-28,0,,,,,0,0,0,Pre-emergence: wheat blast not yet present in Asia,Kim & Choi (2020) Front Plant Sci - observed
+WB_Rangpur_2015,wheat_blast,Rangpur,2014-15,2015,2014-12-01,2015-02-28,0,,,,,0,0,0,Pre-emergence: wheat blast not yet present in Asia,Kim & Choi (2020) Front Plant Sci - observed
+WB_Bogura_2015,wheat_blast,Bogura,2014-15,2015,2014-12-01,2015-02-28,0,,,,,0,0,0,Pre-emergence: wheat blast not yet present in Asia,Kim & Choi (2020) Front Plant Sci - observed
+WB_Rajshahi_2015,wheat_blast,Rajshahi,2014-15,2015,2014-12-01,2015-02-28,0,,,,,0,0,0,Pre-emergence: wheat blast not yet present in Asia,Kim & Choi (2020) Front Plant Sci - observed
+WB_Meherpur_2017,wheat_blast,Meherpur,2016-17,2017,2016-12-01,2017-02-28,1,,,,,low/unquantified,3,low/unquantified,"Recurrence, lower severity (1-5% yield loss); milder weather + management",Gupta et al. (2021) Front Plant Sci; Kim & Choi (2020)
+WB_Chuadanga_2017,wheat_blast,Chuadanga,2016-17,2017,2016-12-01,2017-02-28,1,,,,,low/unquantified,3,low/unquantified,"Recurrence, lower severity (1-5% yield loss); milder weather + management",Gupta et al. (2021) Front Plant Sci; Kim & Choi (2020)
+WB_Jessore_2017,wheat_blast,Jessore,2016-17,2017,2016-12-01,2017-02-28,1,,,,,low/unquantified,3,low/unquantified,"Recurrence, lower severity (1-5% yield loss); milder weather + management",Gupta et al. (2021) Front Plant Sci; Kim & Choi (2020)
+WB_Jhenaidah_2017,wheat_blast,Jhenaidah,2016-17,2017,2016-12-01,2017-02-28,1,,,,,low/unquantified,3,low/unquantified,"Recurrence, lower severity (1-5% yield loss); milder weather + management",Gupta et al. (2021) Front Plant Sci; Kim & Choi (2020)
+WB_Bhola_2017,wheat_blast,Bhola,2016-17,2017,2016-12-01,2017-02-28,1,,,,,low/unquantified,3,low/unquantified,"Recurrence, lower severity (1-5% yield loss); milder weather + management",Gupta et al. (2021) Front Plant Sci; Kim & Choi (2020)
+WB_Kushtia_2017,wheat_blast,Kushtia,2016-17,2017,2016-12-01,2017-02-28,1,,,,,low/unquantified,3,low/unquantified,"Recurrence, lower severity (1-5% yield loss); milder weather + management",Gupta et al. (2021) Front Plant Sci; Kim & Choi (2020)
+WB_Barisal_2017,wheat_blast,Barisal,2016-17,2017,2016-12-01,2017-02-28,1,,,,,low/unquantified,3,low/unquantified,"Recurrence, lower severity (1-5% yield loss); milder weather + management",Gupta et al. (2021) Front Plant Sci; Kim & Choi (2020)
+WB_Pabna_2017,wheat_blast,Pabna,2016-17,2017,2016-12-01,2017-02-28,1,,,,,low/unquantified,3,low/unquantified,"Recurrence, lower severity (1-5% yield loss); milder weather + management",Gupta et al. (2021) Front Plant Sci; Kim & Choi (2020)
