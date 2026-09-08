@@ -1,7 +1,9 @@
 """
 Fits the primary model (RandomForest — see results/fusion_model_results.json for why
 the classical baseline, not the CNN-LSTM fusion model, is the primary result) on ALL
-77 real events, and persists it for the dashboard's /api/predict endpoint.
+real events in data/processed/real_event_features.csv (125 as of the 2026-09-08
+upazila-level integration — see CLAUDE.md), and persists it for the dashboard's
+/api/predict endpoint.
 
 This is a production artifact for serving, not a new evaluation: reported performance
 numbers come from training/classical_baselines.py's cross-validated results, not from
@@ -49,7 +51,7 @@ def main():
     joblib.dump({"pipeline": pipeline, "feature_columns": FEATURE_COLUMNS}, OUT_PATH)
     logger.info(f"Saved fitted RandomForest pipeline to {OUT_PATH}")
 
-    # Real min/max/median per feature from the actual 77-event dataset, for sensible
+    # Real min/max/median per feature from the actual dataset, for sensible
     # dashboard slider ranges and defaults (not invented numbers).
     ranges = {}
     for col in FEATURE_COLUMNS:

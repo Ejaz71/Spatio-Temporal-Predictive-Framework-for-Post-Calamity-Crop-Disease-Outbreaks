@@ -3,7 +3,7 @@ FastAPI Backend for the Crop Disease Outbreak Risk Dashboard.
 
 Serves real, cross-validated results only:
 - /api/predict           live RandomForest inference + local SHAP feature attribution
-- /api/districts         real district event counts from the 77-event dataset
+- /api/districts         real district event counts from the 125-event dataset
 - /api/historical_events real event feature vectors, for the scenario selector
 - /api/results           real classical-baseline and fusion-model CV results
   (including the honest stage 3/4 decision: RandomForest is primary, the fusion
@@ -33,8 +33,8 @@ logger = logging.getLogger("FastAPIServer")
 
 app = FastAPI(
     title="Post-Calamity Crop Disease Outbreak Risk (Real Data)",
-    description="RandomForest model trained on 77 real district-season events "
-                 "(Mahmud et al. 2021 rice blast survey + Islam et al. 2016 wheat blast "
+    description="RandomForest model trained on 125 real events (72 upazila-level rice blast "
+                 "events, Mahmud et al. 2021 survey, + 53 wheat blast events, Islam et al. 2016 "
                  "outbreak), fused with real NASA POWER weather and real Sentinel-1/Landsat imagery.",
     version="2.0.0",
 )
@@ -194,7 +194,7 @@ def predict(req: PredictionRequest):
             {"feature": name, "shap_value": round(val, 4), "direction": "increases risk" if val > 0 else "decreases risk"}
             for name, val in contributions[:6]
         ],
-        "model": "RandomForest (grouped-by-district CV AUPRC=0.730, ROC-AUC=0.851 on 77 real events)",
+        "model": "RandomForest (grouped-by-district nested-tuned CV AUPRC=0.762, ROC-AUC=0.815 on 125 real events)",
     }
 
 

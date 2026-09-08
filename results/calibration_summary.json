@@ -1,40 +1,40 @@
 {
   "n_bins": 5,
   "binning_strategy": "quantile",
-  "note": "n=77 is small for calibration analysis; 5 bins used deliberately rather than the textbook 10, to keep per-bin counts meaningful.",
+  "note": "n=125 is small for calibration analysis; 5 bins used deliberately rather than the textbook 10, to keep per-bin counts meaningful.",
   "curves": {
     "RandomForest (primary)": {
-      "n_events": 77,
+      "n_events": 125,
       "mean_predicted_prob_per_bin": [
-        0.1259748282186959,
-        0.27445219458623477,
-        0.38524830956735046,
-        0.5040157316166358,
-        0.7549509874114677
+        0.08867574188964632,
+        0.27360184382179736,
+        0.42857319080364853,
+        0.6185763726748842,
+        0.8141727876601315
       ],
       "observed_frequency_per_bin": [
-        0.0,
-        0.13333333333333333,
-        0.3333333333333333,
-        0.6,
-        0.5
+        0.04,
+        0.08,
+        0.48,
+        0.4,
+        0.84
       ]
     },
     "Fusion model": {
-      "n_events": 77,
+      "n_events": 125,
       "mean_predicted_prob_per_bin": [
-        0.10768324322998524,
-        0.21129844089349112,
-        0.32912255128224693,
-        0.5766900261243184,
-        0.8132409080862999
+        0.13874001681804657,
+        0.25479491174221036,
+        0.39926280856132507,
+        0.5966963362693787,
+        0.8122961473464966
       ],
       "observed_frequency_per_bin": [
-        0.0625,
-        0.13333333333333333,
-        0.4,
-        0.3333333333333333,
-        0.625
+        0.2,
+        0.12,
+        0.2,
+        0.64,
+        0.68
       ]
     }
   }

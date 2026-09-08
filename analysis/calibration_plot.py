@@ -7,8 +7,9 @@ classical_baselines.py (RandomForest — the primary result) and fusion_model_ev
 this is a visualization of predictions that already exist.
 
 A well-calibrated model's curve tracks the diagonal (predicted probability == observed
-outcome frequency in that bin). Given n=77, bins are necessarily coarse (5 bins here,
-not the textbook 10) — stated explicitly on the plot and in the log, not hidden.
+outcome frequency in that bin). Given a dataset this size, bins are necessarily coarse
+(5 bins here, not the textbook 10) — stated explicitly on the plot and in the log, not
+hidden.
 """
 
 import json
@@ -29,7 +30,7 @@ FEATURES_CSV = "data/processed/real_event_features.csv"
 CLASSICAL_RESULTS_JSON = "results/classical_baseline_results.json"
 FUSION_RESULTS_JSON = "results/fusion_model_results.json"
 OUT_PATH = "results/figures/calibration_plot.png"
-N_BINS = 5  # coarse, appropriate for n=77 — not the textbook 10
+N_BINS = 5  # coarse, appropriate for a dataset this size — not the textbook 10
 
 
 def main():

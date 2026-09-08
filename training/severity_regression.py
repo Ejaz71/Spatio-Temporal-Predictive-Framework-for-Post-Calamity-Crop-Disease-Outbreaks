@@ -1,9 +1,9 @@
 """
 Rice blast severity regression (proposal Section 9's severity/continuous-outcome
 task): predicts leaf_blast_severity_pct and neck_blast_severity_pct — continuous,
-not the binary outbreak label — restricted to the rice_blast rows (n=24 in the
-current 77-event dataset; grows to n=72 once the upazila-level integration, Phase B
-item 0, completes and this script is re-run).
+not the binary outbreak label — restricted to the rice_blast rows (n=72, upazila-level
+resolution, since the 2026-09-08 Phase B item 0 integration replaced the original
+24 district-level rice-blast rows — see CLAUDE.md).
 
 Per the CSE791 Week 6 lecture's "classical stats alongside ML metrics" guidance and
 the plan approved 2026-09-08: features are restricted to those Phase A's Spearman
@@ -168,7 +168,7 @@ def run_target(df_rice, target):
 def main():
     df = pd.read_csv(FEATURES_CSV)
     df_rice = df[df["disease"] == "rice_blast"].copy()
-    logger.info(f"Rice blast subset: n={len(df_rice)} events (pre-upazila-merge snapshot)")
+    logger.info(f"Rice blast subset: n={len(df_rice)} events (upazila-level, post-merge)")
 
     results = {"n_rice_blast_events": len(df_rice)}
     for target in SEVERITY_TARGETS:

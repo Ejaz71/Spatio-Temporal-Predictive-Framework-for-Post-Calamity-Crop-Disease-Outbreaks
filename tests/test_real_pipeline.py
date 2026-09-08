@@ -44,7 +44,14 @@ class TestRealFeatures(unittest.TestCase):
         self.df = pd.read_csv(FEATURES_CSV)
 
     def test_event_count(self):
-        self.assertEqual(len(self.df), 77)
+        # 72 upazila-level rice-blast events (Mahmud et al. 2021, finer-grained than
+        # the original 24 district-level rows) + 53 wheat-blast events (Islam et al.
+        # 2016) = 125, since Phase B item 0 (2026-09-08) merged the upazila-level
+        # disaggregation in — see data/merge_upazila_dataset.py and CLAUDE.md.
+        self.assertEqual(len(self.df), 125)
+        self.assertEqual(int((self.df["disease"] == "rice_blast").sum()), 72)
+        self.assertEqual(int((self.df["disease"] == "wheat_blast").sum()), 53)
+        self.assertEqual(int((self.df["label"] == 1).sum()), 46)
 
     def test_feature_columns_present(self):
         for col in FEATURE_COLUMNS:
@@ -75,8 +82,8 @@ class TestClassicalResults(unittest.TestCase):
             results = json.load(f)
         for model_name in ["RandomForest", "XGBoost"]:
             auprc = results[model_name]["grouped_by_district"]["oof_auprc"]
-            self.assertGreater(auprc, 0.3)  # better than the ~0.31 positive-rate baseline
-            self.assertLess(auprc, 0.99)    # not a suspicious perfect score
+            self.assertGreater(auprc, 0.35)  # better than the ~0.368 positive-rate baseline (46/125)
+            self.assertLess(auprc, 0.99)     # not a suspicious perfect score
 
 
 if __name__ == "__main__":

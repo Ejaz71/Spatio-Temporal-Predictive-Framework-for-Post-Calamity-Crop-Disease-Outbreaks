@@ -1,5 +1,6 @@
 """
-Classical baselines (Random Forest, XGBoost) on the real 77-event feature matrix.
+Classical baselines (Random Forest, XGBoost) on the real event feature matrix (125
+events as of the 2026-09-08 upazila-level integration — see CLAUDE.md).
 
 Implements proposal Section 6.1/6.2/9:
 - Random Forest (Breiman, 2001) and Gradient Boosting / XGBoost (Chen & Guestrin, 2016)
@@ -82,7 +83,7 @@ def build_models():
     return {"RandomForest": build_model("RandomForest"), "XGBoost": build_model("XGBoost")}
 
 
-# Small nested-tuning grids. Kept modest given n=77: RF/XGBoost are fast enough that a
+# Small nested-tuning grids. Kept modest given the dataset is still small: RF/XGBoost are fast enough that a
 # larger grid is cheap, but too much tuning search on this little data risks overfitting
 # to whatever internal validation split gets used, so this stays deliberately small.
 HP_CANDIDATES = {

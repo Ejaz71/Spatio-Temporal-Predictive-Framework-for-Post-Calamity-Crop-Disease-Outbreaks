@@ -7,8 +7,8 @@ v2: the temporal branch now runs over the REAL 90-day daily NASA POWER sequence 
 event (data/extract_daily_sequences.py) instead of 9 pre-aggregated summary scalars.
 Also adds a small hyperparameter search (picked via a single internal validation
 split, not leaked into the outer CV) and seed-averaging per fold, since a neural net
-on n=77 has enough run-to-run variance that a single seed isn't a fair test of the
-architecture.
+on a dataset this size (n in the low hundreds) has enough run-to-run variance that a
+single seed isn't a fair test of the architecture.
 
 Implements the proposal's Section 8 "stage 3/4 decision point" and Section 9 H1 test:
 if the fused model's cross-validated AUPRC does not exceed the best classical baseline
@@ -55,7 +55,7 @@ def load_data():
     seq_data = np.load(DAILY_SEQ_NPZ, allow_pickle=True)
     seq_by_event = dict(zip(seq_data["event_ids"], seq_data["sequences"]))
 
-    # Align daily sequences to the same row order as df (all 77 events have one).
+    # Align daily sequences to the same row order as df (every event has one).
     daily_sequences = np.stack([seq_by_event[eid] for eid in df["event_id"]], axis=0)
 
     X_spatial = df[SPATIAL_FEATURES].copy()
@@ -172,8 +172,8 @@ def cross_validate_fusion(X_spatial, daily_sequences, y, groups, splitter, split
 
         X_sp_train, X_sp_test, X_seq_train, X_seq_test = preprocess_fold(X_spatial, daily_sequences, train_idx, test_idx)
 
-        # Seed-averaging: a neural net on n=77 has enough run-to-run variance that a
-        # single seed isn't a fair read of the architecture's real skill.
+        # Seed-averaging: a neural net on a dataset this small has enough run-to-run
+        # variance that a single seed isn't a fair read of the architecture's real skill.
         seed_probs = [
             train_fold(X_sp_train, X_seq_train, y[train_idx], X_sp_test, X_seq_test, fold_hp, seed=100 * fold_idx + s)
             for s in range(N_SEEDS)
@@ -307,8 +307,8 @@ def main():
         "bootstrap_95pct_ci": [brier_ci_lo, brier_ci_hi],
         "interpretation": (
             "positive value / CI excluding zero above 0 means fusion has lower (better) Brier score than "
-            f"{best_classical_name} across the 77 real leave-one-event-out predictions; CI including zero means "
-            "no statistically distinguishable difference at the per-event level either."
+            f"{best_classical_name} across the {int(valid.sum())} real leave-one-event-out predictions; CI "
+            "including zero means no statistically distinguishable difference at the per-event level either."
         ),
     }
     logger.info(
@@ -331,12 +331,13 @@ def main():
     # Decision uses test 1 (matches the classical baseline's own headline split) but
     # test 2's much higher n is reported alongside as corroboration, not cherry-picked
     # in whichever direction is more favorable.
+    n_paired = paired_event_test["n_events_compared"]
     if ci_lo > 0:
         decision["primary_result"] = "fusion_model"
         decision["rationale"] = (
             f"Fusion model (v2, real daily sequences + nested tuning + seed-averaging) exceeds "
             f"{best_classical_name}'s per-fold AUPRC by {mean_diff:.3f} (95% CI [{ci_lo:.3f}, {ci_hi:.3f}], "
-            f"excludes zero) on grouped-by-district CV, corroborated by the 77-event paired Brier test "
+            f"excludes zero) on grouped-by-district CV, corroborated by the {n_paired}-event paired Brier test "
             f"(mean diff {brier_mean_diff:.4f}, CI [{brier_ci_lo:.4f}, {brier_ci_hi:.4f}])."
         )
     else:
@@ -346,9 +347,10 @@ def main():
             f"to real 90-day daily sequences, TRUE nested hyperparameter tuning (independent per outer fold, "
             f"not leaked from the test fold), and 5-seed averaging per fold, the fusion model's per-fold AUPRC "
             f"advantage over {best_classical_name} is {mean_diff:.3f} with a bootstrapped 95% CI of "
-            f"[{ci_lo:.3f}, {ci_hi:.3f}], which includes zero. The higher-powered 77-event paired Brier-score "
-            f"test corroborates this: mean diff {brier_mean_diff:.4f}, 95% CI [{brier_ci_lo:.4f}, {brier_ci_hi:.4f}]. "
-            f"Neither test finds a statistically defensible fusion-model advantage on n=77 events. The classical "
+            f"[{ci_lo:.3f}, {ci_hi:.3f}], which includes zero. The higher-powered {n_paired}-event paired "
+            f"Brier-score test corroborates this: mean diff {brier_mean_diff:.4f}, 95% CI "
+            f"[{brier_ci_lo:.4f}, {brier_ci_hi:.4f}]. Neither test finds a statistically defensible fusion-model "
+            f"advantage on n={n_paired} events. The classical "
             f"baseline ({best_classical_name}, grouped-by-district nested-tuned OOF AUPRC={best_classical_auprc:.3f}) "
             f"remains the primary result. This is reported as a real negative finding after a genuine, "
             f"methodologically hardened improvement attempt — not the original under-tuned, leakage-adjacent one."
