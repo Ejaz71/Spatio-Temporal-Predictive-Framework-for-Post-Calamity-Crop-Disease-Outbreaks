@@ -88,13 +88,16 @@ def fetch_nasa_power(lat, lon, start, end, cache_key):
     raise RuntimeError(f"NASA POWER fetch failed for {cache_key}")
 
 
-def get_climatology_baseline(district, lat, lon, window_start, window_end):
+def get_climatology_baseline(location_key, lat, lon, window_start, window_end):
     """
     Real climatological normal for the event's day-of-year range, computed from
     NASA POWER daily precipitation across CLIMATOLOGY_START_YEAR..CLIMATOLOGY_END_YEAR
-    at this district's coordinates (not from the event's own window).
+    at this location's coordinates (not from the event's own window). `location_key`
+    is district name for the 77-event district-level dataset, or "District_Upazila"
+    for the finer-grained upazila-level dataset — it only affects the cache filename
+    (lat/lon already pin down the actual query point), kept for human-readable caching.
     """
-    cache_key = f"clim_{district}_{lat:.3f}_{lon:.3f}"
+    cache_key = f"clim_{location_key}_{lat:.3f}_{lon:.3f}"
     data = fetch_nasa_power(
         lat, lon,
         f"{CLIMATOLOGY_START_YEAR}-01-01", f"{CLIMATOLOGY_END_YEAR}-12-31",
@@ -124,11 +127,24 @@ def get_climatology_baseline(district, lat, lon, window_start, window_end):
         if in_window:
             vals.append(v)
 
-    return float(np.median(vals)) if vals else float(np.nan)
+    # Mean, not median: Bangladesh's Dec-Mar dry season is zero-inflated (roughly 80%
+    # of days receive 0mm rain across the 2001-2020 climatology window), so the median
+    # of this distribution is genuinely 0.0mm — which would make precip_anomaly_mm
+    # identical to precip_mean_mm for every event (a known bug fixed here; see
+    # CLAUDE.md "Known Issues" for the discovery). The mean is still real, still
+    # computed from the same real NASA POWER daily series, and does not collapse to
+    # zero, so it is the correct summary statistic for a "typical rainfall level"
+    # baseline in this climate.
+    return float(np.mean(vals)) if vals else float(np.nan)
 
 
-def compute_temporal_features(district, lat, lon, window_start, window_end):
-    cache_key = f"nasa_{district}_{window_start}_{window_end}".replace("-", "")
+def compute_temporal_features(location_key, lat, lon, window_start, window_end):
+    # NOTE: for the original 77-event district-level dataset, location_key == district,
+    # exactly reproducing the pre-existing cache filenames (so that run is unaffected
+    # and its cache stays valid). For the upazila-level dataset, location_key is
+    # "District_Upazila" so multiple upazilas in the same district/year don't collide
+    # on the same cache file despite sharing a window.
+    cache_key = f"nasa_{location_key}_{window_start}_{window_end}".replace("-", "")
     data = fetch_nasa_power(lat, lon, window_start, window_end, cache_key)
     props = data["properties"]["parameter"]
     p = props.get("PRECTOTCORR", {})
@@ -157,7 +173,7 @@ def compute_temporal_features(district, lat, lon, window_start, window_end):
             wet_persistence = max(0, wet_persistence - 1)
         max_wet = max(max_wet, wet_persistence)
 
-    clim_baseline = get_climatology_baseline(district, lat, lon, window_start, window_end)
+    clim_baseline = get_climatology_baseline(location_key, lat, lon, window_start, window_end)
 
     return {
         "precip_mean_mm": float(np.mean(precip)) if len(precip) else np.nan,
@@ -311,11 +327,22 @@ def _with_timeout(fn, *args, timeout=PER_CALL_TIMEOUT_SEC, default=None, label="
             return default
 
 
-def run(limit=None, start_at=0):
-    with open(DISTRICTS_JSON, "r") as f:
+def run(limit=None, start_at=0, events_csv=EVENTS_CSV, out_csv=OUT_CSV, districts_json=DISTRICTS_JSON):
+    """
+    events_csv rows are resolved to (lat, lon, location_key) one of two ways:
+      - if the row already has non-null 'lat'/'lon' columns (the upazila-level
+        dataset), those real per-upazila coordinates are used directly, and
+        location_key = "{district}_{upazila}" to keep cache files disambiguated
+        between upazilas sharing a district and a window.
+      - otherwise (the original 77-event district-level dataset), lat/lon are
+        looked up from districts_json by district name, and location_key =
+        district — byte-for-byte identical to the original cache key scheme,
+        so that dataset's existing cache is reused rather than re-fetched.
+    """
+    with open(districts_json, "r") as f:
         districts = json.load(f)["districts"]
 
-    events = pd.read_csv(EVENTS_CSV)
+    events = pd.read_csv(events_csv)
     if limit:
         events = events.iloc[start_at:start_at + limit]
 
@@ -323,11 +350,11 @@ def run(limit=None, start_at=0):
     # doesn't repeat the (slow, network-bound) work already done.
     rows = []
     done_ids = set()
-    if os.path.exists(OUT_CSV):
-        prev = pd.read_csv(OUT_CSV)
+    if os.path.exists(out_csv):
+        prev = pd.read_csv(out_csv)
         rows = prev.to_dict("records")
         done_ids = set(prev["event_id"])
-        logger.info(f"Resuming: {len(done_ids)} events already in {OUT_CSV}, skipping those")
+        logger.info(f"Resuming: {len(done_ids)} events already in {out_csv}, skipping those")
 
     catalog = get_catalog()
 
@@ -336,16 +363,23 @@ def run(limit=None, start_at=0):
             continue
 
         district = ev["district"]
-        if district not in districts:
-            logger.error(f"No coordinates for district '{district}' — skipping {ev['event_id']}")
-            continue
-        lat, lon = districts[district]["lat"], districts[district]["lon"]
+        has_own_coords = "lat" in ev and "lon" in ev and pd.notna(ev["lat"]) and pd.notna(ev["lon"])
+        if has_own_coords:
+            lat, lon = float(ev["lat"]), float(ev["lon"])
+            upazila = ev["upazila"] if "upazila" in ev and pd.notna(ev["upazila"]) else None
+            location_key = f"{district}_{upazila}" if upazila else district
+        else:
+            if district not in districts:
+                logger.error(f"No coordinates for district '{district}' — skipping {ev['event_id']}")
+                continue
+            lat, lon = districts[district]["lat"], districts[district]["lon"]
+            location_key = district
 
-        logger.info(f"[{idx+1}/{len(events)}] {ev['event_id']} ({district}, {ev['window_start']}..{ev['window_end']})")
+        logger.info(f"[{idx+1}/{len(events)}] {ev['event_id']} ({location_key}, {ev['window_start']}..{ev['window_end']})")
 
         row = ev.to_dict()
         try:
-            row.update(compute_temporal_features(district, lat, lon, ev["window_start"], ev["window_end"]))
+            row.update(compute_temporal_features(location_key, lat, lon, ev["window_start"], ev["window_end"]))
         except Exception as e:
             logger.error(f"Meteorology failed for {ev['event_id']}: {e}")
 
@@ -366,19 +400,22 @@ def run(limit=None, start_at=0):
         rows.append(row)
 
         # Checkpoint every event so a restart resumes right after the last completed one.
-        pd.DataFrame(rows).to_csv(OUT_CSV, index=False)
-        logger.info(f"Checkpoint: saved {len(rows)} rows so far to {OUT_CSV}")
+        pd.DataFrame(rows).to_csv(out_csv, index=False)
+        logger.info(f"Checkpoint: saved {len(rows)} rows so far to {out_csv}")
 
     out_df = pd.DataFrame(rows)
-    os.makedirs(os.path.dirname(OUT_CSV), exist_ok=True)
-    out_df.to_csv(OUT_CSV, index=False)
-    logger.info(f"Saved {len(out_df)} real event feature rows to {OUT_CSV}")
-    return out_df
+    os.makedirs(os.path.dirname(out_csv), exist_ok=True)
+    out_df.to_csv(out_csv, index=False)
+    logger.info(f"Saved {len(out_df)} real event feature rows to {out_csv}")
     return out_df
 
 
 if __name__ == "__main__":
-    import sys
-    limit = int(sys.argv[1]) if len(sys.argv) > 1 else None
-    start_at = int(sys.argv[2]) if len(sys.argv) > 2 else 0
-    run(limit=limit, start_at=start_at)
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("limit", type=int, nargs="?", default=None)
+    parser.add_argument("start_at", type=int, nargs="?", default=0)
+    parser.add_argument("--events", default=EVENTS_CSV, help="Events CSV path")
+    parser.add_argument("--out", default=OUT_CSV, help="Output feature CSV path")
+    args = parser.parse_args()
+    run(limit=args.limit, start_at=args.start_at, events_csv=args.events, out_csv=args.out)

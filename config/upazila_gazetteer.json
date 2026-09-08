@@ -1,0 +1,37 @@
+{
+  "description": "Upazila-headquarters coordinates for the 24 upazilas referenced in data/raw_literature/sajbr2021/upazila_x_year_raw.csv (Mahmud et al. 2021 SAJBR rice blast survey, upazila x year resolution, 72 rows). Coordinates are the real, public geographic locations of each upazila headquarters town, looked up individually from each upazila's Wikipedia infobox (not estimated or guessed from memory) on 2026-09-08. Keyed by 'District|Upazila' because 'Sadar' upazila names repeat across districts (each district's Sadar upazila is a distinct place named after that district's own headquarters).",
+  "sources": "en.wikipedia.org infobox coordinates, one page per upazila, fetched 2026-09-08.",
+  "upazilas": {
+    "Dinajpur|Birganj":     {"lat": 26.0000, "lon": 88.5833, "source_url": "https://en.wikipedia.org/wiki/Birganj_Upazila"},
+    "Dinajpur|Kaharole":    {"lat": 25.7917, "lon": 88.6000, "source_url": "https://en.wikipedia.org/wiki/Kaharole_Upazila"},
+    "Dinajpur|Sadar":       {"lat": 25.6330, "lon": 88.6500, "source_url": "https://en.wikipedia.org/wiki/Dinajpur_Sadar_Upazila"},
+
+    "Rangpur|Taraganj":     {"lat": 25.8117, "lon": 89.0170, "source_url": "https://en.wikipedia.org/wiki/Taraganj_Upazila"},
+    "Rangpur|Badarganj":    {"lat": 25.6670, "lon": 89.0500, "source_url": "https://en.wikipedia.org/wiki/Badarganj_Upazila"},
+    "Rangpur|Kaunia":       {"lat": 25.7700, "lon": 89.4170, "source_url": "https://en.wikipedia.org/wiki/Kaunia_Upazila"},
+
+    "Bogura|Shibganj":      {"lat": 25.0170, "lon": 89.3170, "source_url": "https://en.wikipedia.org/wiki/Shibganj_Upazila,_Bogra"},
+    "Bogura|Sadar":         {"lat": 24.8500, "lon": 89.3670, "source_url": "https://en.wikipedia.org/wiki/Bogra_Sadar_Upazila"},
+    "Bogura|Adamdighi":     {"lat": 24.8170, "lon": 89.0330, "source_url": "https://en.wikipedia.org/wiki/Adamdighi_Upazila"},
+
+    "Natore|Sadar":         {"lat": 24.4133, "lon": 88.9300, "source_url": "https://en.wikipedia.org/wiki/Natore_Sadar_Upazila"},
+    "Natore|Singra":        {"lat": 24.5000, "lon": 89.1330, "source_url": "https://en.wikipedia.org/wiki/Singra_Upazila"},
+    "Natore|Baraigram":     {"lat": 24.3083, "lon": 89.1700, "source_url": "https://en.wikipedia.org/wiki/Baraigram_Upazila"},
+
+    "Meherpur|Sadar":       {"lat": 23.7750, "lon": 88.6417, "source_url": "https://en.wikipedia.org/wiki/Meherpur_Sadar_Upazila"},
+    "Meherpur|Mujibnagar":  {"lat": 23.6500, "lon": 88.6000, "source_url": "https://en.wikipedia.org/wiki/Mujibnagar_Upazila"},
+    "Meherpur|Gangni":      {"lat": 23.8170, "lon": 88.7550, "source_url": "https://en.wikipedia.org/wiki/Gangni_Upazila"},
+
+    "Rajbari|Pangsha":      {"lat": 23.7917, "lon": 89.4170, "source_url": "https://en.wikipedia.org/wiki/Pangsha_Upazila"},
+    "Rajbari|Sadar":        {"lat": 23.7550, "lon": 89.6500, "source_url": "https://en.wikipedia.org/wiki/Rajbari_Sadar_Upazila"},
+    "Rajbari|Kalukhali":    {"lat": 23.7621, "lon": 89.4994, "source_url": "https://en.wikipedia.org/wiki/Kalukhali_Upazila"},
+
+    "Mymensingh|Sadar":       {"lat": 24.7500, "lon": 90.4170, "source_url": "https://en.wikipedia.org/wiki/Mymensingh_Sadar_Upazila"},
+    "Mymensingh|Ishwarganj":  {"lat": 24.6500, "lon": 90.5000, "source_url": "https://en.wikipedia.org/wiki/Ishwarganj_Upazila"},
+    "Mymensingh|Gauripur":    {"lat": 24.7583, "lon": 90.5750, "source_url": "https://en.wikipedia.org/wiki/Gauripur_Upazila"},
+
+    "Jashore|Jhikargachha":  {"lat": 23.1000, "lon": 89.1330, "source_url": "https://en.wikipedia.org/wiki/Jhikargacha_Upazila"},
+    "Jashore|Sadar":         {"lat": 23.1683, "lon": 89.2050, "source_url": "https://en.wikipedia.org/wiki/Jessore_Sadar_Upazila"},
+    "Jashore|Manirampur":    {"lat": 23.0170, "lon": 89.2330, "source_url": "https://en.wikipedia.org/wiki/Manirampur_Upazila"}
+  }
+}

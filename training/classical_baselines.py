@@ -35,7 +35,7 @@ from sklearn.metrics import (
     recall_score,
     roc_auc_score,
 )
-from sklearn.model_selection import GroupKFold, GroupShuffleSplit, LeaveOneOut
+from sklearn.model_selection import GroupKFold, GroupShuffleSplit, LeaveOneGroupOut, LeaveOneOut
 from xgboost import XGBClassifier
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
@@ -63,7 +63,8 @@ def load_data():
     X = df[FEATURE_COLUMNS].copy()
     y = df["label"].astype(int).values
     groups = df["district"].values
-    return df, X, y, groups
+    year_groups = df["year"].values
+    return df, X, y, groups, year_groups
 
 
 def build_model(model_name, hp=None):
@@ -208,9 +209,10 @@ def run_shap_attribution(X, y, model_name="RandomForest"):
 
 
 def main():
-    df, X, y, groups = load_data()
+    df, X, y, groups, year_groups = load_data()
     n_districts = len(np.unique(groups))
     n_splits = min(5, n_districts)
+    n_years = len(np.unique(year_groups))
 
     results = {"n_events": len(y), "n_positive": int(y.sum()), "n_districts": n_districts}
 
@@ -223,6 +225,16 @@ def main():
         loo = LeaveOneOut()
         summary_loo, raw_loo, oof_loo, auprc_l, roc_l, _ = cross_validate(
             X, y, groups, model_name, loo, split_kind="loo", tune=False
+        )
+
+        # Leave-one-year-out: tests generalization to an entirely unseen future
+        # season, complementing grouped-by-district (unseen place) and LOO (unseen
+        # single event). Reuses the "group" split_kind code path with year as the
+        # grouping variable for BOTH the outer folds and the inner nested-tuning
+        # validation split — consistent with how grouped-by-district already works.
+        logo = LeaveOneGroupOut()
+        summary_year, raw_year, oof_year, auprc_y, roc_y, hps_year = cross_validate(
+            X, y, year_groups, model_name, logo, split_kind="group", tune=True
         )
 
         results[model_name] = {
@@ -240,9 +252,21 @@ def main():
                 "oof_roc_auc": roc_l,
                 "oof_probs": oof_loo.tolist(),
             },
+            "leave_one_year_out": {
+                "n_years": n_years,
+                "fold_metrics_mean_std": summary_year,
+                "raw_fold_auprc": raw_year["auprc"],
+                "oof_auprc": auprc_y,
+                "oof_roc_auc": roc_y,
+                "nested_hyperparams_per_fold": hps_year,
+                "note": "Some year-folds (e.g. 2015, all wheat-blast pre-emergence, 0 positives) have only one "
+                        "class in the test fold — AUPRC/ROC-AUC are skipped for those folds specifically (not "
+                        "counted as 0), consistent with how grouped-by-district handles single-class folds.",
+            },
         }
         logger.info(f"{model_name} grouped-by-district (nested-tuned) OOF AUPRC={auprc_g:.3f} ROC-AUC={roc_g:.3f}")
         logger.info(f"{model_name} leave-one-event-out OOF AUPRC={auprc_l:.3f} ROC-AUC={roc_l:.3f}")
+        logger.info(f"{model_name} leave-one-year-out (nested-tuned) OOF AUPRC={auprc_y:.3f} ROC-AUC={roc_y:.3f}")
 
     results["shap_feature_importance_random_forest"] = run_shap_attribution(X, y, "RandomForest")
     results["shap_feature_importance_xgboost"] = run_shap_attribution(X, y, "XGBoost")

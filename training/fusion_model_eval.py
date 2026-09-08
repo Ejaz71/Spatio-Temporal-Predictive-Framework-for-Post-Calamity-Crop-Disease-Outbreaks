@@ -27,7 +27,7 @@ import torch
 import torch.nn as nn
 from sklearn.impute import SimpleImputer
 from sklearn.metrics import average_precision_score, brier_score_loss, f1_score, recall_score, roc_auc_score
-from sklearn.model_selection import GroupKFold, GroupShuffleSplit, LeaveOneOut
+from sklearn.model_selection import GroupKFold, GroupShuffleSplit, LeaveOneGroupOut, LeaveOneOut
 from sklearn.preprocessing import StandardScaler
 
 from models.fusion_model_tabular import SPATIAL_FEATURES, TabularFusionModel
@@ -61,7 +61,8 @@ def load_data():
     X_spatial = df[SPATIAL_FEATURES].copy()
     y = df["label"].astype(int).values
     groups = df["district"].values
-    return X_spatial, daily_sequences, y, groups
+    year_groups = df["year"].values
+    return X_spatial, daily_sequences, y, groups, year_groups
 
 
 def train_fold(X_sp_train, X_seq_train, y_train, X_sp_test, X_seq_test, hp, seed=42):
@@ -229,7 +230,7 @@ def bootstrap_ci_diff(scores_a, scores_b, n_bootstrap=N_BOOTSTRAP, seed=0):
 
 
 def main():
-    X_spatial, daily_sequences, y, groups = load_data()
+    X_spatial, daily_sequences, y, groups, year_groups = load_data()
     n_districts = len(np.unique(groups))
     n_splits = min(5, n_districts)
 
@@ -244,12 +245,17 @@ def main():
 
     results = {"n_events": len(y), "n_positive": int(y.sum()), "n_seeds_averaged": N_SEEDS, "loo_fixed_hyperparams": loo_hp}
 
-    for split_name, splitter, kind, hp_arg in [
-        ("grouped_by_district", GroupKFold(n_splits=n_splits), "group", None),
-        ("leave_one_event_out", LeaveOneOut(), "loo", loo_hp),
+    for split_name, splitter, kind, hp_arg, split_groups in [
+        ("grouped_by_district", GroupKFold(n_splits=n_splits), "group", None, groups),
+        ("leave_one_event_out", LeaveOneOut(), "loo", loo_hp, groups),
+        # Leave-one-year-out: tests generalization to an entirely unseen future
+        # season (complements grouped-by-district's "unseen place" and LOO's "unseen
+        # single event"). Reuses the "group" path with year as the grouping variable
+        # for both outer folds and the inner nested-tuning validation split.
+        ("leave_one_year_out", LeaveOneGroupOut(), "group", None, year_groups),
     ]:
         summary, fold_metrics, oof_probs, oof_auprc, oof_roc, selected_hps, seed_variance = cross_validate_fusion(
-            X_spatial, daily_sequences, y, groups, splitter, kind, hp=hp_arg
+            X_spatial, daily_sequences, y, split_groups, splitter, kind, hp=hp_arg
         )
         logger.info(f"Fusion model (v2, real sequences) {split_name} OOF AUPRC={oof_auprc:.3f} ROC-AUC={oof_roc:.3f}")
         results[split_name] = {

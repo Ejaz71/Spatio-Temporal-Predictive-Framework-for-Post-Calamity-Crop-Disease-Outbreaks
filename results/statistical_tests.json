@@ -47,14 +47,14 @@
       "feature": "precip_anomaly_mm",
       "n": 77,
       "missing_pct": 0.0,
-      "mean": 0.5402,
-      "sd": 0.3873,
-      "median": 0.5106,
-      "iqr_low": 0.2733,
-      "iqr_high": 0.7243,
-      "skewness": 0.874,
-      "shapiro_w": 0.9292,
-      "shapiro_p": 0.00035,
+      "mean": 0.1501,
+      "sd": 0.3374,
+      "median": 0.1345,
+      "iqr_low": 0.0006,
+      "iqr_high": 0.2695,
+      "skewness": 0.547,
+      "shapiro_w": 0.9378,
+      "shapiro_p": 0.000947,
       "distribution_note": "approximately symmetric"
     },
     {
@@ -242,19 +242,19 @@
       "effect_size_note": "very large"
     },
     {
-      "feature": "precip_mean_mm",
+      "feature": "precip_anomaly_mm",
       "n_outbreak": 24,
       "n_no_outbreak": 53,
-      "median_outbreak": 0.2882,
-      "median_no_outbreak": 0.5898,
-      "U": 331.5,
-      "p_value": 0.0008266188101596567,
-      "rank_biserial_r": 0.4788,
+      "median_outbreak": 0.0109,
+      "median_no_outbreak": 0.1603,
+      "U": 329.5,
+      "p_value": 0.0007634350972190028,
+      "rank_biserial_r": 0.4819,
       "fdr_q_value": 0.003858,
       "effect_size_note": "large"
     },
     {
-      "feature": "precip_anomaly_mm",
+      "feature": "precip_mean_mm",
       "n_outbreak": 24,
       "n_no_outbreak": 53,
       "median_outbreak": 0.2882,
@@ -421,8 +421,8 @@
       {
         "feature": "precip_anomaly_mm",
         "n": 24,
-        "spearman_rho": -0.7242,
-        "p_value": 6.299873887289459e-05
+        "spearman_rho": -0.6873,
+        "p_value": 0.00020717774082940966
       },
       {
         "feature": "wet_persistence_max_days",
@@ -507,8 +507,8 @@
       {
         "feature": "precip_anomaly_mm",
         "n": 24,
-        "spearman_rho": -0.4206,
-        "p_value": 0.04070391298913507
+        "spearman_rho": -0.4167,
+        "p_value": 0.04281970921849306
       },
       {
         "feature": "precip_max_mm",
@@ -576,14 +576,14 @@
     "threshold": 0.5,
     "n_events": 77,
     "confusion_matrix": {
-      "true_negative": 44,
-      "false_positive": 9,
-      "false_negative": 12,
-      "true_positive": 12
+      "true_negative": 43,
+      "false_positive": 10,
+      "false_negative": 11,
+      "true_positive": 13
     },
-    "precision": 0.5714,
-    "recall": 0.5,
-    "f1": 0.5333,
-    "reporting_sentence": "At the standard 0.5 threshold on real leave-one-event-out predictions (n=77), RandomForest achieves recall=0.50 (catches 12/24 real outbreaks) and precision=0.57 (9 false alarms among 21 flagged events). We emphasize recall because a missed outbreak (false negative) is more costly than an unnecessary fungicide/bactericide application prompted by a false alarm; precision is reported alongside it so the cost of that trade-off is visible, not hidden behind a single metric."
+    "precision": 0.5652,
+    "recall": 0.5417,
+    "f1": 0.5532,
+    "reporting_sentence": "At the standard 0.5 threshold on real leave-one-event-out predictions (n=77), RandomForest achieves recall=0.54 (catches 13/24 real outbreaks) and precision=0.57 (10 false alarms among 23 flagged events). We emphasize recall because a missed outbreak (false negative) is more costly than an unnecessary fungicide/bactericide application prompted by a false alarm; precision is reported alongside it so the cost of that trade-off is visible, not hidden behind a single metric."
   }
 }
