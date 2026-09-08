@@ -67,13 +67,17 @@ def main(features_csv, districts_json=DISTRICTS_JSON):
                 result = _with_timeout(
                     compute_sar_features, catalog, lat, lon, window_start, window_end,
                     timeout=PER_CALL_TIMEOUT_SEC,
-                    default={"sar_vv_db_mean": np.nan, "sar_vh_db_mean": np.nan, "n_s1_scenes": 0},
+                    default={"sar_vv_db_mean": np.nan, "sar_vh_db_mean": np.nan, "n_s1_scenes": 0,
+                             "water_extent_frac": np.nan, "water_extent_frac_strict": np.nan,
+                             "water_extent_frac_max": np.nan},
                     label=f"SAR retry ({attempt+1}/{N_ATTEMPTS}) for {event_id}",
                 )
                 if result["n_s1_scenes"] > 0:
                     df.loc[idx, "sar_vv_db_mean"] = result["sar_vv_db_mean"]
                     df.loc[idx, "sar_vh_db_mean"] = result["sar_vh_db_mean"]
                     df.loc[idx, "n_s1_scenes"] = result["n_s1_scenes"]
+                    for wcol in ("water_extent_frac", "water_extent_frac_strict", "water_extent_frac_max"):
+                        df.loc[idx, wcol] = result[wcol]
                     n_sar_recovered += 1
                     logger.info(f"{event_id}: SAR recovered on retry ({result['n_s1_scenes']} real scenes)")
                     break

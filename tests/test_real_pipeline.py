@@ -70,6 +70,47 @@ class TestRealFeatures(unittest.TestCase):
             self.assertGreater(self.df[col].nunique(dropna=True), 1, f"{col} has <=1 unique value")
 
 
+class TestFeatureListConsistency(unittest.TestCase):
+    """The model feature list is currently duplicated across several modules. If they
+    drift apart, different scripts silently report numbers computed on different
+    feature sets — exactly the kind of quiet inconsistency this project exists to
+    avoid. This test pins them together; if you add a feature, it fails until every
+    consumer agrees."""
+
+    def test_all_modules_agree_on_feature_columns(self):
+        import importlib
+        import sys
+        sys.path.insert(0, REPO_ROOT)
+
+        from training.classical_baselines import FEATURE_COLUMNS as classical_cols
+        from analysis.statistical_tests import FEATURE_COLUMNS as stats_cols
+        from training.train_final_model import FEATURE_COLUMNS as final_cols
+        from training.rq2_ablations import FULL_COLUMNS as ablation_cols
+
+        self.assertEqual(set(classical_cols), set(FEATURE_COLUMNS),
+                         "training/classical_baselines.py disagrees with the test's feature list")
+        self.assertEqual(set(stats_cols), set(FEATURE_COLUMNS),
+                         "analysis/statistical_tests.py disagrees with the feature list")
+        self.assertEqual(set(final_cols), set(FEATURE_COLUMNS),
+                         "training/train_final_model.py disagrees with the feature list")
+        self.assertEqual(set(ablation_cols), set(FEATURE_COLUMNS),
+                         "training/rq2_ablations.py's FULL_COLUMNS disagrees with the feature list")
+
+    def test_ablation_partition_is_exhaustive_and_disjoint(self):
+        """The RQ2 ablation splits features into remote-sensing vs. meteorology. Those
+        two sets must exactly partition the full feature set — otherwise a feature is
+        silently dropped from, or double-counted across, the ablation conditions."""
+        import sys
+        sys.path.insert(0, REPO_ROOT)
+        from training.rq2_ablations import (
+            FULL_COLUMNS, METEOROLOGY_COLUMNS, REMOTE_SENSING_COLUMNS,
+        )
+        self.assertTrue(set(METEOROLOGY_COLUMNS).isdisjoint(REMOTE_SENSING_COLUMNS),
+                        "a feature is in BOTH ablation conditions")
+        self.assertEqual(set(METEOROLOGY_COLUMNS) | set(REMOTE_SENSING_COLUMNS), set(FULL_COLUMNS),
+                         "ablation conditions do not partition the full feature set")
+
+
 class TestClassicalResults(unittest.TestCase):
     RESULTS_JSON = os.path.join(REPO_ROOT, "results", "classical_baseline_results.json")
 

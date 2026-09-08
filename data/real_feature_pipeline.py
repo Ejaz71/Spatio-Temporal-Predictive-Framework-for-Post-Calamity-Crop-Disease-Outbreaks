@@ -200,12 +200,15 @@ def get_catalog():
     return pystac_client.Client.open(STAC_URL, modifier=planetary_computer.sign_inplace)
 
 
-def _read_band_mean_std(href, bbox_wgs84):
+def _read_window_array(href, bbox_wgs84):
+    """Reads the bbox window from a remote COG and returns its finite pixel values as
+    a flat array (or None if unreadable/empty). Shared by the SAR and optical paths so
+    a single HTTP range read can serve several derived statistics."""
     import rasterio
     from rasterio.warp import transform_bounds
     with rasterio.open(href) as src:
         if src.crs is None:
-            return np.nan, np.nan
+            return None
         b = transform_bounds("EPSG:4326", src.crs, *bbox_wgs84)
         win = rasterio.windows.from_bounds(*b, transform=src.transform)
         arr = src.read(1, window=win, boundless=True, fill_value=np.nan).astype(np.float32)
@@ -213,9 +216,47 @@ def _read_band_mean_std(href, bbox_wgs84):
         if nodata is not None:
             arr = np.where(arr == nodata, np.nan, arr)
         arr = arr[np.isfinite(arr)]
-        if arr.size == 0:
-            return np.nan, np.nan
-        return float(np.mean(arr)), float(np.std(arr))
+        return arr if arr.size else None
+
+
+def _read_band_mean_std(href, bbox_wgs84):
+    arr = _read_window_array(href, bbox_wgs84)
+    if arr is None:
+        return np.nan, np.nan
+    return float(np.mean(arr)), float(np.std(arr))
+
+
+# Surface-water detection thresholds on Sentinel-1 RTC gamma0 VV, in dB. Smooth open
+# water is a specular reflector and returns very little energy to the sensor, so it
+# sits far below vegetated/bare land; -15 dB is the conventional operational threshold
+# in the Sentinel-1 flood/water-mapping literature, and -18 dB is a stricter variant
+# reported alongside it as a sensitivity check (so the finding can't be an artifact of
+# one arbitrary cutoff).
+#
+# NOTE on interpretation: every observation window in this project falls in Dec-Mar,
+# Bangladesh's DRY season — monsoon flooding is Jun-Sep. Water detected here is
+# therefore predominantly irrigation / paddy standing water, NOT calamity flooding.
+# That is still an epidemiologically meaningful quantity (paddy water management
+# modulates blast risk: water-stressed, aerobic fields favour the disease), but it
+# must be named and reported as water/inundation extent rather than "flood extent".
+WATER_THRESHOLD_DB = -15.0
+WATER_THRESHOLD_DB_STRICT = -18.0
+
+
+def _water_fraction(arr_linear, threshold_db):
+    """Fraction of valid pixels whose gamma0 backscatter falls below `threshold_db`.
+
+    Operates on the LINEAR power values rasterio returns (comparing against the
+    linearised threshold) rather than taking log of each pixel — avoids -inf for
+    zero-valued pixels and is numerically cheaper. Only strictly-positive pixels count
+    as valid, consistent with compute_sar_features' own `> 0` guard: a zero or negative
+    gamma0 is a processing artifact, not a real specular-water return, and counting
+    those as water would inflate this feature exactly where the data is worst."""
+    valid = arr_linear[arr_linear > 0]
+    if valid.size == 0:
+        return np.nan
+    threshold_linear = 10.0 ** (threshold_db / 10.0)
+    return float(np.mean(valid < threshold_linear))
 
 
 def compute_sar_features(catalog, lat, lon, window_start, window_end):
@@ -224,15 +265,28 @@ def compute_sar_features(catalog, lat, lon, window_start, window_end):
                              datetime=f"{window_start}/{window_end}", limit=20)
     items = list(search.items())
     if not items:
-        return {"sar_vv_db_mean": np.nan, "sar_vh_db_mean": np.nan, "n_s1_scenes": 0}
+        return {"sar_vv_db_mean": np.nan, "sar_vh_db_mean": np.nan, "n_s1_scenes": 0,
+                "water_extent_frac": np.nan, "water_extent_frac_strict": np.nan,
+                "water_extent_frac_max": np.nan}
 
     vv_vals, vh_vals = [], []
+    water_fracs, water_fracs_strict = [], []
     for it in items[:6]:  # cap scenes per event to bound runtime
         try:
             if "vv" in it.assets:
-                vv_mean, _ = _read_band_mean_std(it.assets["vv"].href, bbox)
-                if vv_mean and vv_mean > 0:
-                    vv_vals.append(10 * np.log10(vv_mean))
+                # One read serves both the scene-mean backscatter and the per-pixel
+                # water-extent fractions — no extra network cost for the new feature.
+                arr = _read_window_array(it.assets["vv"].href, bbox)
+                if arr is not None:
+                    vv_mean = float(np.mean(arr))
+                    if vv_mean > 0:
+                        vv_vals.append(10 * np.log10(vv_mean))
+                    wf = _water_fraction(arr, WATER_THRESHOLD_DB)
+                    wf_strict = _water_fraction(arr, WATER_THRESHOLD_DB_STRICT)
+                    if not np.isnan(wf):
+                        water_fracs.append(wf)
+                    if not np.isnan(wf_strict):
+                        water_fracs_strict.append(wf_strict)
             if "vh" in it.assets:
                 vh_mean, _ = _read_band_mean_std(it.assets["vh"].href, bbox)
                 if vh_mean and vh_mean > 0:
@@ -245,6 +299,13 @@ def compute_sar_features(catalog, lat, lon, window_start, window_end):
         "sar_vv_db_mean": float(np.mean(vv_vals)) if vv_vals else np.nan,
         "sar_vh_db_mean": float(np.mean(vh_vals)) if vh_vals else np.nan,
         "n_s1_scenes": len(vv_vals),
+        # Mean water extent across the window's scenes (the typical inundation state),
+        # plus the max (the wettest single observation in the window — closer to the
+        # "was there a standing-water event at any point" question the proposal's
+        # flood-detection framing was reaching for).
+        "water_extent_frac": float(np.mean(water_fracs)) if water_fracs else np.nan,
+        "water_extent_frac_strict": float(np.mean(water_fracs_strict)) if water_fracs_strict else np.nan,
+        "water_extent_frac_max": float(np.max(water_fracs)) if water_fracs else np.nan,
     }
 
 
@@ -385,7 +446,9 @@ def run(limit=None, start_at=0, events_csv=EVENTS_CSV, out_csv=OUT_CSV, district
 
         sar_result = _with_timeout(
             compute_sar_features, catalog, lat, lon, ev["window_start"], ev["window_end"],
-            default={"sar_vv_db_mean": np.nan, "sar_vh_db_mean": np.nan, "n_s1_scenes": 0},
+            default={"sar_vv_db_mean": np.nan, "sar_vh_db_mean": np.nan, "n_s1_scenes": 0,
+                     "water_extent_frac": np.nan, "water_extent_frac_strict": np.nan,
+                     "water_extent_frac_max": np.nan},
             label=f"SAR for {ev['event_id']}",
         )
         row.update(sar_result)
