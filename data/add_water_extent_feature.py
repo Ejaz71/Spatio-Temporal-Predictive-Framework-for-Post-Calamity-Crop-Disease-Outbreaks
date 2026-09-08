@@ -98,8 +98,14 @@ def main(features_csv, districts_json=DISTRICTS_JSON):
             logger.error(f"{event_id}: no coordinates — skipping")
             continue
 
+        # vv_only: the water fractions are derived purely from VV, and every row we
+        # touch here already has a real sar_vh_db_mean from the main extraction run.
+        # Skipping the VH reads halves the network work per event. Only the three
+        # water columns are written back, so the VV/VH/scene-count columns already in
+        # the CSV are never disturbed.
         result = _with_timeout(
             compute_sar_features, catalog, lat, lon, row["window_start"], row["window_end"],
+            True,  # vv_only
             timeout=PER_CALL_TIMEOUT_SEC, default=SAR_DEFAULT,
             label=f"SAR water extent for {event_id}",
         )

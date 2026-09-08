@@ -1,0 +1,426 @@
+{
+  "n_events": 125,
+  "n_populated": 30,
+  "backfill_complete": false,
+  "distribution": {
+    "water_extent_frac": {
+      "n_non_missing": 30,
+      "n_missing": 95,
+      "mean": 0.08863,
+      "std": 0.08213,
+      "min": 0.0118,
+      "q25": 0.03633,
+      "median": 0.05174,
+      "q75": 0.10613,
+      "max": 0.36964,
+      "n_unique": 30,
+      "within_unit_interval": true,
+      "median_rice_blast": 0.05174,
+      "n_rice_blast": 30
+    },
+    "water_extent_frac_strict": {
+      "n_non_missing": 30,
+      "n_missing": 95,
+      "mean": 0.05748,
+      "std": 0.08238,
+      "min": 0.00119,
+      "q25": 0.00683,
+      "median": 0.01205,
+      "q75": 0.07676,
+      "max": 0.33816,
+      "n_unique": 30,
+      "within_unit_interval": true,
+      "median_rice_blast": 0.01205,
+      "n_rice_blast": 30
+    },
+    "water_extent_frac_max": {
+      "n_non_missing": 30,
+      "n_missing": 95,
+      "mean": 0.25967,
+      "std": 0.27161,
+      "min": 0.0151,
+      "q25": 0.06567,
+      "median": 0.1329,
+      "q75": 0.33207,
+      "max": 1.0,
+      "n_unique": 30,
+      "within_unit_interval": true,
+      "median_rice_blast": 0.1329,
+      "n_rice_blast": 30
+    }
+  },
+  "implausible_values": {
+    "saturation_threshold": 0.9,
+    "n_saturated_scenes": 1,
+    "saturated_events": [
+      {
+        "event_id": "RB_Dinajpur_Kaharole_2018",
+        "water_extent_frac_max": 1.0,
+        "water_extent_frac": 0.3696,
+        "n_s1_scenes": 6
+      }
+    ]
+  },
+  "missingness": {
+    "n_missing_water_extent": 95,
+    "n_events_with_zero_s1_scenes": 5,
+    "missing_all_explained_by_zero_scenes": false,
+    "missing_rate_pct": 76.0
+  },
+  "redundancy_vs_existing_features": {
+    "water_extent_frac": {
+      "sar_vv_db_mean": {
+        "spearman_rho": -0.5675,
+        "p_value": 0.001073,
+        "n": 30
+      },
+      "sar_vh_db_mean": {
+        "spearman_rho": -0.7063,
+        "p_value": 1.3e-05,
+        "n": 30
+      },
+      "ndwi_mean": {
+        "spearman_rho": 0.0549,
+        "p_value": 0.773039,
+        "n": 30
+      },
+      "ndvi_mean": {
+        "spearman_rho": -0.079,
+        "p_value": 0.678258,
+        "n": 30
+      },
+      "precip_sum_mm": {
+        "spearman_rho": -0.4772,
+        "p_value": 0.007663,
+        "n": 30
+      },
+      "precip_anomaly_mm": {
+        "spearman_rho": -0.4826,
+        "p_value": 0.006918,
+        "n": 30
+      },
+      "water_extent_frac_strict": {
+        "spearman_rho": 0.8986,
+        "p_value": 0.0,
+        "n": 30
+      },
+      "water_extent_frac_max": {
+        "spearman_rho": 0.9435,
+        "p_value": 0.0,
+        "n": 30
+      }
+    },
+    "water_extent_frac_strict": {
+      "sar_vv_db_mean": {
+        "spearman_rho": -0.4158,
+        "p_value": 0.0223,
+        "n": 30
+      },
+      "sar_vh_db_mean": {
+        "spearman_rho": -0.5123,
+        "p_value": 0.003796,
+        "n": 30
+      },
+      "ndwi_mean": {
+        "spearman_rho": -0.0625,
+        "p_value": 0.74278,
+        "n": 30
+      },
+      "ndvi_mean": {
+        "spearman_rho": 0.1115,
+        "p_value": 0.557628,
+        "n": 30
+      },
+      "precip_sum_mm": {
+        "spearman_rho": -0.5229,
+        "p_value": 0.003029,
+        "n": 30
+      },
+      "precip_anomaly_mm": {
+        "spearman_rho": -0.5559,
+        "p_value": 0.001426,
+        "n": 30
+      },
+      "water_extent_frac": {
+        "spearman_rho": 0.8986,
+        "p_value": 0.0,
+        "n": 30
+      },
+      "water_extent_frac_max": {
+        "spearman_rho": 0.9128,
+        "p_value": 0.0,
+        "n": 30
+      }
+    },
+    "water_extent_frac_max": {
+      "sar_vv_db_mean": {
+        "spearman_rho": -0.5266,
+        "p_value": 0.002795,
+        "n": 30
+      },
+      "sar_vh_db_mean": {
+        "spearman_rho": -0.6543,
+        "p_value": 8.8e-05,
+        "n": 30
+      },
+      "ndwi_mean": {
+        "spearman_rho": -0.0616,
+        "p_value": 0.746321,
+        "n": 30
+      },
+      "ndvi_mean": {
+        "spearman_rho": 0.0274,
+        "p_value": 0.885867,
+        "n": 30
+      },
+      "precip_sum_mm": {
+        "spearman_rho": -0.4892,
+        "p_value": 0.006074,
+        "n": 30
+      },
+      "precip_anomaly_mm": {
+        "spearman_rho": -0.5173,
+        "p_value": 0.003416,
+        "n": 30
+      },
+      "water_extent_frac": {
+        "spearman_rho": 0.9435,
+        "p_value": 0.0,
+        "n": 30
+      },
+      "water_extent_frac_strict": {
+        "spearman_rho": 0.9128,
+        "p_value": 0.0,
+        "n": 30
+      }
+    }
+  },
+  "outcome_association_pooled": [
+    {
+      "feature": "water_extent_frac",
+      "subset": "all_events",
+      "n_outbreak": 23,
+      "n_no_outbreak": 7,
+      "median_outbreak": 0.05228,
+      "median_no_outbreak": 0.05085,
+      "U": 89.0,
+      "p_value": 0.701294822674133,
+      "rank_biserial_r": -0.1056,
+      "effect_size_note": "small",
+      "fdr_q_value": 0.773702
+    },
+    {
+      "feature": "water_extent_frac_strict",
+      "subset": "all_events",
+      "n_outbreak": 23,
+      "n_no_outbreak": 7,
+      "median_outbreak": 0.01175,
+      "median_no_outbreak": 0.01234,
+      "U": 87.0,
+      "p_value": 0.7737017388741526,
+      "rank_biserial_r": -0.0807,
+      "effect_size_note": "negligible",
+      "fdr_q_value": 0.773702
+    },
+    {
+      "feature": "water_extent_frac_max",
+      "subset": "all_events",
+      "n_outbreak": 23,
+      "n_no_outbreak": 7,
+      "median_outbreak": 0.13125,
+      "median_no_outbreak": 0.16149,
+      "U": 90.0,
+      "p_value": 0.6659946949602122,
+      "rank_biserial_r": -0.118,
+      "effect_size_note": "small",
+      "fdr_q_value": 0.773702
+    }
+  ],
+  "outcome_association_rice_only": [
+    {
+      "feature": "water_extent_frac",
+      "subset": "rice_blast_only",
+      "n_outbreak": 23,
+      "n_no_outbreak": 7,
+      "median_outbreak": 0.05228,
+      "median_no_outbreak": 0.05085,
+      "U": 89.0,
+      "p_value": 0.701294822674133,
+      "rank_biserial_r": -0.1056,
+      "effect_size_note": "small",
+      "fdr_q_value": 0.773702
+    },
+    {
+      "feature": "water_extent_frac_strict",
+      "subset": "rice_blast_only",
+      "n_outbreak": 23,
+      "n_no_outbreak": 7,
+      "median_outbreak": 0.01175,
+      "median_no_outbreak": 0.01234,
+      "U": 87.0,
+      "p_value": 0.7737017388741526,
+      "rank_biserial_r": -0.0807,
+      "effect_size_note": "negligible",
+      "fdr_q_value": 0.773702
+    },
+    {
+      "feature": "water_extent_frac_max",
+      "subset": "rice_blast_only",
+      "n_outbreak": 23,
+      "n_no_outbreak": 7,
+      "median_outbreak": 0.13125,
+      "median_no_outbreak": 0.16149,
+      "U": 90.0,
+      "p_value": 0.6659946949602122,
+      "rank_biserial_r": -0.118,
+      "effect_size_note": "small",
+      "fdr_q_value": 0.773702
+    }
+  ],
+  "severity_association_rice": [
+    {
+      "feature": "water_extent_frac_strict",
+      "outcome": "leaf_blast_severity_pct",
+      "n": 30,
+      "spearman_rho": -0.1878,
+      "p_value": 0.32043247833540106,
+      "partial_rho_controlling_sar_vv": -0.3189,
+      "partial_p_value": 0.085845,
+      "retains_signal_after_control": false,
+      "interpretation": "no significant raw association to explain",
+      "fdr_q_value": 0.858872
+    },
+    {
+      "feature": "water_extent_frac_strict",
+      "outcome": "neck_blast_severity_pct",
+      "n": 30,
+      "spearman_rho": 0.1876,
+      "p_value": 0.32072107763168956,
+      "partial_rho_controlling_sar_vv": 0.2883,
+      "partial_p_value": 0.122363,
+      "retains_signal_after_control": false,
+      "interpretation": "no significant raw association to explain",
+      "fdr_q_value": 0.858872
+    },
+    {
+      "feature": "water_extent_frac_max",
+      "outcome": "leaf_blast_incidence_pct",
+      "n": 30,
+      "spearman_rho": -0.1713,
+      "p_value": 0.3653186422809415,
+      "partial_rho_controlling_sar_vv": -0.2406,
+      "partial_p_value": 0.200362,
+      "retains_signal_after_control": false,
+      "interpretation": "no significant raw association to explain",
+      "fdr_q_value": 0.858872
+    },
+    {
+      "feature": "water_extent_frac",
+      "outcome": "neck_blast_incidence_pct",
+      "n": 30,
+      "spearman_rho": 0.1594,
+      "p_value": 0.40026054131483263,
+      "partial_rho_controlling_sar_vv": -0.1101,
+      "partial_p_value": 0.562552,
+      "retains_signal_after_control": false,
+      "interpretation": "no significant raw association to explain",
+      "fdr_q_value": 0.858872
+    },
+    {
+      "feature": "water_extent_frac",
+      "outcome": "neck_blast_severity_pct",
+      "n": 30,
+      "spearman_rho": 0.1518,
+      "p_value": 0.4231696384262164,
+      "partial_rho_controlling_sar_vv": 0.3061,
+      "partial_p_value": 0.099957,
+      "retains_signal_after_control": false,
+      "interpretation": "no significant raw association to explain",
+      "fdr_q_value": 0.858872
+    },
+    {
+      "feature": "water_extent_frac_strict",
+      "outcome": "leaf_blast_incidence_pct",
+      "n": 30,
+      "spearman_rho": -0.1374,
+      "p_value": 0.46896463162688806,
+      "partial_rho_controlling_sar_vv": -0.1799,
+      "partial_p_value": 0.341436,
+      "retains_signal_after_control": false,
+      "interpretation": "no significant raw association to explain",
+      "fdr_q_value": 0.858872
+    },
+    {
+      "feature": "water_extent_frac",
+      "outcome": "leaf_blast_incidence_pct",
+      "n": 30,
+      "spearman_rho": -0.1276,
+      "p_value": 0.5015877799150527,
+      "partial_rho_controlling_sar_vv": -0.1983,
+      "partial_p_value": 0.29358,
+      "retains_signal_after_control": false,
+      "interpretation": "no significant raw association to explain",
+      "fdr_q_value": 0.858872
+    },
+    {
+      "feature": "water_extent_frac_max",
+      "outcome": "neck_blast_severity_pct",
+      "n": 30,
+      "spearman_rho": 0.1009,
+      "p_value": 0.5956733402782204,
+      "partial_rho_controlling_sar_vv": 0.2274,
+      "partial_p_value": 0.226904,
+      "retains_signal_after_control": false,
+      "interpretation": "no significant raw association to explain",
+      "fdr_q_value": 0.858872
+    },
+    {
+      "feature": "water_extent_frac",
+      "outcome": "leaf_blast_severity_pct",
+      "n": 30,
+      "spearman_rho": -0.0796,
+      "p_value": 0.6758251493320591,
+      "partial_rho_controlling_sar_vv": -0.2605,
+      "partial_p_value": 0.164502,
+      "retains_signal_after_control": false,
+      "interpretation": "no significant raw association to explain",
+      "fdr_q_value": 0.858872
+    },
+    {
+      "feature": "water_extent_frac_max",
+      "outcome": "neck_blast_incidence_pct",
+      "n": 30,
+      "spearman_rho": 0.0689,
+      "p_value": 0.7174948019499404,
+      "partial_rho_controlling_sar_vv": -0.2015,
+      "partial_p_value": 0.285514,
+      "retains_signal_after_control": false,
+      "interpretation": "no significant raw association to explain",
+      "fdr_q_value": 0.858872
+    },
+    {
+      "feature": "water_extent_frac_strict",
+      "outcome": "neck_blast_incidence_pct",
+      "n": 30,
+      "spearman_rho": -0.0402,
+      "p_value": 0.8330504751803265,
+      "partial_rho_controlling_sar_vv": -0.2637,
+      "partial_p_value": 0.159162,
+      "retains_signal_after_control": false,
+      "interpretation": "no significant raw association to explain",
+      "fdr_q_value": 0.858872
+    },
+    {
+      "feature": "water_extent_frac_max",
+      "outcome": "leaf_blast_severity_pct",
+      "n": 30,
+      "spearman_rho": -0.0339,
+      "p_value": 0.8588715667899158,
+      "partial_rho_controlling_sar_vv": -0.1858,
+      "partial_p_value": 0.325662,
+      "retains_signal_after_control": false,
+      "interpretation": "no significant raw association to explain",
+      "fdr_q_value": 0.858872
+    }
+  ]
+}

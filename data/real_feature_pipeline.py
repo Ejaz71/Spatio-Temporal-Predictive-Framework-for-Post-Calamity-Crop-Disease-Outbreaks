@@ -29,7 +29,14 @@ os.environ.setdefault("GDAL_HTTP_MULTIPLEX", "YES")
 os.environ.setdefault("VSI_CACHE", "TRUE")
 os.environ.setdefault("VSI_CACHE_SIZE", "25000000")
 os.environ.setdefault("GDAL_HTTP_TIMEOUT", "30")
-os.environ.setdefault("GDAL_HTTP_MAX_RETRY", "3")
+# Fail fast rather than grind. GDAL's default GDAL_HTTP_RETRY_DELAY is 30s, and a COG
+# read issues one request per tile — so on a flaky link, 3 retries x 30s x many tiles
+# turned a single scene read into an hour-long stall (observed 2026-09-08: one event
+# took 56 minutes). One quick retry absorbs a transient blip; anything worse is better
+# handled by re-running the resumable script later, when the connection is back.
+os.environ.setdefault("GDAL_HTTP_MAX_RETRY", "1")
+os.environ.setdefault("GDAL_HTTP_RETRY_DELAY", "2")
+os.environ.setdefault("GDAL_HTTP_CONNECTTIMEOUT", "15")
 
 import numpy as np
 import pandas as pd
@@ -200,6 +207,25 @@ def get_catalog():
     return pystac_client.Client.open(STAC_URL, modifier=planetary_computer.sign_inplace)
 
 
+def _fresh_href(href):
+    """Re-sign a Planetary Computer blob URL immediately before reading it.
+
+    PC's SAS tokens are short-lived (~45 minutes). `sign_inplace` stamps them onto
+    items at STAC-search time, so on a slow link a token could expire part-way through
+    an event's reads and every subsequent tile request came back HTTP 403 — which GDAL
+    then dutifully retried, making the stall worse. Signing at the point of use instead
+    of the point of search removes that race. planetary_computer caches the token per
+    container for its lifetime, so this is one HTTP call per container per ~45 min, not
+    per read. If signing fails we fall back to the existing href rather than aborting:
+    it may still be valid, and a failed read is handled (as missing) downstream."""
+    try:
+        import planetary_computer
+        return planetary_computer.sign(href)
+    except Exception as e:  # noqa: BLE001
+        logger.warning(f"re-sign failed ({type(e).__name__}: {e}) — using existing token")
+        return href
+
+
 def _read_window_array(href, bbox_wgs84):
     """Reads the bbox window from a remote COG and returns its finite pixel values as
     a flat array (or None if unreadable/empty). Shared by the SAR and optical paths so
@@ -259,7 +285,16 @@ def _water_fraction(arr_linear, threshold_db):
     return float(np.mean(valid < threshold_linear))
 
 
-def compute_sar_features(catalog, lat, lon, window_start, window_end):
+def compute_sar_features(catalog, lat, lon, window_start, window_end,
+                          vv_only=False, max_scenes=6):
+    """Sentinel-1 RTC gamma0 statistics over the event bbox.
+
+    `vv_only=True` skips the VH reads, halving the network work. Use it when only the
+    VV-derived quantities are wanted (the water-extent fractions and sar_vv_db_mean) —
+    e.g. backfilling water extent onto rows whose sar_vh_db_mean is already populated.
+    The returned sar_vh_db_mean is then NaN and MUST NOT be written back over an
+    existing real value.
+    """
     bbox = [lon - BBOX_DELTA_DEG, lat - BBOX_DELTA_DEG, lon + BBOX_DELTA_DEG, lat + BBOX_DELTA_DEG]
     search = catalog.search(collections=["sentinel-1-rtc"], bbox=bbox,
                              datetime=f"{window_start}/{window_end}", limit=20)
@@ -271,12 +306,12 @@ def compute_sar_features(catalog, lat, lon, window_start, window_end):
 
     vv_vals, vh_vals = [], []
     water_fracs, water_fracs_strict = [], []
-    for it in items[:6]:  # cap scenes per event to bound runtime
+    for it in items[:max_scenes]:  # cap scenes per event to bound runtime
         try:
             if "vv" in it.assets:
                 # One read serves both the scene-mean backscatter and the per-pixel
                 # water-extent fractions — no extra network cost for the new feature.
-                arr = _read_window_array(it.assets["vv"].href, bbox)
+                arr = _read_window_array(_fresh_href(it.assets["vv"].href), bbox)
                 if arr is not None:
                     vv_mean = float(np.mean(arr))
                     if vv_mean > 0:
@@ -287,8 +322,8 @@ def compute_sar_features(catalog, lat, lon, window_start, window_end):
                         water_fracs.append(wf)
                     if not np.isnan(wf_strict):
                         water_fracs_strict.append(wf_strict)
-            if "vh" in it.assets:
-                vh_mean, _ = _read_band_mean_std(it.assets["vh"].href, bbox)
+            if not vv_only and "vh" in it.assets:
+                vh_mean, _ = _read_band_mean_std(_fresh_href(it.assets["vh"].href), bbox)
                 if vh_mean and vh_mean > 0:
                     vh_vals.append(10 * np.log10(vh_mean))
         except Exception as e:
@@ -371,21 +406,36 @@ PER_CALL_TIMEOUT_SEC = 100  # bounds a single flaky scene/token from stalling th
 
 
 def _with_timeout(fn, *args, timeout=PER_CALL_TIMEOUT_SEC, default=None, label=""):
-    """Run fn(*args) in a worker thread; if it exceeds `timeout`, abandon it and
+    """Run fn(*args) in a daemon thread; if it exceeds `timeout`, abandon it and
     return `default` instead of letting one stuck remote read stall everything.
-    The thread itself may keep running in the background (Python can't force-kill
-    a thread), but the main loop moves on rather than blocking indefinitely."""
-    import concurrent.futures
-    with concurrent.futures.ThreadPoolExecutor(max_workers=1) as ex:
-        future = ex.submit(fn, *args)
+
+    Uses a raw daemon thread rather than ThreadPoolExecutor deliberately. The
+    executor version of this function had a silent bug: `with ThreadPoolExecutor(...)`
+    calls shutdown(wait=True) on block exit, so after the TimeoutError was caught and
+    "moving on" was logged, the code *still* blocked until the stuck read finished.
+    The timeout was decorative — one event was observed taking 56 minutes under a
+    100s cap. Python cannot force-kill a thread, so the abandoned worker does keep
+    running; marking it daemon at least stops it from blocking interpreter exit."""
+    import threading
+    box = {}
+
+    def target():
         try:
-            return future.result(timeout=timeout)
-        except concurrent.futures.TimeoutError:
-            logger.warning(f"{label} timed out after {timeout}s — recording as missing and moving on")
-            return default
-        except Exception as e:
-            logger.warning(f"{label} raised {type(e).__name__}: {e} — recording as missing and moving on")
-            return default
+            box["value"] = fn(*args)
+        except Exception as e:  # noqa: BLE001 - reported below, never silently swallowed
+            box["error"] = e
+
+    t = threading.Thread(target=target, daemon=True)
+    t.start()
+    t.join(timeout)
+    if t.is_alive():
+        logger.warning(f"{label} timed out after {timeout}s — recording as missing and moving on")
+        return default
+    if "error" in box:
+        e = box["error"]
+        logger.warning(f"{label} raised {type(e).__name__}: {e} — recording as missing and moving on")
+        return default
+    return box.get("value", default)
 
 
 def run(limit=None, start_at=0, events_csv=EVENTS_CSV, out_csv=OUT_CSV, districts_json=DISTRICTS_JSON):
