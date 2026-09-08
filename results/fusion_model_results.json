@@ -1,46 +1,179 @@
 {
   "n_events": 77,
   "n_positive": 24,
-  "selected_hyperparams": {
+  "n_seeds_averaged": 5,
+  "loo_fixed_hyperparams": {
     "hidden_dim": 16,
     "dropout": 0.5,
     "weight_decay": 0.03,
     "lr": 0.008,
     "epochs": 60
   },
-  "n_seeds_averaged": 5,
   "grouped_by_district": {
     "fold_metrics_mean_std": {
       "auprc": [
-        0.7277047555618983,
-        0.22205703260018972
+        0.7595423623995052,
+        0.20056243688015526
       ],
       "f1": [
-        0.5546031746031745,
-        0.16176028412057905
+        0.5634920634920635,
+        0.1540582293149324
       ],
       "roc_auc": [
-        0.8384226884226884,
-        0.12725407970798192
+        0.8828671328671328,
+        0.06236474830719495
       ],
       "recall": [
         0.6819047619047619,
         0.24322847428487449
       ],
       "brier": [
-        0.19650537073612212,
-        0.054793680434111564
+        0.1791752815246582,
+        0.03550859500700534
       ]
     },
     "raw_fold_auprc": [
       0.9478458049886621,
       0.790909090909091,
       0.9617346938775508,
-      0.5213675213675213,
+      0.6805555555555556,
       0.41666666666666663
     ],
-    "oof_auprc": 0.5654516987487701,
-    "oof_roc_auc": 0.7775157232704402
+    "oof_auprc": 0.6049614666891854,
+    "oof_roc_auc": 0.8128930817610063,
+    "oof_probs": [
+      0.2624320089817047,
+      0.4067758023738861,
+      0.28348973393440247,
+      0.45329397916793823,
+      0.3160823881626129,
+      0.7456747889518738,
+      0.6747127771377563,
+      0.25106629729270935,
+      0.7835420370101929,
+      0.4363583028316498,
+      0.16426889598369598,
+      0.5031911730766296,
+      0.5828007459640503,
+      0.3069915473461151,
+      0.26171088218688965,
+      0.998878002166748,
+      0.9990455508232117,
+      0.20202457904815674,
+      0.3491937518119812,
+      0.732429563999176,
+      0.1719909906387329,
+      0.553925633430481,
+      0.7209432125091553,
+      0.11112618446350098,
+      0.5119668245315552,
+      0.5721116065979004,
+      0.18342794477939606,
+      0.3149239122867584,
+      0.6752170324325562,
+      0.3272983431816101,
+      0.8350380063056946,
+      0.3951385021209717,
+      0.18257825076580048,
+      0.19762705266475677,
+      0.21055063605308533,
+      0.11380326747894287,
+      0.20250701904296875,
+      0.08573167026042938,
+      0.09536503255367279,
+      0.08831131458282471,
+      0.3711925148963928,
+      0.1638639122247696,
+      0.27192696928977966,
+      0.30225670337677,
+      0.2529335916042328,
+      0.4205129146575928,
+      0.40238794684410095,
+      0.8054162859916687,
+      0.5274047255516052,
+      0.4425113797187805,
+      0.3370349407196045,
+      0.205487459897995,
+      0.11312311887741089,
+      0.18048962950706482,
+      0.25819841027259827,
+      0.303546279668808,
+      0.6709245443344116,
+      0.15622524917125702,
+      0.025240713730454445,
+      0.09827234596014023,
+      0.1368596851825714,
+      0.5284974575042725,
+      0.24101777374744415,
+      0.7405499219894409,
+      0.17180705070495605,
+      0.0685681402683258,
+      0.05107153207063675,
+      0.28061291575431824,
+      0.08589546382427216,
+      0.9020141363143921,
+      0.7429329752922058,
+      0.9401882886886597,
+      0.9076137542724609,
+      0.8793520927429199,
+      0.8341501355171204,
+      0.9606294631958008,
+      0.930801510810852
+    ],
+    "nested_hyperparams_per_fold": [
+      {
+        "hidden_dim": 16,
+        "dropout": 0.5,
+        "weight_decay": 0.03,
+        "lr": 0.008,
+        "epochs": 60
+      },
+      {
+        "hidden_dim": 16,
+        "dropout": 0.5,
+        "weight_decay": 0.03,
+        "lr": 0.008,
+        "epochs": 60
+      },
+      {
+        "hidden_dim": 16,
+        "dropout": 0.5,
+        "weight_decay": 0.03,
+        "lr": 0.008,
+        "epochs": 60
+      },
+      {
+        "hidden_dim": 12,
+        "dropout": 0.4,
+        "weight_decay": 0.01,
+        "lr": 0.01,
+        "epochs": 80
+      },
+      {
+        "hidden_dim": 16,
+        "dropout": 0.5,
+        "weight_decay": 0.03,
+        "lr": 0.008,
+        "epochs": 60
+      }
+    ],
+    "seed_variance": {
+      "per_fold_seed_mean": [
+        0.8639527932385075,
+        0.6680714285714286,
+        0.8737363430220573,
+        0.4135714285714286,
+        0.35666666666666663
+      ],
+      "per_fold_seed_std": [
+        0.0628980009618955,
+        0.1696558170116951,
+        0.07399135907057061,
+        0.09482861707457374,
+        0.050935689299787076
+      ],
+      "max_single_seed_spread": 0.3871428571428572
+    }
   },
   "leave_one_event_out": {
     "fold_metrics_mean_std": {
@@ -67,19 +200,112 @@
     },
     "raw_fold_auprc": [],
     "oof_auprc": 0.643770108238436,
-    "oof_roc_auc": 0.7704402515723271
+    "oof_roc_auc": 0.7704402515723271,
+    "oof_probs": [
+      0.4623785614967346,
+      0.12602099776268005,
+      0.4646269679069519,
+      0.6628608703613281,
+      0.5347691774368286,
+      0.601537823677063,
+      0.7396950721740723,
+      0.250150591135025,
+      0.6534937620162964,
+      0.753627598285675,
+      0.33915698528289795,
+      0.5058685541152954,
+      0.18363717198371887,
+      0.46159833669662476,
+      0.41536474227905273,
+      0.5636239051818848,
+      0.042045317590236664,
+      0.3412560522556305,
+      0.2465699464082718,
+      0.6394899487495422,
+      0.08065462112426758,
+      0.5558416247367859,
+      0.9378503561019897,
+      0.2523358464241028,
+      0.6415762901306152,
+      0.7794133424758911,
+      0.27532655000686646,
+      0.22635798156261444,
+      0.6555981636047363,
+      0.20348258316516876,
+      0.5271434783935547,
+      0.38914453983306885,
+      0.15370334684848785,
+      0.4590904116630554,
+      0.3617652952671051,
+      0.16638511419296265,
+      0.06346358358860016,
+      0.3208433985710144,
+      0.21178516745567322,
+      0.30759209394454956,
+      0.10338819026947021,
+      0.14153338968753815,
+      0.24693521857261658,
+      0.3037165701389313,
+      0.11323218047618866,
+      0.599150538444519,
+      0.4426991045475006,
+      0.7405056953430176,
+      0.5885958671569824,
+      0.5126224756240845,
+      0.29470524191856384,
+      0.25558727979660034,
+      0.26316067576408386,
+      0.21826383471488953,
+      0.2566056549549103,
+      0.16736376285552979,
+      0.6750362515449524,
+      0.13433721661567688,
+      0.20269453525543213,
+      0.222726970911026,
+      0.2360858917236328,
+      0.5918200016021729,
+      0.19226059317588806,
+      0.4546889662742615,
+      0.05003957822918892,
+      0.06495785713195801,
+      0.30104726552963257,
+      0.21004652976989746,
+      0.3053697943687439,
+      0.7427915334701538,
+      0.9321420788764954,
+      0.9466060400009155,
+      0.9026159048080444,
+      0.8132794499397278,
+      0.6829222440719604,
+      0.919535756111145,
+      0.9139682650566101
+    ],
+    "nested_hyperparams_per_fold": null,
+    "seed_variance": null
   },
   "stage_3_4_decision": {
     "best_classical_baseline": "RandomForest",
-    "best_classical_grouped_oof_auprc": 0.7303646903780963,
-    "fusion_grouped_oof_auprc": 0.5654516987487701,
-    "per_fold_auprc_diff_mean_fusion_minus_classical": -0.018508396365539248,
-    "bootstrap_95pct_ci": [
-      -0.16367521367521373,
-      0.10371469800041226
-    ],
-    "n_folds_compared": 5,
+    "best_classical_grouped_oof_auprc": 0.7201028956820341,
+    "fusion_grouped_oof_auprc": 0.6049614666891854,
+    "test_1_grouped_fold_auprc_diff": {
+      "mean_diff_fusion_minus_classical": 0.017467120181405858,
+      "bootstrap_95pct_ci": [
+        -0.08238961038961039,
+        0.1173238507524221
+      ],
+      "n_folds_compared": 5
+    },
+    "test_2_paired_per_event_brier": {
+      "n_events_compared": 77,
+      "metric": "brier_score (lower is better)",
+      "mean_diff_classical_minus_fusion": -0.013016674324715278,
+      "bootstrap_95pct_ci": [
+        -0.05873677992126232,
+        0.029475777172218044
+      ],
+      "interpretation": "positive value / CI excluding zero above 0 means fusion has lower (better) Brier score than RandomForest across the 77 real leave-one-event-out predictions; CI including zero means no statistically distinguishable difference at the per-event level either."
+    },
     "primary_result": "RandomForest",
-    "rationale": "Per proposal Section 8's stage 3/4 decision point: even after switching the temporal branch to real 90-day daily sequences, a small hyperparameter search, and 5-seed averaging per fold, the fusion model's per-fold AUPRC advantage over RandomForest is -0.019 with a bootstrapped 95% CI of [-0.164, 0.104], which includes zero \u2014 not a statistically defensible improvement on 5 folds / n=77 events. The classical baseline (RandomForest, grouped-by-district OOF AUPRC=0.730) remains the primary result. This is reported as a real negative finding after a genuine improvement attempt, not the original under-tuned architecture."
+    "rationale": "Per proposal Section 8's stage 3/4 decision point: even after switching the temporal branch to real 90-day daily sequences, TRUE nested hyperparameter tuning (independent per outer fold, not leaked from the test fold), and 5-seed averaging per fold, the fusion model's per-fold AUPRC advantage over RandomForest is 0.017 with a bootstrapped 95% CI of [-0.082, 0.117], which includes zero. The higher-powered 77-event paired Brier-score test corroborates this: mean diff -0.0130, 95% CI [-0.0587, 0.0295]. Neither test finds a statistically defensible fusion-model advantage on n=77 events. The classical baseline (RandomForest, grouped-by-district nested-tuned OOF AUPRC=0.720) remains the primary result. This is reported as a real negative finding after a genuine, methodologically hardened improvement attempt \u2014 not the original under-tuned, leakage-adjacent one."
   }
 }

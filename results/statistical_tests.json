@@ -1,0 +1,589 @@
+{
+  "n_events": 77,
+  "descriptive_statistics": [
+    {
+      "feature": "precip_mean_mm",
+      "n": 77,
+      "missing_pct": 0.0,
+      "mean": 0.5402,
+      "sd": 0.3873,
+      "median": 0.5106,
+      "iqr_low": 0.2733,
+      "iqr_high": 0.7243,
+      "skewness": 0.874,
+      "shapiro_w": 0.9292,
+      "shapiro_p": 0.00035,
+      "distribution_note": "approximately symmetric"
+    },
+    {
+      "feature": "precip_max_mm",
+      "n": 77,
+      "missing_pct": 0.0,
+      "mean": 25.5238,
+      "sd": 23.9785,
+      "median": 19.94,
+      "iqr_low": 12.0,
+      "iqr_high": 33.14,
+      "skewness": 1.987,
+      "shapiro_w": 0.7714,
+      "shapiro_p": 0.0,
+      "distribution_note": "right-skewed"
+    },
+    {
+      "feature": "precip_sum_mm",
+      "n": 77,
+      "missing_pct": 0.0,
+      "mean": 51.6652,
+      "sd": 37.9698,
+      "median": 48.05,
+      "iqr_low": 26.31,
+      "iqr_high": 65.19,
+      "skewness": 0.974,
+      "shapiro_w": 0.9208,
+      "shapiro_p": 0.00014,
+      "distribution_note": "approximately symmetric"
+    },
+    {
+      "feature": "precip_anomaly_mm",
+      "n": 77,
+      "missing_pct": 0.0,
+      "mean": 0.5402,
+      "sd": 0.3873,
+      "median": 0.5106,
+      "iqr_low": 0.2733,
+      "iqr_high": 0.7243,
+      "skewness": 0.874,
+      "shapiro_w": 0.9292,
+      "shapiro_p": 0.00035,
+      "distribution_note": "approximately symmetric"
+    },
+    {
+      "feature": "rh_mean_pct",
+      "n": 77,
+      "missing_pct": 0.0,
+      "mean": 58.5969,
+      "sd": 5.93,
+      "median": 57.1808,
+      "iqr_low": 54.5009,
+      "iqr_high": 62.6586,
+      "skewness": 0.575,
+      "shapiro_w": 0.9613,
+      "shapiro_p": 0.019375,
+      "distribution_note": "approximately symmetric"
+    },
+    {
+      "feature": "rh_max_pct",
+      "n": 77,
+      "missing_pct": 0.0,
+      "mean": 84.1662,
+      "sd": 5.0323,
+      "median": 84.28,
+      "iqr_low": 81.36,
+      "iqr_high": 87.81,
+      "skewness": -0.128,
+      "shapiro_w": 0.976,
+      "shapiro_p": 0.154034,
+      "distribution_note": "approximately symmetric"
+    },
+    {
+      "feature": "temp_mean_c",
+      "n": 77,
+      "missing_pct": 0.0,
+      "mean": 20.0271,
+      "sd": 0.7315,
+      "median": 19.9581,
+      "iqr_low": 19.5344,
+      "iqr_high": 20.4564,
+      "skewness": 0.196,
+      "shapiro_w": 0.99,
+      "shapiro_p": 0.816407,
+      "distribution_note": "approximately symmetric"
+    },
+    {
+      "feature": "vpd_mean_kpa",
+      "n": 77,
+      "missing_pct": 0.0,
+      "mean": 1.0599,
+      "sd": 0.1518,
+      "median": 1.0811,
+      "iqr_low": 0.9627,
+      "iqr_high": 1.1875,
+      "skewness": -0.628,
+      "shapiro_w": 0.9374,
+      "shapiro_p": 0.000912,
+      "distribution_note": "approximately symmetric"
+    },
+    {
+      "feature": "wet_persistence_max_days",
+      "n": 77,
+      "missing_pct": 0.0,
+      "mean": 1.8442,
+      "sd": 1.3185,
+      "median": 1.0,
+      "iqr_low": 1.0,
+      "iqr_high": 3.0,
+      "skewness": 1.087,
+      "shapiro_w": 0.8137,
+      "shapiro_p": 0.0,
+      "distribution_note": "right-skewed"
+    },
+    {
+      "feature": "sar_vv_db_mean",
+      "n": 67,
+      "missing_pct": 13.0,
+      "mean": -7.3765,
+      "sd": 3.4646,
+      "median": -6.8283,
+      "iqr_low": -7.2888,
+      "iqr_high": -5.9628,
+      "skewness": -3.717,
+      "shapiro_w": 0.55,
+      "shapiro_p": 0.0,
+      "distribution_note": "left-skewed"
+    },
+    {
+      "feature": "sar_vh_db_mean",
+      "n": 66,
+      "missing_pct": 14.3,
+      "mean": -14.9106,
+      "sd": 3.0524,
+      "median": -14.3044,
+      "iqr_low": -14.9958,
+      "iqr_high": -13.7324,
+      "skewness": -4.222,
+      "shapiro_w": 0.5327,
+      "shapiro_p": 0.0,
+      "distribution_note": "left-skewed"
+    },
+    {
+      "feature": "ndvi_mean",
+      "n": 70,
+      "missing_pct": 9.1,
+      "mean": 0.3787,
+      "sd": 0.0918,
+      "median": 0.3742,
+      "iqr_low": 0.3053,
+      "iqr_high": 0.4476,
+      "skewness": 0.115,
+      "shapiro_w": 0.9814,
+      "shapiro_p": 0.383637,
+      "distribution_note": "approximately symmetric"
+    },
+    {
+      "feature": "ndwi_mean",
+      "n": 70,
+      "missing_pct": 9.1,
+      "mean": -0.355,
+      "sd": 0.0851,
+      "median": -0.3698,
+      "iqr_low": -0.4034,
+      "iqr_high": -0.2825,
+      "skewness": 0.17,
+      "shapiro_w": 0.9719,
+      "shapiro_p": 0.116398,
+      "distribution_note": "approximately symmetric"
+    },
+    {
+      "feature": "lst_celsius_mean",
+      "n": 70,
+      "missing_pct": 9.1,
+      "mean": 24.6982,
+      "sd": 1.7175,
+      "median": 24.4849,
+      "iqr_low": 23.6315,
+      "iqr_high": 25.7014,
+      "skewness": 0.35,
+      "shapiro_w": 0.9782,
+      "shapiro_p": 0.261819,
+      "distribution_note": "approximately symmetric"
+    }
+  ],
+  "missingness_mechanism_check": {
+    "SAR": {
+      "n_missing": 10,
+      "vs_label": {
+        "odds_ratio": 1.5666666666666667,
+        "p_value": 0.49260345629040847,
+        "test": "Fisher's exact"
+      },
+      "vs_year": {
+        "chi2": 7.697605721393035,
+        "p_value": 0.10330484320956686,
+        "min_expected_cell_count": 1.0389610389610389,
+        "test": "chi-square (caveat: small expected counts likely given n=77)"
+      }
+    },
+    "Landsat": {
+      "n_missing": 4,
+      "vs_label": {
+        "odds_ratio": Infinity,
+        "p_value": 0.007852062588904694,
+        "test": "Fisher's exact"
+      },
+      "vs_year": {
+        "chi2": 16.08561643835616,
+        "p_value": 0.002906404730919434,
+        "min_expected_cell_count": 0.4155844155844156,
+        "test": "chi-square (caveat: small expected counts likely given n=77)"
+      }
+    }
+  },
+  "mann_whitney_outbreak_vs_none": [
+    {
+      "feature": "precip_max_mm",
+      "n_outbreak": 24,
+      "n_no_outbreak": 53,
+      "median_outbreak": 11.24,
+      "median_no_outbreak": 21.67,
+      "U": 270.5,
+      "p_value": 5.95293228596656e-05,
+      "rank_biserial_r": 0.5747,
+      "fdr_q_value": 0.000833,
+      "effect_size_note": "very large"
+    },
+    {
+      "feature": "precip_mean_mm",
+      "n_outbreak": 24,
+      "n_no_outbreak": 53,
+      "median_outbreak": 0.2882,
+      "median_no_outbreak": 0.5898,
+      "U": 331.5,
+      "p_value": 0.0008266188101596567,
+      "rank_biserial_r": 0.4788,
+      "fdr_q_value": 0.003858,
+      "effect_size_note": "large"
+    },
+    {
+      "feature": "precip_anomaly_mm",
+      "n_outbreak": 24,
+      "n_no_outbreak": 53,
+      "median_outbreak": 0.2882,
+      "median_no_outbreak": 0.5898,
+      "U": 331.5,
+      "p_value": 0.0008266188101596567,
+      "rank_biserial_r": 0.4788,
+      "fdr_q_value": 0.003858,
+      "effect_size_note": "large"
+    },
+    {
+      "feature": "precip_sum_mm",
+      "n_outbreak": 24,
+      "n_no_outbreak": 53,
+      "median_outbreak": 30.26,
+      "median_no_outbreak": 53.61,
+      "U": 340.5,
+      "p_value": 0.0011756107167374041,
+      "rank_biserial_r": 0.4646,
+      "fdr_q_value": 0.004115,
+      "effect_size_note": "large"
+    },
+    {
+      "feature": "rh_mean_pct",
+      "n_outbreak": 24,
+      "n_no_outbreak": 53,
+      "median_outbreak": 59.8809,
+      "median_no_outbreak": 56.6539,
+      "U": 796.5,
+      "p_value": 0.07843242460736564,
+      "rank_biserial_r": -0.2524,
+      "fdr_q_value": 0.219611,
+      "effect_size_note": "medium"
+    },
+    {
+      "feature": "ndvi_mean",
+      "n_outbreak": 20,
+      "n_no_outbreak": 50,
+      "median_outbreak": 0.4216,
+      "median_no_outbreak": 0.3683,
+      "U": 624.0,
+      "p_value": 0.10836910301511292,
+      "rank_biserial_r": -0.248,
+      "fdr_q_value": 0.251278,
+      "effect_size_note": "medium"
+    },
+    {
+      "feature": "temp_mean_c",
+      "n_outbreak": 24,
+      "n_no_outbreak": 53,
+      "median_outbreak": 20.1198,
+      "median_no_outbreak": 19.8862,
+      "U": 775.5,
+      "p_value": 0.12629571292845027,
+      "rank_biserial_r": -0.2193,
+      "fdr_q_value": 0.251278,
+      "effect_size_note": "medium"
+    },
+    {
+      "feature": "ndwi_mean",
+      "n_outbreak": 20,
+      "n_no_outbreak": 50,
+      "median_outbreak": -0.3912,
+      "median_no_outbreak": -0.3556,
+      "U": 387.0,
+      "p_value": 0.14358755748037777,
+      "rank_biserial_r": 0.226,
+      "fdr_q_value": 0.251278,
+      "effect_size_note": "medium"
+    },
+    {
+      "feature": "wet_persistence_max_days",
+      "n_outbreak": 24,
+      "n_no_outbreak": 53,
+      "median_outbreak": 1.0,
+      "median_no_outbreak": 1.0,
+      "U": 530.5,
+      "p_value": 0.21099319096662172,
+      "rank_biserial_r": 0.1659,
+      "fdr_q_value": 0.328212,
+      "effect_size_note": "medium"
+    },
+    {
+      "feature": "sar_vv_db_mean",
+      "n_outbreak": 20,
+      "n_no_outbreak": 47,
+      "median_outbreak": -7.0382,
+      "median_no_outbreak": -6.7259,
+      "U": 395.0,
+      "p_value": 0.3073627361724365,
+      "rank_biserial_r": 0.1596,
+      "fdr_q_value": 0.430308,
+      "effect_size_note": "medium"
+    },
+    {
+      "feature": "vpd_mean_kpa",
+      "n_outbreak": 24,
+      "n_no_outbreak": 53,
+      "median_outbreak": 1.0385,
+      "median_no_outbreak": 1.0918,
+      "U": 552.5,
+      "p_value": 0.3612821510058515,
+      "rank_biserial_r": 0.1313,
+      "fdr_q_value": 0.459814,
+      "effect_size_note": "medium"
+    },
+    {
+      "feature": "sar_vh_db_mean",
+      "n_outbreak": 19,
+      "n_no_outbreak": 47,
+      "median_outbreak": -14.4812,
+      "median_no_outbreak": -14.301,
+      "U": 403.0,
+      "p_value": 0.5425442780508605,
+      "rank_biserial_r": 0.0974,
+      "fdr_q_value": 0.632968,
+      "effect_size_note": "small"
+    },
+    {
+      "feature": "rh_max_pct",
+      "n_outbreak": 24,
+      "n_no_outbreak": 53,
+      "median_outbreak": 84.5,
+      "median_no_outbreak": 83.57,
+      "U": 639.0,
+      "p_value": 0.9780618839188165,
+      "rank_biserial_r": -0.0047,
+      "fdr_q_value": 1.0,
+      "effect_size_note": "small"
+    },
+    {
+      "feature": "lst_celsius_mean",
+      "n_outbreak": 20,
+      "n_no_outbreak": 50,
+      "median_outbreak": 24.7875,
+      "median_no_outbreak": 24.4272,
+      "U": 500.0,
+      "p_value": 1.0,
+      "rank_biserial_r": 0.0,
+      "fdr_q_value": 1.0,
+      "effect_size_note": "small"
+    }
+  ],
+  "severity_correlations": {
+    "leaf_blast_severity_pct": [
+      {
+        "feature": "precip_max_mm",
+        "n": 24,
+        "spearman_rho": -0.7869,
+        "p_value": 5.100169996329402e-06
+      },
+      {
+        "feature": "precip_mean_mm",
+        "n": 24,
+        "spearman_rho": -0.7242,
+        "p_value": 6.299873887289459e-05
+      },
+      {
+        "feature": "precip_sum_mm",
+        "n": 24,
+        "spearman_rho": -0.7242,
+        "p_value": 6.299873887289459e-05
+      },
+      {
+        "feature": "precip_anomaly_mm",
+        "n": 24,
+        "spearman_rho": -0.7242,
+        "p_value": 6.299873887289459e-05
+      },
+      {
+        "feature": "wet_persistence_max_days",
+        "n": 24,
+        "spearman_rho": -0.5679,
+        "p_value": 0.00379072617609927
+      },
+      {
+        "feature": "rh_mean_pct",
+        "n": 24,
+        "spearman_rho": -0.4358,
+        "p_value": 0.03325784714645035
+      },
+      {
+        "feature": "rh_max_pct",
+        "n": 24,
+        "spearman_rho": -0.4132,
+        "p_value": 0.04474682575346022
+      },
+      {
+        "feature": "vpd_mean_kpa",
+        "n": 24,
+        "spearman_rho": 0.2758,
+        "p_value": 0.1921157085053866
+      },
+      {
+        "feature": "temp_mean_c",
+        "n": 24,
+        "spearman_rho": -0.2271,
+        "p_value": 0.285984286574414
+      },
+      {
+        "feature": "ndvi_mean",
+        "n": 21,
+        "spearman_rho": -0.1624,
+        "p_value": 0.48173160272816906
+      },
+      {
+        "feature": "sar_vh_db_mean",
+        "n": 24,
+        "spearman_rho": 0.1131,
+        "p_value": 0.5987804278612963
+      },
+      {
+        "feature": "ndwi_mean",
+        "n": 21,
+        "spearman_rho": 0.0962,
+        "p_value": 0.6783848166628568
+      },
+      {
+        "feature": "sar_vv_db_mean",
+        "n": 24,
+        "spearman_rho": 0.0913,
+        "p_value": 0.6712060958112352
+      },
+      {
+        "feature": "lst_celsius_mean",
+        "n": 21,
+        "spearman_rho": -0.0286,
+        "p_value": 0.9020929134948861
+      }
+    ],
+    "neck_blast_severity_pct": [
+      {
+        "feature": "temp_mean_c",
+        "n": 24,
+        "spearman_rho": -0.4529,
+        "p_value": 0.026262133370419806
+      },
+      {
+        "feature": "precip_mean_mm",
+        "n": 24,
+        "spearman_rho": -0.4206,
+        "p_value": 0.04070391298913507
+      },
+      {
+        "feature": "precip_sum_mm",
+        "n": 24,
+        "spearman_rho": -0.4206,
+        "p_value": 0.04070391298913507
+      },
+      {
+        "feature": "precip_anomaly_mm",
+        "n": 24,
+        "spearman_rho": -0.4206,
+        "p_value": 0.04070391298913507
+      },
+      {
+        "feature": "precip_max_mm",
+        "n": 24,
+        "spearman_rho": -0.3695,
+        "p_value": 0.07552029055089145
+      },
+      {
+        "feature": "vpd_mean_kpa",
+        "n": 24,
+        "spearman_rho": -0.3429,
+        "p_value": 0.10089556222084448
+      },
+      {
+        "feature": "sar_vv_db_mean",
+        "n": 24,
+        "spearman_rho": 0.2936,
+        "p_value": 0.16373258180433692
+      },
+      {
+        "feature": "sar_vh_db_mean",
+        "n": 24,
+        "spearman_rho": 0.2526,
+        "p_value": 0.23367422378604152
+      },
+      {
+        "feature": "ndvi_mean",
+        "n": 21,
+        "spearman_rho": -0.2093,
+        "p_value": 0.3626325171495045
+      },
+      {
+        "feature": "rh_mean_pct",
+        "n": 24,
+        "spearman_rho": 0.209,
+        "p_value": 0.32705844083804797
+      },
+      {
+        "feature": "wet_persistence_max_days",
+        "n": 24,
+        "spearman_rho": -0.2019,
+        "p_value": 0.3441462417085354
+      },
+      {
+        "feature": "lst_celsius_mean",
+        "n": 21,
+        "spearman_rho": 0.1532,
+        "p_value": 0.5073478688297584
+      },
+      {
+        "feature": "ndwi_mean",
+        "n": 21,
+        "spearman_rho": 0.1434,
+        "p_value": 0.5351292940648701
+      },
+      {
+        "feature": "rh_max_pct",
+        "n": 24,
+        "spearman_rho": -0.0668,
+        "p_value": 0.756624871429556
+      }
+    ]
+  },
+  "confusion_matrix_report": {
+    "threshold": 0.5,
+    "n_events": 77,
+    "confusion_matrix": {
+      "true_negative": 44,
+      "false_positive": 9,
+      "false_negative": 12,
+      "true_positive": 12
+    },
+    "precision": 0.5714,
+    "recall": 0.5,
+    "f1": 0.5333,
+    "reporting_sentence": "At the standard 0.5 threshold on real leave-one-event-out predictions (n=77), RandomForest achieves recall=0.50 (catches 12/24 real outbreaks) and precision=0.57 (9 false alarms among 21 flagged events). We emphasize recall because a missed outbreak (false negative) is more costly than an unnecessary fungicide/bactericide application prompted by a false alarm; precision is reported alongside it so the cost of that trade-off is visible, not hidden behind a single metric."
+  }
+}

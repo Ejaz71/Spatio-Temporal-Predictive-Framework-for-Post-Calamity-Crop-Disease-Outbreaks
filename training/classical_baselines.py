@@ -35,7 +35,7 @@ from sklearn.metrics import (
     recall_score,
     roc_auc_score,
 )
-from sklearn.model_selection import GroupKFold, LeaveOneOut
+from sklearn.model_selection import GroupKFold, GroupShuffleSplit, LeaveOneOut
 from xgboost import XGBClassifier
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
@@ -66,45 +66,104 @@ def load_data():
     return df, X, y, groups
 
 
+def build_model(model_name, hp=None):
+    if model_name == "RandomForest":
+        defaults = dict(n_estimators=400, max_depth=5, min_samples_leaf=2)
+        params = {**defaults, **(hp or {})}
+        return RandomForestClassifier(class_weight="balanced", random_state=42, **params)
+    else:
+        defaults = dict(n_estimators=300, max_depth=3, learning_rate=0.05, subsample=0.8, colsample_bytree=0.8)
+        params = {**defaults, **(hp or {})}
+        return XGBClassifier(eval_metric="logloss", random_state=42, **params)
+
+
 def build_models():
-    return {
-        "RandomForest": RandomForestClassifier(
-            n_estimators=400, max_depth=5, min_samples_leaf=2,
-            class_weight="balanced", random_state=42,
-        ),
-        "XGBoost": XGBClassifier(
-            n_estimators=300, max_depth=3, learning_rate=0.05,
-            subsample=0.8, colsample_bytree=0.8,
-            scale_pos_weight=(1.0), eval_metric="logloss",
-            random_state=42,
-        ),
-    }
+    return {"RandomForest": build_model("RandomForest"), "XGBoost": build_model("XGBoost")}
 
 
-def cross_validate(X, y, groups, model_name, splitter, split_kind):
+# Small nested-tuning grids. Kept modest given n=77: RF/XGBoost are fast enough that a
+# larger grid is cheap, but too much tuning search on this little data risks overfitting
+# to whatever internal validation split gets used, so this stays deliberately small.
+HP_CANDIDATES = {
+    "RandomForest": [
+        {"n_estimators": 400, "max_depth": 5, "min_samples_leaf": 2},
+        {"n_estimators": 300, "max_depth": 3, "min_samples_leaf": 3},
+        {"n_estimators": 500, "max_depth": 7, "min_samples_leaf": 1},
+        {"n_estimators": 600, "max_depth": 4, "min_samples_leaf": 2},
+    ],
+    "XGBoost": [
+        {"n_estimators": 300, "max_depth": 3, "learning_rate": 0.05},
+        {"n_estimators": 200, "max_depth": 2, "learning_rate": 0.1},
+        {"n_estimators": 400, "max_depth": 4, "learning_rate": 0.03},
+        {"n_estimators": 500, "max_depth": 3, "learning_rate": 0.02},
+    ],
+}
+
+
+def _fit_predict(model_name, hp, X_train, y_train, X_test):
+    model = build_model(model_name, hp)
+    pos = max(1, np.sum(y_train == 1))
+    neg = max(1, np.sum(y_train == 0))
+    if model_name == "XGBoost":
+        model.set_params(scale_pos_weight=neg / pos)
+    model.fit(X_train, y_train)
+    return model.predict_proba(X_test)[:, 1]
+
+
+def select_hyperparams_for_indices(X, y, groups, model_name, train_idx, seed=0):
+    """Nested tuning: pick hyperparams using ONLY this outer fold's training data,
+    via one internal GroupShuffleSplit validation split — never touches the outer
+    fold's held-out test data, so the outer metric stays leakage-free."""
+    sub_groups = groups[train_idx]
+    if len(np.unique(sub_groups)) < 2:
+        return HP_CANDIDATES[model_name][0]
+    gss = GroupShuffleSplit(n_splits=1, test_size=0.25, random_state=seed)
+    try:
+        inner_tr_rel, inner_val_rel = next(gss.split(train_idx, y[train_idx], sub_groups))
+    except ValueError:
+        return HP_CANDIDATES[model_name][0]
+    inner_tr, inner_val = train_idx[inner_tr_rel], train_idx[inner_val_rel]
+    if len(np.unique(y[inner_val])) < 2 or len(np.unique(y[inner_tr])) < 2:
+        return HP_CANDIDATES[model_name][0]
+
+    imputer = SimpleImputer(strategy="median")
+    X_tr = imputer.fit_transform(X.iloc[inner_tr])
+    X_val = imputer.transform(X.iloc[inner_val])
+
+    best_hp, best_auprc = HP_CANDIDATES[model_name][0], -1
+    for hp in HP_CANDIDATES[model_name]:
+        probs = _fit_predict(model_name, hp, X_tr, y[inner_tr], X_val)
+        auprc = average_precision_score(y[inner_val], probs)
+        if auprc > best_auprc:
+            best_auprc, best_hp = auprc, hp
+    return best_hp
+
+
+def cross_validate(X, y, groups, model_name, splitter, split_kind, tune=True):
     fold_metrics = {"auprc": [], "f1": [], "roc_auc": [], "recall": [], "brier": []}
     oof_probs = np.full(len(y), np.nan)
+    selected_hps = []
 
     if split_kind == "loo":
         splits = splitter.split(X)
     else:
         splits = splitter.split(X, y, groups)
 
-    for train_idx, test_idx in splits:
+    for fold_idx, (train_idx, test_idx) in enumerate(splits):
         if len(np.unique(y[train_idx])) < 2:
             continue
         imputer = SimpleImputer(strategy="median")
         X_train = imputer.fit_transform(X.iloc[train_idx])
         X_test = imputer.transform(X.iloc[test_idx])
 
-        model = build_models()[model_name]
-        pos = max(1, np.sum(y[train_idx] == 1))
-        neg = max(1, np.sum(y[train_idx] == 0))
-        if model_name == "XGBoost":
-            model.set_params(scale_pos_weight=neg / pos)
+        # Nested hyperparameter selection: only for grouped CV (LOO's 76-sample
+        # training folds are too small to carve out a further internal validation
+        # split without overfitting the tuning step itself).
+        hp = select_hyperparams_for_indices(X, y, groups, model_name, train_idx, seed=fold_idx) \
+            if (tune and split_kind == "group") else None
+        selected_hps.append(hp)
 
-        model.fit(X_train, y[train_idx])
-        probs = model.predict_proba(X_test)[:, 1]
+        probs = _fit_predict(model_name, hp, X_train, y[train_idx], X_test)
         oof_probs[test_idx] = probs
 
         if len(np.unique(y[test_idx])) > 1:
@@ -124,7 +183,7 @@ def cross_validate(X, y, groups, model_name, splitter, split_kind):
     else:
         oof_auprc, oof_roc = np.nan, np.nan
 
-    return summary, fold_metrics, oof_probs, oof_auprc, oof_roc
+    return summary, fold_metrics, oof_probs, oof_auprc, oof_roc, selected_hps
 
 
 def run_shap_attribution(X, y, model_name="RandomForest"):
@@ -157,13 +216,13 @@ def main():
 
     for model_name in ["RandomForest", "XGBoost"]:
         gkf = GroupKFold(n_splits=n_splits)
-        summary_grouped, raw_grouped, oof_grouped, auprc_g, roc_g = cross_validate(
-            X, y, groups, model_name, gkf, split_kind="group"
+        summary_grouped, raw_grouped, oof_grouped, auprc_g, roc_g, hps_grouped = cross_validate(
+            X, y, groups, model_name, gkf, split_kind="group", tune=True
         )
 
         loo = LeaveOneOut()
-        summary_loo, raw_loo, oof_loo, auprc_l, roc_l = cross_validate(
-            X, y, groups, model_name, loo, split_kind="loo"
+        summary_loo, raw_loo, oof_loo, auprc_l, roc_l, _ = cross_validate(
+            X, y, groups, model_name, loo, split_kind="loo", tune=False
         )
 
         results[model_name] = {
@@ -173,14 +232,16 @@ def main():
                 "raw_fold_auprc": raw_grouped["auprc"],
                 "oof_auprc": auprc_g,
                 "oof_roc_auc": roc_g,
+                "nested_hyperparams_per_fold": hps_grouped,
             },
             "leave_one_event_out": {
                 "fold_metrics_mean_std": summary_loo,
                 "oof_auprc": auprc_l,
                 "oof_roc_auc": roc_l,
+                "oof_probs": oof_loo.tolist(),
             },
         }
-        logger.info(f"{model_name} grouped-by-district OOF AUPRC={auprc_g:.3f} ROC-AUC={roc_g:.3f}")
+        logger.info(f"{model_name} grouped-by-district (nested-tuned) OOF AUPRC={auprc_g:.3f} ROC-AUC={roc_g:.3f}")
         logger.info(f"{model_name} leave-one-event-out OOF AUPRC={auprc_l:.3f} ROC-AUC={roc_l:.3f}")
 
     results["shap_feature_importance_random_forest"] = run_shap_attribution(X, y, "RandomForest")
