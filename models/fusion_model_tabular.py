@@ -19,7 +19,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-SPATIAL_FEATURES = ["sar_vv_db_mean", "sar_vh_db_mean", "ndvi_mean", "ndwi_mean", "lst_celsius_mean"]
+SPATIAL_FEATURES = ["sar_vv_db_mean", "sar_vh_db_mean", "ndvi_mean", "ndwi_mean", "lst_celsius_mean",
+                    "water_extent_frac"]
 TEMPORAL_FEATURES = [
     "precip_mean_mm", "precip_max_mm", "precip_sum_mm", "precip_anomaly_mm",
     "rh_mean_pct", "rh_max_pct", "temp_mean_c", "vpd_mean_kpa", "wet_persistence_max_days",

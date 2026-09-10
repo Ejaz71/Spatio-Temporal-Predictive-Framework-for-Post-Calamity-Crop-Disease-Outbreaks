@@ -1,7 +1,7 @@
 {
   "n_rice_blast_events": 72,
   "leaf_blast_severity_pct": {
-    "n_significant_univariate_predictors": 7,
+    "n_significant_univariate_predictors": 8,
     "univariate_ols": [
       {
         "feature": "precip_max_mm",
@@ -14,6 +14,18 @@
         "intercept": 17.94453809833034,
         "r_squared": 0.2959222405834222,
         "p_value": 7.863629251427552e-07
+      },
+      {
+        "feature": "wet_persistence_max_days",
+        "n": 72,
+        "slope": -2.0556293590169386,
+        "slope_95pct_ci": [
+          -2.942140079911656,
+          -1.169118638122221
+        ],
+        "intercept": 17.6360013284623,
+        "r_squared": 0.23403186597509162,
+        "p_value": 1.6697382305317655e-05
       },
       {
         "feature": "precip_mean_mm",
@@ -52,18 +64,6 @@
         "p_value": 0.00016759321244129723
       },
       {
-        "feature": "wet_persistence_max_days",
-        "n": 72,
-        "slope": -2.0556293590169386,
-        "slope_95pct_ci": [
-          -2.942140079911656,
-          -1.169118638122221
-        ],
-        "intercept": 17.6360013284623,
-        "r_squared": 0.23403186597509162,
-        "p_value": 1.6697382305317655e-05
-      },
-      {
         "feature": "rh_mean_pct",
         "n": 72,
         "slope": -0.5253226573678231,
@@ -86,19 +86,32 @@
         "intercept": 63.86180902836615,
         "r_squared": 0.09608900640259455,
         "p_value": 0.0080523182651477
+      },
+      {
+        "feature": "vpd_mean_kpa",
+        "n": 72,
+        "slope": 12.860749595624672,
+        "slope_95pct_ci": [
+          2.105991022779781,
+          23.61550816846956
+        ],
+        "intercept": -0.9927462495631988,
+        "r_squared": 0.07515259310752131,
+        "p_value": 0.019791548952615305
       }
     ],
     "collinearity_reduction": {
       "kept": [
         "precip_max_mm",
-        "precip_mean_mm",
         "wet_persistence_max_days",
+        "precip_mean_mm",
         "rh_mean_pct",
         "rh_max_pct"
       ],
       "dropped_redundant_with": {
         "precip_sum_mm": "precip_mean_mm",
-        "precip_anomaly_mm": "precip_mean_mm"
+        "precip_anomaly_mm": "precip_mean_mm",
+        "vpd_mean_kpa": "rh_mean_pct"
       },
       "threshold_pearson_r": 0.8
     },
@@ -106,62 +119,62 @@
       "n": 72,
       "features": [
         "precip_max_mm",
-        "precip_mean_mm",
         "wet_persistence_max_days",
+        "precip_mean_mm",
         "rh_mean_pct",
         "rh_max_pct"
       ],
-      "r_squared": 0.4076513463367306,
-      "adj_r_squared": 0.36277644833193756,
-      "f_pvalue": 1.307166444281051e-06,
+      "r_squared": 0.4076513463367307,
+      "adj_r_squared": 0.3627764483319377,
+      "f_pvalue": 1.307166444281036e-06,
       "coefficients": {
         "const": {
-          "coef": 20.139301344137124,
+          "coef": 20.139301344137184,
           "ci": [
-            -29.491463835356498,
-            69.77006652363075
+            -29.491463835356424,
+            69.77006652363079
           ],
-          "p_value": 0.4207534439528479
+          "p_value": 0.4207534439528464
         },
         "precip_max_mm": {
-          "coef": -0.2894442904419224,
+          "coef": -0.2894442904419231,
           "ci": [
-            -0.47511574246723376,
-            -0.10377283841661097
+            -0.4751157424672355,
+            -0.10377283841661072
           ],
-          "p_value": 0.0027419238002155434
-        },
-        "precip_mean_mm": {
-          "coef": 5.680029369867475,
-          "ci": [
-            -2.2138172504421902,
-            13.57387599017714
-          ],
-          "p_value": 0.15554645488367794
+          "p_value": 0.0027419238002156106
         },
         "wet_persistence_max_days": {
-          "coef": -1.9938665698616809,
+          "coef": -1.993866569861676,
           "ci": [
-            -3.693898111567568,
-            -0.29383502815579376
+            -3.6938981115675613,
+            -0.2938350281557909
           ],
-          "p_value": 0.022226741972888587
+          "p_value": 0.022226741972888712
+        },
+        "precip_mean_mm": {
+          "coef": 5.68002936986746,
+          "ci": [
+            -2.2138172504422,
+            13.573875990177122
+          ],
+          "p_value": 0.15554645488367877
         },
         "rh_mean_pct": {
-          "coef": 0.1732455116654642,
+          "coef": 0.17324551166546556,
           "ci": [
-            -0.24548994951873732,
-            0.5919809728496657
+            -0.2454899495187369,
+            0.591980972849668
           ],
-          "p_value": 0.4117527141332062
+          "p_value": 0.4117527141332036
         },
         "rh_max_pct": {
-          "coef": -0.10617023382394186,
+          "coef": -0.10617023382394358,
           "ci": [
-            -0.6934442458189739,
-            0.4811037781710902
+            -0.6934442458189753,
+            0.48110377817108824
           ],
-          "p_value": 0.7192906888980775
+          "p_value": 0.719290688898073
         }
       }
     },
@@ -177,8 +190,20 @@
     }
   },
   "neck_blast_severity_pct": {
-    "n_significant_univariate_predictors": 4,
+    "n_significant_univariate_predictors": 7,
     "univariate_ols": [
+      {
+        "feature": "sar_vv_db_mean",
+        "n": 67,
+        "slope": 0.16296592143675614,
+        "slope_95pct_ci": [
+          -0.05898729011976908,
+          0.3849191329932814
+        ],
+        "intercept": 6.119739372892541,
+        "r_squared": 0.03202132295271887,
+        "p_value": 0.1473691105567554
+      },
       {
         "feature": "temp_mean_c",
         "n": 72,
@@ -216,6 +241,18 @@
         "p_value": 0.027957270238159537
       },
       {
+        "feature": "precip_max_mm",
+        "n": 72,
+        "slope": -0.044390214077100754,
+        "slope_95pct_ci": [
+          -0.08249187396420866,
+          -0.006288554189992843
+        ],
+        "intercept": 5.835470236066275,
+        "r_squared": 0.07160787536674063,
+        "p_value": 0.023055891000210015
+      },
+      {
         "feature": "precip_anomaly_mm",
         "n": 72,
         "slope": -1.8685228284878725,
@@ -226,12 +263,27 @@
         "intercept": 5.150583055784127,
         "r_squared": 0.04377904916754838,
         "p_value": 0.07774515470712799
+      },
+      {
+        "feature": "vpd_mean_kpa",
+        "n": 72,
+        "slope": -4.641532265806817,
+        "slope_95pct_ci": [
+          -8.937553542871274,
+          -0.3455109887423591
+        ],
+        "intercept": 9.418703366401541,
+        "r_squared": 0.06220703801926508,
+        "p_value": 0.03461635233114813
       }
     ],
     "collinearity_reduction": {
       "kept": [
+        "sar_vv_db_mean",
         "temp_mean_c",
-        "precip_mean_mm"
+        "precip_mean_mm",
+        "precip_max_mm",
+        "vpd_mean_kpa"
       ],
       "dropped_redundant_with": {
         "precip_sum_mm": "precip_mean_mm",
@@ -240,49 +292,76 @@
       "threshold_pearson_r": 0.8
     },
     "multiple_ols": {
-      "n": 72,
+      "n": 67,
       "features": [
+        "sar_vv_db_mean",
         "temp_mean_c",
-        "precip_mean_mm"
+        "precip_mean_mm",
+        "precip_max_mm",
+        "vpd_mean_kpa"
       ],
-      "r_squared": 0.14419479861368834,
-      "adj_r_squared": 0.11938885074741856,
-      "f_pvalue": 0.004644455419162982,
+      "r_squared": 0.20753672923833344,
+      "adj_r_squared": 0.14258072343819672,
+      "f_pvalue": 0.012581205036349527,
       "coefficients": {
         "const": {
-          "coef": 30.933463079019916,
+          "coef": 4.642345297171115,
           "ci": [
-            10.79636231074035,
-            51.07056384729948
+            -30.027285945565783,
+            39.31197653990802
           ],
-          "p_value": 0.0031097287937130783
+          "p_value": 0.7897917422877155
+        },
+        "sar_vv_db_mean": {
+          "coef": 0.1604491211518518,
+          "ci": [
+            -0.059126356587357626,
+            0.3800245988910612
+          ],
+          "p_value": 0.14910012166045847
         },
         "temp_mean_c": {
-          "coef": -1.2964932654884855,
+          "coef": 0.6362440562950507,
           "ci": [
-            -2.334185760425071,
-            -0.25880077055189976
+            -1.5841182245337266,
+            2.8566063371238277
           ],
-          "p_value": 0.015090248950130208
+          "p_value": 0.5687567307410207
         },
         "precip_mean_mm": {
-          "coef": -0.8398532114231427,
+          "coef": -0.6600891971625806,
           "ci": [
-            -2.4863832054383908,
-            0.8066767825921051
+            -3.3043275307936018,
+            1.9841491364684405
           ],
-          "p_value": 0.3124366175350346
+          "p_value": 0.6194537248914096
+        },
+        "precip_max_mm": {
+          "coef": -0.06506936568981928,
+          "ci": [
+            -0.15933326778010956,
+            0.02919453640047101
+          ],
+          "p_value": 0.17252610280952552
+        },
+        "vpd_mean_kpa": {
+          "coef": -8.959062437916886,
+          "ci": [
+            -18.31127802908534,
+            0.39315315325156774
+          ],
+          "p_value": 0.06011144891955408
         }
       }
     },
     "held_out_loo_cv": {
       "LinearRegression": {
-        "loo_rmse": 2.500728003103102,
-        "loo_r_squared": 0.05263376423457422
+        "loo_rmse": 2.6105301162362577,
+        "loo_r_squared": -0.027195626641215
       },
       "Ridge_alpha1.0": {
-        "loo_rmse": 2.4933257136468687,
-        "loo_r_squared": 0.05823397356222859
+        "loo_rmse": 2.6289000157429103,
+        "loo_r_squared": -0.04170292623928318
       }
     }
   }

@@ -24,6 +24,7 @@ FEATURE_COLUMNS = [
     "precip_mean_mm", "precip_max_mm", "precip_sum_mm", "precip_anomaly_mm",
     "rh_mean_pct", "rh_max_pct", "temp_mean_c", "vpd_mean_kpa", "wet_persistence_max_days",
     "sar_vv_db_mean", "sar_vh_db_mean", "ndvi_mean", "ndwi_mean", "lst_celsius_mean",
+    "water_extent_frac",
 ]
 
 
@@ -109,6 +110,39 @@ class TestFeatureListConsistency(unittest.TestCase):
                         "a feature is in BOTH ablation conditions")
         self.assertEqual(set(METEOROLOGY_COLUMNS) | set(REMOTE_SENSING_COLUMNS), set(FULL_COLUMNS),
                          "ablation conditions do not partition the full feature set")
+
+
+class TestEffectSizeSignConvention(unittest.TestCase):
+    """The rank-biserial effect size must be POSITIVE when the outbreak group has the
+    larger values. This was wrong once (the formula was written 1 - 2U/(n1*n2), which
+    inverts the sign), and a sign error is uniquely dangerous here: magnitudes and
+    p-values look perfectly healthy, so nothing downstream complains, but every
+    statement about the DIRECTION of an effect comes out backwards in the report."""
+
+    def test_positive_r_means_higher_in_outbreak(self):
+        import sys
+        sys.path.insert(0, REPO_ROOT)
+        import numpy as np
+        import pandas as pd
+        from analysis.statistical_tests import mann_whitney_by_outcome, FEATURE_COLUMNS as cols
+
+        rng = np.random.default_rng(0)
+        n = 40
+        # Outbreak rows are constructed to have systematically LARGER feature values.
+        df = pd.DataFrame({c: np.concatenate([rng.normal(10, 1, n), rng.normal(0, 1, n)])
+                           for c in cols})
+        df["label"] = [1] * n + [0] * n
+
+        results = {r["feature"]: r for r in mann_whitney_by_outcome(df) if "p_value" in r}
+        self.assertTrue(results, "no features were tested")
+        for feature, r in results.items():
+            self.assertGreater(
+                r["median_outbreak"], r["median_no_outbreak"],
+                f"{feature}: test fixture is wrong, outbreak should be larger")
+            self.assertGreater(
+                r["rank_biserial_r"], 0,
+                f"{feature}: outbreak values are larger, so rank_biserial_r must be "
+                f"POSITIVE, got {r['rank_biserial_r']}")
 
 
 class TestClassicalResults(unittest.TestCase):

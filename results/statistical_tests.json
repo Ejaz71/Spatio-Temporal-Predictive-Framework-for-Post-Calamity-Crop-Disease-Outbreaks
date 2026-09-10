@@ -196,6 +196,20 @@
       "shapiro_w": 0.9765,
       "shapiro_p": 0.02808,
       "distribution_note": "approximately symmetric"
+    },
+    {
+      "feature": "water_extent_frac",
+      "n": 120,
+      "missing_pct": 4.0,
+      "mean": 0.0866,
+      "sd": 0.0833,
+      "median": 0.052,
+      "iqr_low": 0.0296,
+      "iqr_high": 0.1207,
+      "skewness": 1.991,
+      "shapiro_w": 0.7818,
+      "shapiro_p": 0.0,
+      "distribution_note": "right-skewed"
     }
   ],
   "missingness_mechanism_check": {
@@ -237,7 +251,7 @@
       "median_no_outbreak": 23.99,
       "U": 698.0,
       "p_value": 1.0246284616480547e-08,
-      "rank_biserial_r": 0.6159,
+      "rank_biserial_r": -0.6159,
       "fdr_q_value": 0.0,
       "effect_size_note": "very large"
     },
@@ -249,8 +263,8 @@
       "median_no_outbreak": 0.6012,
       "U": 925.5,
       "p_value": 5.071257396228417e-06,
-      "rank_biserial_r": 0.4906,
-      "fdr_q_value": 3.5e-05,
+      "rank_biserial_r": -0.4906,
+      "fdr_q_value": 3.8e-05,
       "effect_size_note": "large"
     },
     {
@@ -261,8 +275,8 @@
       "median_no_outbreak": 61.25,
       "U": 965.5,
       "p_value": 1.3184361650533652e-05,
-      "rank_biserial_r": 0.4686,
-      "fdr_q_value": 6.2e-05,
+      "rank_biserial_r": -0.4686,
+      "fdr_q_value": 6.6e-05,
       "effect_size_note": "large"
     },
     {
@@ -273,8 +287,8 @@
       "median_no_outbreak": 0.2061,
       "U": 980.5,
       "p_value": 1.8670497553382026e-05,
-      "rank_biserial_r": 0.4604,
-      "fdr_q_value": 6.5e-05,
+      "rank_biserial_r": -0.4604,
+      "fdr_q_value": 7e-05,
       "effect_size_note": "large"
     },
     {
@@ -285,8 +299,8 @@
       "median_no_outbreak": 2.0,
       "U": 1402.0,
       "p_value": 0.024367305657460585,
-      "rank_biserial_r": 0.2284,
-      "fdr_q_value": 0.068228,
+      "rank_biserial_r": -0.2284,
+      "fdr_q_value": 0.073102,
       "effect_size_note": "medium"
     },
     {
@@ -297,8 +311,20 @@
       "median_no_outbreak": -6.8154,
       "U": 1313.0,
       "p_value": 0.03599538990146825,
-      "rank_biserial_r": 0.2286,
-      "fdr_q_value": 0.083989,
+      "rank_biserial_r": -0.2286,
+      "fdr_q_value": 0.089232,
+      "effect_size_note": "medium"
+    },
+    {
+      "feature": "water_extent_frac",
+      "n_outbreak": 46,
+      "n_no_outbreak": 74,
+      "median_outbreak": 0.0789,
+      "median_no_outbreak": 0.0439,
+      "U": 2072.0,
+      "p_value": 0.04610568108123017,
+      "rank_biserial_r": 0.2174,
+      "fdr_q_value": 0.089232,
       "effect_size_note": "medium"
     },
     {
@@ -309,8 +335,8 @@
       "median_no_outbreak": -14.3056,
       "U": 1303.0,
       "p_value": 0.04759039920410832,
-      "rank_biserial_r": 0.2174,
-      "fdr_q_value": 0.095181,
+      "rank_biserial_r": -0.2174,
+      "fdr_q_value": 0.089232,
       "effect_size_note": "medium"
     },
     {
@@ -321,8 +347,8 @@
       "median_no_outbreak": -0.3855,
       "U": 1593.0,
       "p_value": 0.25255329490967593,
-      "rank_biserial_r": 0.1233,
-      "fdr_q_value": 0.441968,
+      "rank_biserial_r": -0.1233,
+      "fdr_q_value": 0.420922,
       "effect_size_note": "medium"
     },
     {
@@ -333,8 +359,8 @@
       "median_no_outbreak": 1.0637,
       "U": 2007.5,
       "p_value": 0.33066351503569913,
-      "rank_biserial_r": -0.1048,
-      "fdr_q_value": 0.514365,
+      "rank_biserial_r": 0.1048,
+      "fdr_q_value": 0.495995,
       "effect_size_note": "medium"
     },
     {
@@ -345,8 +371,8 @@
       "median_no_outbreak": 58.781,
       "U": 1640.5,
       "p_value": 0.3675352216326462,
-      "rank_biserial_r": 0.0971,
-      "fdr_q_value": 0.514549,
+      "rank_biserial_r": -0.0971,
+      "fdr_q_value": 0.501184,
       "effect_size_note": "small"
     },
     {
@@ -357,8 +383,8 @@
       "median_no_outbreak": 0.3912,
       "U": 1976.0,
       "p_value": 0.41712832789671306,
-      "rank_biserial_r": -0.0875,
-      "fdr_q_value": 0.530891,
+      "rank_biserial_r": 0.0875,
+      "fdr_q_value": 0.52141,
       "effect_size_note": "small"
     },
     {
@@ -369,7 +395,7 @@
       "median_no_outbreak": 19.8746,
       "U": 1880.5,
       "p_value": 0.7470339486535849,
-      "rank_biserial_r": -0.0349,
+      "rank_biserial_r": 0.0349,
       "fdr_q_value": 0.801903,
       "effect_size_note": "small"
     },
@@ -381,7 +407,7 @@
       "median_no_outbreak": 24.756,
       "U": 1767.0,
       "p_value": 0.7999539531785627,
-      "rank_biserial_r": 0.0275,
+      "rank_biserial_r": -0.0275,
       "fdr_q_value": 0.801903,
       "effect_size_note": "small"
     },
@@ -393,7 +419,7 @@
       "median_no_outbreak": 86.4,
       "U": 1767.5,
       "p_value": 0.8019034716986742,
-      "rank_biserial_r": 0.0272,
+      "rank_biserial_r": -0.0272,
       "fdr_q_value": 0.801903,
       "effect_size_note": "small"
     }
@@ -471,6 +497,12 @@
         "n": 72,
         "spearman_rho": -0.1221,
         "p_value": 0.3068269612021192
+      },
+      {
+        "feature": "water_extent_frac",
+        "n": 67,
+        "spearman_rho": -0.1185,
+        "p_value": 0.33941734396880596
       },
       {
         "feature": "sar_vv_db_mean",
@@ -569,6 +601,12 @@
         "n": 72,
         "spearman_rho": -0.0254,
         "p_value": 0.832563797383812
+      },
+      {
+        "feature": "water_extent_frac",
+        "n": 67,
+        "spearman_rho": -0.0174,
+        "p_value": 0.8886165500412284
       }
     ]
   },
@@ -576,14 +614,14 @@
     "threshold": 0.5,
     "n_events": 125,
     "confusion_matrix": {
-      "true_negative": 59,
-      "false_positive": 20,
-      "false_negative": 14,
-      "true_positive": 32
+      "true_negative": 61,
+      "false_positive": 18,
+      "false_negative": 15,
+      "true_positive": 31
     },
-    "precision": 0.6154,
-    "recall": 0.6957,
-    "f1": 0.6531,
-    "reporting_sentence": "At the standard 0.5 threshold on real leave-one-event-out predictions (n=125), RandomForest achieves recall=0.70 (catches 32/46 real outbreaks) and precision=0.62 (20 false alarms among 52 flagged events). We emphasize recall because a missed outbreak (false negative) is more costly than an unnecessary fungicide/bactericide application prompted by a false alarm; precision is reported alongside it so the cost of that trade-off is visible, not hidden behind a single metric."
+    "precision": 0.6327,
+    "recall": 0.6739,
+    "f1": 0.6526,
+    "reporting_sentence": "At the standard 0.5 threshold on real leave-one-event-out predictions (n=125), RandomForest achieves recall=0.67 (catches 31/46 real outbreaks) and precision=0.63 (18 false alarms among 49 flagged events). We emphasize recall because a missed outbreak (false negative) is more costly than an unnecessary fungicide/bactericide application prompted by a false alarm; precision is reported alongside it so the cost of that trade-off is visible, not hidden behind a single metric."
   }
 }

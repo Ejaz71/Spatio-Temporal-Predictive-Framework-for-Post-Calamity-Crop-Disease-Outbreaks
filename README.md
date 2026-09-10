@@ -58,12 +58,12 @@ on three cross-validation schemes
 
 | Model | Split | OOF AUPRC | OOF ROC-AUC |
 |---|---|---|---|
-| **RandomForest** | **grouped-by-district** | **0.762** | **0.815** |
-| RandomForest | leave-one-event-out | 0.784 | 0.846 |
-| RandomForest | leave-one-year-out | 0.317 | 0.430 |
-| XGBoost | grouped-by-district | 0.718 | 0.814 |
-| XGBoost | leave-one-event-out | 0.766 | 0.848 |
-| XGBoost | leave-one-year-out | 0.315 | 0.406 |
+| **RandomForest** | **grouped-by-district** | **0.724** | **0.800** |
+| RandomForest | leave-one-event-out | 0.778 | 0.839 |
+| RandomForest | leave-one-year-out | 0.318 | 0.432 |
+| XGBoost | grouped-by-district | 0.720 | 0.815 |
+| XGBoost | leave-one-event-out | 0.739 | 0.816 |
+| XGBoost | leave-one-year-out | 0.310 | 0.404 |
 
 (Random-guess AUPRC at this class balance — 46/125 positive — is ~0.368.)
 
@@ -96,7 +96,7 @@ Two independent significance tests, both including zero:
 
 **RandomForest remains the primary result**, per the decision rule fixed in advance.
 Notably, the gap *widened* when the dataset grew from 77 to 125 events — RandomForest
-improved (0.692 → 0.762) while the fusion model did not (0.551 → 0.520). This
+improved (0.692 → 0.724) while the fusion model did not (0.551 → 0.520). This
 pre-empts the obvious objection: the neural model was not simply starved of data.
 This is reported as a real negative finding reached after a genuine, methodologically
 hardened improvement attempt.
@@ -105,13 +105,37 @@ hardened improvement attempt.
 
 | Feature set | RandomForest AUPRC | XGBoost AUPRC |
 |---|---|---|
-| Remote sensing only (5 features) | 0.412 | 0.399 |
+| Remote sensing only (6 features) | 0.414 | 0.369 |
 | **Meteorology only (9 features)** | **0.807** | **0.809** |
-| Full (14 features) | 0.762 | 0.718 |
+| Full (15 features) | 0.724 | 0.720 |
 
 Meteorology alone *outperforms* the full model — the remote-sensing features dilute
 rather than add signal at this sample size. This replicated and strengthened when the
 dataset grew.
+
+#### We tested the obvious objection, and it did not hold
+
+The natural rebuttal to "remote sensing doesn't help" is that the *representation* was
+too crude: `sar_vv_db_mean` is a mean over a ~13 km box, and a box mean cannot express
+partial surface water at all (open water sits below about −15 dB, while the observed
+box means cluster near −7 dB, so any water signal is averaged away). The proposal had
+specified SAR flood detection; only mean backscatter was ever implemented.
+
+So we implemented it properly — `water_extent_frac`, the *fraction* of pixels below the
+open-water backscatter threshold, extracted for all 120 events with Sentinel-1 coverage
+— and re-ran the ablation. It measurably is not redundant with the existing SAR columns
+(strongest rank correlation with any existing feature is ρ = −0.548 against
+`sar_vh_db_mean`), so it does carry information the mean discarded.
+
+**It made no difference to outbreak prediction.** Remote-sensing-only AUPRC moved
+0.412 → 0.414 for RandomForest and 0.399 → 0.369 for XGBoost; full-model performance
+changed by −0.004 ± 0.013 per fold, against fold-to-fold variability of 0.28 — i.e.
+indistinguishable from zero in either direction. The feature was kept in the reported
+feature set rather than removed, so that this negative result is a test of the best
+SAR representation available to us and not of a straw man.
+
+This is the difference between "remote sensing didn't help" and "remote sensing didn't
+help, and we checked that this wasn't just a representation artifact."
 
 ### Feature attribution
 
@@ -121,7 +145,17 @@ ablation above, and permutation importance on the fusion model — all agree tha
 (RandomForest): `precip_max_mm` (0.087), `precip_mean_mm` (0.045), `rh_max_pct`
 (0.037), `precip_sum_mm` (0.035), `temp_mean_c` (0.027). The strongest single test:
 `precip_max_mm` differs between outbreak and non-outbreak events at
-**p = 1.0 × 10⁻⁸** (FDR-corrected q < 0.0001, rank-biserial r = 0.616, "very large").
+**p = 1.0 × 10⁻⁸** (FDR-corrected q < 0.0001, rank-biserial r = −0.616, "very large").
+
+The direction is worth stating explicitly, because it is the opposite of the intuition
+that "more rain means more disease": **outbreak events have roughly half the peak
+rainfall of non-outbreak events** (median 12.6 mm vs 24.0 mm). The same inverse
+relationship holds for severity among the rice-blast events (`precip_max_mm` vs leaf
+blast severity, Spearman ρ = −0.579, p = 1.0 × 10⁻⁷). Occurrence and severity agree.
+This is consistent with blast epidemiology: the fungus needs leaf wetness to infect,
+but heavy rain physically washes conidia off the leaf surface, and every observation
+window here is the Dec–Mar dry season, when the disease is driven by dew and irrigation
+rather than rainfall.
 
 This differs from what the earlier (fabricated) version of this project claimed — it
 had reported SAR backscatter as the strongest predictor.

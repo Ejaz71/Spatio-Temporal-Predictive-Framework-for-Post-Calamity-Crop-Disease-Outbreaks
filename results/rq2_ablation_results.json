@@ -3,40 +3,41 @@
   "n_positive": 46,
   "RandomForest": {
     "remote_sensing_only": {
-      "n_features": 5,
+      "n_features": 6,
       "feature_columns": [
         "sar_vv_db_mean",
         "sar_vh_db_mean",
         "ndvi_mean",
         "ndwi_mean",
-        "lst_celsius_mean"
+        "lst_celsius_mean",
+        "water_extent_frac"
       ],
       "grouped_by_district": {
         "n_splits": 5,
         "fold_metrics_mean_std": {
           "auprc": [
-            0.48954605286628433,
-            0.1705768858475864
+            0.4843863329485278,
+            0.17424235961581716
           ],
           "f1": [
-            0.4337352332237242,
-            0.1813038047748009
+            0.40840207936721595,
+            0.12998632186313722
           ],
           "roc_auc": [
-            0.552941835941836,
-            0.11965153663687096
+            0.5375416805416805,
+            0.12009761374012191
           ],
           "recall": [
-            0.4442424242424242,
-            0.1728000909770872
+            0.4502020202020202,
+            0.11423952161644038
           ],
           "brier": [
-            0.26029889240657506,
-            0.030424906414240397
+            0.2650780895005488,
+            0.034605084793871574
           ]
         },
-        "oof_auprc": 0.4116188879818469,
-        "oof_roc_auc": 0.546505228398459
+        "oof_auprc": 0.4138013296928488,
+        "oof_roc_auc": 0.5244909190974133
       },
       "leave_one_event_out": {
         "fold_metrics_mean_std": {
@@ -45,24 +46,24 @@
             NaN
           ],
           "f1": [
-            0.176,
-            0.3808201675331808
+            0.184,
+            0.3874841932259948
           ],
           "roc_auc": [
             NaN,
             NaN
           ],
           "recall": [
-            0.176,
-            0.3808201675331808
+            0.184,
+            0.3874841932259948
           ],
           "brier": [
-            0.2366025681070759,
-            0.17149188987769057
+            0.2409265035238363,
+            0.15890659031954088
           ]
         },
-        "oof_auprc": 0.49308390248115985,
-        "oof_roc_auc": 0.6381397908640616
+        "oof_auprc": 0.5011820064462106,
+        "oof_roc_auc": 0.6150247660979637
       }
     },
     "meteorology_only": {
@@ -133,7 +134,7 @@
       }
     },
     "full_model": {
-      "n_features": 14,
+      "n_features": 15,
       "feature_columns": [
         "precip_mean_mm",
         "precip_max_mm",
@@ -148,34 +149,35 @@
         "sar_vh_db_mean",
         "ndvi_mean",
         "ndwi_mean",
-        "lst_celsius_mean"
+        "lst_celsius_mean",
+        "water_extent_frac"
       ],
       "grouped_by_district": {
         "n_splits": 5,
         "fold_metrics_mean_std": {
           "auprc": [
-            0.7038706220497665,
-            0.2545081020317514
+            0.699422007329902,
+            0.2568979751846329
           ],
           "f1": [
-            0.6442028985507247,
-            0.1872371783983757
+            0.6187878787878788,
+            0.226233219516141
           ],
           "roc_auc": [
-            0.7906724386724387,
-            0.12984671413084004
+            0.7834669774669776,
+            0.1342316659615041
           ],
           "recall": [
-            0.71,
-            0.17562586496425986
+            0.6695959595959596,
+            0.255842135796936
           ],
           "brier": [
-            0.175766345842673,
-            0.03999124886076439
+            0.18248199549857258,
+            0.03510887765759934
           ]
         },
-        "oof_auprc": 0.7620776232855305,
-        "oof_roc_auc": 0.8153549807374794
+        "oof_auprc": 0.7235176780006581,
+        "oof_roc_auc": 0.7996697853604843
       },
       "leave_one_event_out": {
         "fold_metrics_mean_std": {
@@ -184,63 +186,64 @@
             NaN
           ],
           "f1": [
-            0.256,
-            0.4364218143035474
+            0.248,
+            0.4318518264405049
           ],
           "roc_auc": [
             NaN,
             NaN
           ],
           "recall": [
-            0.256,
-            0.4364218143035474
+            0.248,
+            0.4318518264405049
           ],
           "brier": [
-            0.162125550931837,
-            0.17338447962342401
+            0.163703984252854,
+            0.17243471320632342
           ]
         },
-        "oof_auprc": 0.7835662473785729,
-        "oof_roc_auc": 0.8458998348926803
+        "oof_auprc": 0.7782404367160948,
+        "oof_roc_auc": 0.8390203632361035
       }
     }
   },
   "XGBoost": {
     "remote_sensing_only": {
-      "n_features": 5,
+      "n_features": 6,
       "feature_columns": [
         "sar_vv_db_mean",
         "sar_vh_db_mean",
         "ndvi_mean",
         "ndwi_mean",
-        "lst_celsius_mean"
+        "lst_celsius_mean",
+        "water_extent_frac"
       ],
       "grouped_by_district": {
         "n_splits": 5,
         "fold_metrics_mean_std": {
           "auprc": [
-            0.42518561037914093,
-            0.1330947692411316
+            0.42636380529511053,
+            0.14938260467195127
           ],
           "f1": [
-            0.3680988292752999,
-            0.16021594514504017
+            0.36109385783298825,
+            0.16675866233248818
           ],
           "roc_auc": [
-            0.5434321234321234,
-            0.06715136997901881
+            0.5083766788766788,
+            0.11072956798603625
           ],
           "recall": [
-            0.36717171717171715,
-            0.1463392008936499
+            0.3841414141414141,
+            0.16582388692018724
           ],
           "brier": [
-            0.30788576006889345,
-            0.05044946280240059
+            0.3301260083913803,
+            0.07094911231228611
           ]
         },
-        "oof_auprc": 0.39882517780048904,
-        "oof_roc_auc": 0.5423775454045129
+        "oof_auprc": 0.3687227972434077,
+        "oof_roc_auc": 0.4895432030820033
       },
       "leave_one_event_out": {
         "fold_metrics_mean_std": {
@@ -261,12 +264,12 @@
             0.36660605559646714
           ],
           "brier": [
-            0.27152907464513554,
-            0.3071577084061789
+            0.2739339305947069,
+            0.3079846517193633
           ]
         },
-        "oof_auprc": 0.44965666825975886,
-        "oof_roc_auc": 0.5864061640066043
+        "oof_auprc": 0.4475491562158397,
+        "oof_roc_auc": 0.5831040176114475
       }
     },
     "meteorology_only": {
@@ -337,7 +340,7 @@
       }
     },
     "full_model": {
-      "n_features": 14,
+      "n_features": 15,
       "feature_columns": [
         "precip_mean_mm",
         "precip_max_mm",
@@ -352,34 +355,35 @@
         "sar_vh_db_mean",
         "ndvi_mean",
         "ndwi_mean",
-        "lst_celsius_mean"
+        "lst_celsius_mean",
+        "water_extent_frac"
       ],
       "grouped_by_district": {
         "n_splits": 5,
         "fold_metrics_mean_std": {
           "auprc": [
-            0.7157346114220118,
-            0.25589077323168913
+            0.6811062669298229,
+            0.23978502211822064
           ],
           "f1": [
-            0.5999498824562762,
-            0.2473433928942219
+            0.6263167800925238,
+            0.24817506092945407
           ],
           "roc_auc": [
-            0.8108308358308358,
-            0.1292379172394437
+            0.8083819513819513,
+            0.11124609695484193
           ],
           "recall": [
-            0.594040404040404,
-            0.25712862755646343
+            0.6495959595959595,
+            0.24867456008401065
           ],
           "brier": [
-            0.17752056270837785,
-            0.05348523029642493
+            0.17364906370639802,
+            0.05836508858870998
           ]
         },
-        "oof_auprc": 0.7177031444404011,
-        "oof_roc_auc": 0.8139790864061641
+        "oof_auprc": 0.7194656515632721,
+        "oof_roc_auc": 0.8150798018712163
       },
       "leave_one_event_out": {
         "fold_metrics_mean_std": {
@@ -388,34 +392,34 @@
             NaN
           ],
           "f1": [
-            0.264,
-            0.4407992740465892
+            0.248,
+            0.43185182644050485
           ],
           "roc_auc": [
             NaN,
             NaN
           ],
           "recall": [
-            0.264,
-            0.4407992740465892
+            0.248,
+            0.43185182644050485
           ],
           "brier": [
-            0.16685971030616747,
-            0.27329717240961005
+            0.18156830089788856,
+            0.2830383025060543
           ]
         },
-        "oof_auprc": 0.7659968906446822,
-        "oof_roc_auc": 0.8475509080902587
+        "oof_auprc": 0.7384973784267956,
+        "oof_roc_auc": 0.8161805173362686
       }
     }
   },
   "rq2_headline_comparison": {
-    "remote_sensing_only_auprc": 0.4116188879818469,
+    "remote_sensing_only_auprc": 0.4138013296928488,
     "meteorology_only_auprc": 0.8066428417351056,
-    "full_model_auprc": 0.7620776232855305,
+    "full_model_auprc": 0.7235176780006581,
     "best_single_modality": "meteorology_only",
     "best_single_modality_auprc": 0.8066428417351056,
-    "full_model_gain_over_best_single_modality": -0.04456521844957506,
-    "interpretation": "RandomForest grouped-by-district OOF AUPRC: remote-sensing-only=0.412, meteorology-only=0.807, full (both)=0.762. The full model does not beat the best single modality (meteorology_only) by -0.045 AUPRC. This is a point estimate on n=125 events without a paired significance test across ablations (unlike the RandomForest-vs-fusion comparison, which does have one) \u2014 report the gap as descriptive evidence for which modality carries more signal, not as a statistically confirmed difference."
+    "full_model_gain_over_best_single_modality": -0.08312516373444745,
+    "interpretation": "RandomForest grouped-by-district OOF AUPRC: remote-sensing-only=0.414, meteorology-only=0.807, full (both)=0.724. The full model does not beat the best single modality (meteorology_only) by -0.083 AUPRC. This is a point estimate on n=125 events without a paired significance test across ablations (unlike the RandomForest-vs-fusion comparison, which does have one) \u2014 report the gap as descriptive evidence for which modality carries more signal, not as a statistically confirmed difference."
   }
 }

@@ -162,7 +162,11 @@ def attention_weight_analysis(attn_weights, daily_sequences_raw, disease):
         if len(vals_a) < 2 or len(vals_b) < 2:
             return {"note": "insufficient data"}
         u, p = stats.mannwhitneyu(vals_a, vals_b, alternative="two-sided")
-        r_rb = 1 - (2 * u) / (len(vals_a) * len(vals_b))
+        # POSITIVE r = group A (rice) has the LARGER values. Written as
+        # 2U/(n_a*n_b) - 1; the inverted form `1 - 2U/(n_a*n_b)` was a bug fixed on
+        # 2026-09-09 — same magnitude, backwards direction. See the matching note in
+        # analysis/statistical_tests.py.
+        r_rb = (2 * u) / (len(vals_a) * len(vals_b)) - 1
         return {"n_a": int(len(vals_a)), "n_b": int(len(vals_b)), "median_a": float(np.median(vals_a)),
                 "median_b": float(np.median(vals_b)), "U": float(u), "p_value": float(p),
                 "rank_biserial_r": round(float(r_rb), 4)}

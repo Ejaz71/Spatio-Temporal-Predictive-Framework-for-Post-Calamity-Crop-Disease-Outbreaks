@@ -28,6 +28,7 @@ FEATURE_COLUMNS = [
     "precip_mean_mm", "precip_max_mm", "precip_sum_mm", "precip_anomaly_mm",
     "rh_mean_pct", "rh_max_pct", "temp_mean_c", "vpd_mean_kpa", "wet_persistence_max_days",
     "sar_vv_db_mean", "sar_vh_db_mean", "ndvi_mean", "ndwi_mean", "lst_celsius_mean",
+    "water_extent_frac",
 ]
 OUT_PATH = "results/checkpoints/random_forest_final.joblib"
 FEATURE_RANGES_OUT = "results/feature_ranges.json"

@@ -143,7 +143,9 @@ def outcome_association(df, subset_name):
                          "note": f"insufficient data (n_pos={len(a)}, n_neg={len(b)})"})
             continue
         u, p = stats.mannwhitneyu(a, b, alternative="two-sided")
-        r_rb = 1 - (2 * u) / (len(a) * len(b))
+        # POSITIVE r = feature is HIGHER in outbreak events. See the matching comment in
+        # analysis/statistical_tests.py for why this is written this way round.
+        r_rb = (2 * u) / (len(a) * len(b)) - 1
         rows.append({
             "feature": col, "subset": subset_name,
             "n_outbreak": int(len(a)), "n_no_outbreak": int(len(b)),

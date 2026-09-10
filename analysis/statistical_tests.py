@@ -4,13 +4,13 @@ Phase A statistical rigor layer, per the CSE791 Week 6 methodology checklist
 held to a "no p-value without an effect size" discipline). Complements, rather than
 replaces, the SHAP-based feature attribution in classical_baselines.py:
 
-1. Descriptive statistics (mean/SD or median/IQR depending on skew) for all 14 real
+1. Descriptive statistics (mean/SD or median/IQR depending on skew) for all 15 real
    features, by outbreak label.
 2. Missingness-mechanism check: is SAR/Landsat scene unavailability random, or
    associated with label/year? (Fisher's exact, small expected cell counts.)
 3. Mann-Whitney U (not t-test — features are skewed, confirmed via Shapiro-Wilk below)
    + rank-biserial effect size, per feature, outbreak vs. non-outbreak. Benjamini-
-   Hochberg FDR correction applied across the 14 tests (don't run 14 tests and report
+   Hochberg FDR correction applied across the 15 tests (don't run 15 tests and report
    whichever has the smallest p-value).
 4. Spearman correlation, each feature vs. rice blast severity % (the 24 rice-blast
    rows that carry a continuous severity value) — precursor to the severity
@@ -39,6 +39,7 @@ FEATURE_COLUMNS = [
     "precip_mean_mm", "precip_max_mm", "precip_sum_mm", "precip_anomaly_mm",
     "rh_mean_pct", "rh_max_pct", "temp_mean_c", "vpd_mean_kpa", "wet_persistence_max_days",
     "sar_vv_db_mean", "sar_vh_db_mean", "ndvi_mean", "ndwi_mean", "lst_celsius_mean",
+    "water_extent_frac",
 ]
 SEVERITY_COLUMNS = ["leaf_blast_severity_pct", "neck_blast_severity_pct"]
 
@@ -126,8 +127,14 @@ def mann_whitney_by_outcome(df):
             rows.append({"feature": col, "note": "insufficient non-missing data for this test"})
             continue
         u_stat, p_val = stats.mannwhitneyu(a, b, alternative="two-sided")
-        # rank-biserial correlation: r = 1 - 2U / (n1 * n2)
-        r_rb = 1 - (2 * u_stat) / (len(a) * len(b))
+        # Rank-biserial correlation: r = 2U/(n1*n2) - 1, where U is scipy's U1 (the
+        # count of outbreak-vs-no-outbreak pairs in which the OUTBREAK value is larger).
+        # Sign convention: POSITIVE r means the feature is HIGHER in outbreak events.
+        # (This was previously written as 1 - 2U/(n1*n2), which is the same magnitude
+        # with the sign flipped — it reported a negative r whenever outbreak events had
+        # the LARGER values, inverting the direction of every effect in this table.
+        # Fixed 2026-09-09; p-values and magnitudes were never affected.)
+        r_rb = (2 * u_stat) / (len(a) * len(b)) - 1
         rows.append({
             "feature": col, "n_outbreak": int(len(a)), "n_no_outbreak": int(len(b)),
             "median_outbreak": round(float(np.median(a)), 4), "median_no_outbreak": round(float(np.median(b)), 4),
