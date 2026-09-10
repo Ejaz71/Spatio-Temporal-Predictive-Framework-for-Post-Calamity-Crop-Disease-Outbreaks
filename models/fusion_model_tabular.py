@@ -24,6 +24,8 @@ SPATIAL_FEATURES = ["sar_vv_db_mean", "sar_vh_db_mean", "ndvi_mean", "ndwi_mean"
 TEMPORAL_FEATURES = [
     "precip_mean_mm", "precip_max_mm", "precip_sum_mm", "precip_anomaly_mm",
     "rh_mean_pct", "rh_max_pct", "temp_mean_c", "vpd_mean_kpa", "wet_persistence_max_days",
+    "monsoon_precip_sum_mm", "monsoon_precip_anomaly_mm", "monsoon_rh_mean_pct",
+    "monsoon_temp_mean_c", "monsoon_vpd_mean_kpa", "monsoon_wet_persistence_max_days",
 ]
 DAILY_SEQUENCE_FEATURES = ["precip_mm", "precip_anomaly_mm", "temp_c", "rh_pct", "vpd_kpa", "wet_persistence_days"]
 

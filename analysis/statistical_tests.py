@@ -4,13 +4,13 @@ Phase A statistical rigor layer, per the CSE791 Week 6 methodology checklist
 held to a "no p-value without an effect size" discipline). Complements, rather than
 replaces, the SHAP-based feature attribution in classical_baselines.py:
 
-1. Descriptive statistics (mean/SD or median/IQR depending on skew) for all 15 real
+1. Descriptive statistics (mean/SD or median/IQR depending on skew) for all 21 real
    features, by outbreak label.
 2. Missingness-mechanism check: is SAR/Landsat scene unavailability random, or
    associated with label/year? (Fisher's exact, small expected cell counts.)
 3. Mann-Whitney U (not t-test — features are skewed, confirmed via Shapiro-Wilk below)
    + rank-biserial effect size, per feature, outbreak vs. non-outbreak. Benjamini-
-   Hochberg FDR correction applied across the 15 tests (don't run 15 tests and report
+   Hochberg FDR correction applied across the 21 tests (don't run 21 tests and report
    whichever has the smallest p-value).
 4. Spearman correlation, each feature vs. rice blast severity % (the 24 rice-blast
    rows that carry a continuous severity value) — precursor to the severity
@@ -40,6 +40,8 @@ FEATURE_COLUMNS = [
     "rh_mean_pct", "rh_max_pct", "temp_mean_c", "vpd_mean_kpa", "wet_persistence_max_days",
     "sar_vv_db_mean", "sar_vh_db_mean", "ndvi_mean", "ndwi_mean", "lst_celsius_mean",
     "water_extent_frac",
+    "monsoon_precip_sum_mm", "monsoon_precip_anomaly_mm", "monsoon_rh_mean_pct",
+    "monsoon_temp_mean_c", "monsoon_vpd_mean_kpa", "monsoon_wet_persistence_max_days",
 ]
 SEVERITY_COLUMNS = ["leaf_blast_severity_pct", "neck_blast_severity_pct"]
 

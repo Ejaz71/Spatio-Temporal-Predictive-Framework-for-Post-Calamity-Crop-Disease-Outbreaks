@@ -210,6 +210,90 @@
       "shapiro_w": 0.7818,
       "shapiro_p": 0.0,
       "distribution_note": "right-skewed"
+    },
+    {
+      "feature": "monsoon_precip_sum_mm",
+      "n": 125,
+      "missing_pct": 0.0,
+      "mean": 1539.2614,
+      "sd": 509.6077,
+      "median": 1400.05,
+      "iqr_low": 1234.09,
+      "iqr_high": 1814.34,
+      "skewness": 1.73,
+      "shapiro_w": 0.8373,
+      "shapiro_p": 0.0,
+      "distribution_note": "right-skewed"
+    },
+    {
+      "feature": "monsoon_precip_anomaly_mm",
+      "n": 125,
+      "missing_pct": 0.0,
+      "mean": 2.1768,
+      "sd": 2.9527,
+      "median": 1.678,
+      "iqr_low": 0.1167,
+      "iqr_high": 2.8896,
+      "skewness": 1.675,
+      "shapiro_w": 0.8472,
+      "shapiro_p": 0.0,
+      "distribution_note": "right-skewed"
+    },
+    {
+      "feature": "monsoon_rh_mean_pct",
+      "n": 125,
+      "missing_pct": 0.0,
+      "mean": 87.2792,
+      "sd": 1.6687,
+      "median": 87.2424,
+      "iqr_low": 86.0252,
+      "iqr_high": 88.5001,
+      "skewness": 0.038,
+      "shapiro_w": 0.9791,
+      "shapiro_p": 0.050069,
+      "distribution_note": "approximately symmetric"
+    },
+    {
+      "feature": "monsoon_temp_mean_c",
+      "n": 125,
+      "missing_pct": 0.0,
+      "mean": 28.6355,
+      "sd": 0.2865,
+      "median": 28.6413,
+      "iqr_low": 28.4311,
+      "iqr_high": 28.847,
+      "skewness": -0.301,
+      "shapiro_w": 0.9854,
+      "shapiro_p": 0.200034,
+      "distribution_note": "approximately symmetric"
+    },
+    {
+      "feature": "monsoon_vpd_mean_kpa",
+      "n": 125,
+      "missing_pct": 0.0,
+      "mean": 0.526,
+      "sd": 0.0836,
+      "median": 0.5276,
+      "iqr_low": 0.463,
+      "iqr_high": 0.5868,
+      "skewness": 0.073,
+      "shapiro_w": 0.9784,
+      "shapiro_p": 0.04311,
+      "distribution_note": "approximately symmetric"
+    },
+    {
+      "feature": "monsoon_wet_persistence_max_days",
+      "n": 125,
+      "missing_pct": 0.0,
+      "mean": 91.392,
+      "sd": 14.6414,
+      "median": 94.0,
+      "iqr_low": 80.0,
+      "iqr_high": 101.0,
+      "skewness": -0.373,
+      "shapiro_w": 0.9559,
+      "shapiro_p": 0.000445,
+      "distribution_note": "approximately symmetric"
     }
   ],
   "missingness_mechanism_check": {
@@ -264,7 +348,7 @@
       "U": 925.5,
       "p_value": 5.071257396228417e-06,
       "rank_biserial_r": -0.4906,
-      "fdr_q_value": 3.8e-05,
+      "fdr_q_value": 5.3e-05,
       "effect_size_note": "large"
     },
     {
@@ -276,7 +360,7 @@
       "U": 965.5,
       "p_value": 1.3184361650533652e-05,
       "rank_biserial_r": -0.4686,
-      "fdr_q_value": 6.6e-05,
+      "fdr_q_value": 9.2e-05,
       "effect_size_note": "large"
     },
     {
@@ -288,7 +372,7 @@
       "U": 980.5,
       "p_value": 1.8670497553382026e-05,
       "rank_biserial_r": -0.4604,
-      "fdr_q_value": 7e-05,
+      "fdr_q_value": 9.8e-05,
       "effect_size_note": "large"
     },
     {
@@ -300,7 +384,7 @@
       "U": 1402.0,
       "p_value": 0.024367305657460585,
       "rank_biserial_r": -0.2284,
-      "fdr_q_value": 0.073102,
+      "fdr_q_value": 0.102343,
       "effect_size_note": "medium"
     },
     {
@@ -312,7 +396,7 @@
       "U": 1313.0,
       "p_value": 0.03599538990146825,
       "rank_biserial_r": -0.2286,
-      "fdr_q_value": 0.089232,
+      "fdr_q_value": 0.124925,
       "effect_size_note": "medium"
     },
     {
@@ -324,7 +408,7 @@
       "U": 2072.0,
       "p_value": 0.04610568108123017,
       "rank_biserial_r": 0.2174,
-      "fdr_q_value": 0.089232,
+      "fdr_q_value": 0.124925,
       "effect_size_note": "medium"
     },
     {
@@ -336,7 +420,43 @@
       "U": 1303.0,
       "p_value": 0.04759039920410832,
       "rank_biserial_r": -0.2174,
-      "fdr_q_value": 0.089232,
+      "fdr_q_value": 0.124925,
+      "effect_size_note": "medium"
+    },
+    {
+      "feature": "monsoon_rh_mean_pct",
+      "n_outbreak": 46,
+      "n_no_outbreak": 79,
+      "median_outbreak": 86.957,
+      "median_no_outbreak": 87.3623,
+      "U": 1548.5,
+      "p_value": 0.17000676990518904,
+      "rank_biserial_r": -0.1478,
+      "fdr_q_value": 0.396682,
+      "effect_size_note": "medium"
+    },
+    {
+      "feature": "monsoon_temp_mean_c",
+      "n_outbreak": 46,
+      "n_no_outbreak": 79,
+      "median_outbreak": 28.6989,
+      "median_no_outbreak": 28.6077,
+      "U": 2068.5,
+      "p_value": 0.19874313623782336,
+      "rank_biserial_r": 0.1384,
+      "fdr_q_value": 0.417361,
+      "effect_size_note": "medium"
+    },
+    {
+      "feature": "monsoon_vpd_mean_kpa",
+      "n_outbreak": 46,
+      "n_no_outbreak": 79,
+      "median_outbreak": 0.5397,
+      "median_no_outbreak": 0.5207,
+      "U": 2057.5,
+      "p_value": 0.21913939417758765,
+      "rank_biserial_r": 0.1324,
+      "fdr_q_value": 0.418357,
       "effect_size_note": "medium"
     },
     {
@@ -348,7 +468,19 @@
       "U": 1593.0,
       "p_value": 0.25255329490967593,
       "rank_biserial_r": -0.1233,
-      "fdr_q_value": 0.420922,
+      "fdr_q_value": 0.441968,
+      "effect_size_note": "medium"
+    },
+    {
+      "feature": "monsoon_precip_anomaly_mm",
+      "n_outbreak": 46,
+      "n_no_outbreak": 79,
+      "median_outbreak": 2.0881,
+      "median_no_outbreak": 1.3727,
+      "U": 2019.5,
+      "p_value": 0.30101620877493074,
+      "rank_biserial_r": 0.1114,
+      "fdr_q_value": 0.486257,
       "effect_size_note": "medium"
     },
     {
@@ -372,7 +504,19 @@
       "U": 1640.5,
       "p_value": 0.3675352216326462,
       "rank_biserial_r": -0.0971,
-      "fdr_q_value": 0.501184,
+      "fdr_q_value": 0.514549,
+      "effect_size_note": "small"
+    },
+    {
+      "feature": "monsoon_wet_persistence_max_days",
+      "n_outbreak": 46,
+      "n_no_outbreak": 79,
+      "median_outbreak": 92.0,
+      "median_no_outbreak": 95.0,
+      "U": 1658.0,
+      "p_value": 0.4168841793655773,
+      "rank_biserial_r": -0.0875,
+      "fdr_q_value": 0.515276,
       "effect_size_note": "small"
     },
     {
@@ -384,7 +528,7 @@
       "U": 1976.0,
       "p_value": 0.41712832789671306,
       "rank_biserial_r": 0.0875,
-      "fdr_q_value": 0.52141,
+      "fdr_q_value": 0.515276,
       "effect_size_note": "small"
     },
     {
@@ -396,7 +540,7 @@
       "U": 1880.5,
       "p_value": 0.7470339486535849,
       "rank_biserial_r": 0.0349,
-      "fdr_q_value": 0.801903,
+      "fdr_q_value": 0.841999,
       "effect_size_note": "small"
     },
     {
@@ -408,7 +552,7 @@
       "U": 1767.0,
       "p_value": 0.7999539531785627,
       "rank_biserial_r": -0.0275,
-      "fdr_q_value": 0.801903,
+      "fdr_q_value": 0.841999,
       "effect_size_note": "small"
     },
     {
@@ -420,17 +564,53 @@
       "U": 1767.5,
       "p_value": 0.8019034716986742,
       "rank_biserial_r": -0.0272,
-      "fdr_q_value": 0.801903,
+      "fdr_q_value": 0.841999,
+      "effect_size_note": "small"
+    },
+    {
+      "feature": "monsoon_precip_sum_mm",
+      "n_outbreak": 46,
+      "n_no_outbreak": 79,
+      "median_outbreak": 1415.11,
+      "median_no_outbreak": 1400.05,
+      "U": 1819.5,
+      "p_value": 0.9918296735574729,
+      "rank_biserial_r": 0.0014,
+      "fdr_q_value": 0.99183,
       "effect_size_note": "small"
     }
   ],
   "severity_correlations": {
     "leaf_blast_severity_pct": [
       {
+        "feature": "monsoon_temp_mean_c",
+        "n": 72,
+        "spearman_rho": 0.586,
+        "p_value": 6.386712884661185e-08
+      },
+      {
         "feature": "precip_max_mm",
         "n": 72,
         "spearman_rho": -0.5785,
         "p_value": 1.0219807255354656e-07
+      },
+      {
+        "feature": "monsoon_rh_mean_pct",
+        "n": 72,
+        "spearman_rho": -0.5604,
+        "p_value": 3.0638856154112875e-07
+      },
+      {
+        "feature": "monsoon_wet_persistence_max_days",
+        "n": 72,
+        "spearman_rho": -0.5416,
+        "p_value": 8.988630509878432e-07
+      },
+      {
+        "feature": "monsoon_vpd_mean_kpa",
+        "n": 72,
+        "spearman_rho": 0.5414,
+        "p_value": 9.089681076014252e-07
       },
       {
         "feature": "wet_persistence_max_days",
@@ -457,6 +637,12 @@
         "p_value": 4.225191570521258e-05
       },
       {
+        "feature": "monsoon_precip_anomaly_mm",
+        "n": 72,
+        "spearman_rho": -0.4417,
+        "p_value": 0.00010282145428722727
+      },
+      {
         "feature": "rh_mean_pct",
         "n": 72,
         "spearman_rho": -0.4194,
@@ -467,6 +653,12 @@
         "n": 72,
         "spearman_rho": -0.3349,
         "p_value": 0.004030869560116593
+      },
+      {
+        "feature": "monsoon_precip_sum_mm",
+        "n": 72,
+        "spearman_rho": -0.3166,
+        "p_value": 0.006740819820912814
       },
       {
         "feature": "vpd_mean_kpa",
@@ -531,6 +723,12 @@
         "p_value": 0.0016468654467562294
       },
       {
+        "feature": "monsoon_temp_mean_c",
+        "n": 72,
+        "spearman_rho": 0.325,
+        "p_value": 0.005341070356316071
+      },
+      {
         "feature": "precip_mean_mm",
         "n": 72,
         "spearman_rho": -0.3201,
@@ -561,6 +759,18 @@
         "p_value": 0.01630896397617089
       },
       {
+        "feature": "monsoon_rh_mean_pct",
+        "n": 72,
+        "spearman_rho": -0.234,
+        "p_value": 0.04792713681328565
+      },
+      {
+        "feature": "monsoon_vpd_mean_kpa",
+        "n": 72,
+        "spearman_rho": 0.2274,
+        "p_value": 0.0547458891705553
+      },
+      {
         "feature": "wet_persistence_max_days",
         "n": 72,
         "spearman_rho": -0.2243,
@@ -579,6 +789,12 @@
         "p_value": 0.23097117213006843
       },
       {
+        "feature": "monsoon_wet_persistence_max_days",
+        "n": 72,
+        "spearman_rho": -0.1202,
+        "p_value": 0.3147114085799262
+      },
+      {
         "feature": "rh_max_pct",
         "n": 72,
         "spearman_rho": -0.1136,
@@ -589,6 +805,18 @@
         "n": 67,
         "spearman_rho": 0.0876,
         "p_value": 0.4809316107644281
+      },
+      {
+        "feature": "monsoon_precip_sum_mm",
+        "n": 72,
+        "spearman_rho": 0.0685,
+        "p_value": 0.5674049434966276
+      },
+      {
+        "feature": "monsoon_precip_anomaly_mm",
+        "n": 72,
+        "spearman_rho": -0.0531,
+        "p_value": 0.6579885124711115
       },
       {
         "feature": "ndvi_mean",
@@ -614,14 +842,14 @@
     "threshold": 0.5,
     "n_events": 125,
     "confusion_matrix": {
-      "true_negative": 61,
-      "false_positive": 18,
-      "false_negative": 15,
-      "true_positive": 31
+      "true_negative": 63,
+      "false_positive": 16,
+      "false_negative": 16,
+      "true_positive": 30
     },
-    "precision": 0.6327,
-    "recall": 0.6739,
-    "f1": 0.6526,
-    "reporting_sentence": "At the standard 0.5 threshold on real leave-one-event-out predictions (n=125), RandomForest achieves recall=0.67 (catches 31/46 real outbreaks) and precision=0.63 (18 false alarms among 49 flagged events). We emphasize recall because a missed outbreak (false negative) is more costly than an unnecessary fungicide/bactericide application prompted by a false alarm; precision is reported alongside it so the cost of that trade-off is visible, not hidden behind a single metric."
+    "precision": 0.6522,
+    "recall": 0.6522,
+    "f1": 0.6522,
+    "reporting_sentence": "At the standard 0.5 threshold on real leave-one-event-out predictions (n=125), RandomForest achieves recall=0.65 (catches 30/46 real outbreaks) and precision=0.65 (16 false alarms among 46 flagged events). We emphasize recall because a missed outbreak (false negative) is more costly than an unnecessary fungicide/bactericide application prompted by a false alarm; precision is reported alongside it so the cost of that trade-off is visible, not hidden behind a single metric."
   }
 }

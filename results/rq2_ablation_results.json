@@ -67,73 +67,6 @@
       }
     },
     "meteorology_only": {
-      "n_features": 9,
-      "feature_columns": [
-        "precip_mean_mm",
-        "precip_max_mm",
-        "precip_sum_mm",
-        "precip_anomaly_mm",
-        "rh_mean_pct",
-        "rh_max_pct",
-        "temp_mean_c",
-        "vpd_mean_kpa",
-        "wet_persistence_max_days"
-      ],
-      "grouped_by_district": {
-        "n_splits": 5,
-        "fold_metrics_mean_std": {
-          "auprc": [
-            0.7436894625555617,
-            0.22420729605619064
-          ],
-          "f1": [
-            0.654474350126524,
-            0.1686571530725405
-          ],
-          "roc_auc": [
-            0.8313769841269842,
-            0.1134480847746116
-          ],
-          "recall": [
-            0.7711111111111111,
-            0.17407249802281013
-          ],
-          "brier": [
-            0.1548170285873373,
-            0.03480286787823451
-          ]
-        },
-        "oof_auprc": 0.8066428417351056,
-        "oof_roc_auc": 0.8585580627407815
-      },
-      "leave_one_event_out": {
-        "fold_metrics_mean_std": {
-          "auprc": [
-            NaN,
-            NaN
-          ],
-          "f1": [
-            0.288,
-            0.45283109433871693
-          ],
-          "roc_auc": [
-            NaN,
-            NaN
-          ],
-          "recall": [
-            0.288,
-            0.45283109433871693
-          ],
-          "brier": [
-            0.1522272986706657,
-            0.1966530036700321
-          ]
-        },
-        "oof_auprc": 0.7819901811922139,
-        "oof_roc_auc": 0.8569069895432031
-      }
-    },
-    "full_model": {
       "n_features": 15,
       "feature_columns": [
         "precip_mean_mm",
@@ -145,6 +78,85 @@
         "temp_mean_c",
         "vpd_mean_kpa",
         "wet_persistence_max_days",
+        "monsoon_precip_sum_mm",
+        "monsoon_precip_anomaly_mm",
+        "monsoon_rh_mean_pct",
+        "monsoon_temp_mean_c",
+        "monsoon_vpd_mean_kpa",
+        "monsoon_wet_persistence_max_days"
+      ],
+      "grouped_by_district": {
+        "n_splits": 5,
+        "fold_metrics_mean_std": {
+          "auprc": [
+            0.731253420145577,
+            0.2295084954625898
+          ],
+          "f1": [
+            0.6332332015810277,
+            0.24371243602337814
+          ],
+          "roc_auc": [
+            0.8138375790875791,
+            0.12167666008154959
+          ],
+          "recall": [
+            0.7044444444444444,
+            0.26521363389716274
+          ],
+          "brier": [
+            0.165363553928667,
+            0.042359112687330024
+          ]
+        },
+        "oof_auprc": 0.7333905913831958,
+        "oof_roc_auc": 0.8310401761144743
+      },
+      "leave_one_event_out": {
+        "fold_metrics_mean_std": {
+          "auprc": [
+            NaN,
+            NaN
+          ],
+          "f1": [
+            0.28,
+            0.4489988864128729
+          ],
+          "roc_auc": [
+            NaN,
+            NaN
+          ],
+          "recall": [
+            0.28,
+            0.4489988864128729
+          ],
+          "brier": [
+            0.14395867183849265,
+            0.19043183042325038
+          ]
+        },
+        "oof_auprc": 0.8114154305141126,
+        "oof_roc_auc": 0.8736929003852505
+      }
+    },
+    "full_model": {
+      "n_features": 21,
+      "feature_columns": [
+        "precip_mean_mm",
+        "precip_max_mm",
+        "precip_sum_mm",
+        "precip_anomaly_mm",
+        "rh_mean_pct",
+        "rh_max_pct",
+        "temp_mean_c",
+        "vpd_mean_kpa",
+        "wet_persistence_max_days",
+        "monsoon_precip_sum_mm",
+        "monsoon_precip_anomaly_mm",
+        "monsoon_rh_mean_pct",
+        "monsoon_temp_mean_c",
+        "monsoon_vpd_mean_kpa",
+        "monsoon_wet_persistence_max_days",
         "sar_vv_db_mean",
         "sar_vh_db_mean",
         "ndvi_mean",
@@ -156,28 +168,28 @@
         "n_splits": 5,
         "fold_metrics_mean_std": {
           "auprc": [
-            0.699422007329902,
-            0.2568979751846329
+            0.7184709594737302,
+            0.26635763459691997
           ],
           "f1": [
-            0.6187878787878788,
-            0.226233219516141
+            0.6255518394648829,
+            0.2520631393543753
           ],
           "roc_auc": [
-            0.7834669774669776,
-            0.1342316659615041
+            0.7991289266289267,
+            0.13420380414572033
           ],
           "recall": [
-            0.6695959595959596,
-            0.255842135796936
+            0.6862626262626262,
+            0.24680581619372405
           ],
           "brier": [
-            0.18248199549857258,
-            0.03510887765759934
+            0.17309214575276788,
+            0.04177116050789971
           ]
         },
-        "oof_auprc": 0.7235176780006581,
-        "oof_roc_auc": 0.7996697853604843
+        "oof_auprc": 0.7410846721712449,
+        "oof_roc_auc": 0.8164556962025317
       },
       "leave_one_event_out": {
         "fold_metrics_mean_std": {
@@ -198,12 +210,12 @@
             0.4318518264405049
           ],
           "brier": [
-            0.163703984252854,
-            0.17243471320632342
+            0.1540110494344606,
+            0.1756059171561326
           ]
         },
-        "oof_auprc": 0.7782404367160948,
-        "oof_roc_auc": 0.8390203632361035
+        "oof_auprc": 0.7922646880042172,
+        "oof_roc_auc": 0.8555310952118877
       }
     }
   },
@@ -273,73 +285,6 @@
       }
     },
     "meteorology_only": {
-      "n_features": 9,
-      "feature_columns": [
-        "precip_mean_mm",
-        "precip_max_mm",
-        "precip_sum_mm",
-        "precip_anomaly_mm",
-        "rh_mean_pct",
-        "rh_max_pct",
-        "temp_mean_c",
-        "vpd_mean_kpa",
-        "wet_persistence_max_days"
-      ],
-      "grouped_by_district": {
-        "n_splits": 5,
-        "fold_metrics_mean_std": {
-          "auprc": [
-            0.7991308937068741,
-            0.19314534294337354
-          ],
-          "f1": [
-            0.674445534125168,
-            0.2487261522010636
-          ],
-          "roc_auc": [
-            0.8948311965811966,
-            0.0560520974192799
-          ],
-          "recall": [
-            0.6877777777777778,
-            0.2747479203799119
-          ],
-          "brier": [
-            0.14230055660009383,
-            0.05046897901007238
-          ]
-        },
-        "oof_auprc": 0.8089804892872601,
-        "oof_roc_auc": 0.8739680792515135
-      },
-      "leave_one_event_out": {
-        "fold_metrics_mean_std": {
-          "auprc": [
-            NaN,
-            NaN
-          ],
-          "f1": [
-            0.288,
-            0.45283109433871693
-          ],
-          "roc_auc": [
-            NaN,
-            NaN
-          ],
-          "recall": [
-            0.288,
-            0.45283109433871693
-          ],
-          "brier": [
-            0.150542603961605,
-            0.28765449677284977
-          ]
-        },
-        "oof_auprc": 0.7830877937420844,
-        "oof_roc_auc": 0.8717666483214089
-      }
-    },
-    "full_model": {
       "n_features": 15,
       "feature_columns": [
         "precip_mean_mm",
@@ -351,6 +296,85 @@
         "temp_mean_c",
         "vpd_mean_kpa",
         "wet_persistence_max_days",
+        "monsoon_precip_sum_mm",
+        "monsoon_precip_anomaly_mm",
+        "monsoon_rh_mean_pct",
+        "monsoon_temp_mean_c",
+        "monsoon_vpd_mean_kpa",
+        "monsoon_wet_persistence_max_days"
+      ],
+      "grouped_by_district": {
+        "n_splits": 5,
+        "fold_metrics_mean_std": {
+          "auprc": [
+            0.7505582347267074,
+            0.2586349196308322
+          ],
+          "f1": [
+            0.6861988304093567,
+            0.2602399894160038
+          ],
+          "roc_auc": [
+            0.8515772283272284,
+            0.12038788655872933
+          ],
+          "recall": [
+            0.6644444444444445,
+            0.2628570470055802
+          ],
+          "brier": [
+            0.136537616699934,
+            0.06706015200582957
+          ]
+        },
+        "oof_auprc": 0.8272428797802408,
+        "oof_roc_auc": 0.8808475509080903
+      },
+      "leave_one_event_out": {
+        "fold_metrics_mean_std": {
+          "auprc": [
+            NaN,
+            NaN
+          ],
+          "f1": [
+            0.296,
+            0.4564909637659873
+          ],
+          "roc_auc": [
+            NaN,
+            NaN
+          ],
+          "recall": [
+            0.296,
+            0.4564909637659873
+          ],
+          "brier": [
+            0.14310287972100194,
+            0.2980696828141485
+          ]
+        },
+        "oof_auprc": 0.7501489507926132,
+        "oof_roc_auc": 0.8731425426527243
+      }
+    },
+    "full_model": {
+      "n_features": 21,
+      "feature_columns": [
+        "precip_mean_mm",
+        "precip_max_mm",
+        "precip_sum_mm",
+        "precip_anomaly_mm",
+        "rh_mean_pct",
+        "rh_max_pct",
+        "temp_mean_c",
+        "vpd_mean_kpa",
+        "wet_persistence_max_days",
+        "monsoon_precip_sum_mm",
+        "monsoon_precip_anomaly_mm",
+        "monsoon_rh_mean_pct",
+        "monsoon_temp_mean_c",
+        "monsoon_vpd_mean_kpa",
+        "monsoon_wet_persistence_max_days",
         "sar_vv_db_mean",
         "sar_vh_db_mean",
         "ndvi_mean",
@@ -362,28 +386,28 @@
         "n_splits": 5,
         "fold_metrics_mean_std": {
           "auprc": [
-            0.6811062669298229,
-            0.23978502211822064
+            0.7481205245629237,
+            0.261940614998162
           ],
           "f1": [
-            0.6263167800925238,
-            0.24817506092945407
+            0.6511111111111111,
+            0.2679229666329162
           ],
           "roc_auc": [
-            0.8083819513819513,
-            0.11124609695484193
+            0.830879120879121,
+            0.12129607299383743
           ],
           "recall": [
-            0.6495959595959595,
-            0.24867456008401065
+            0.6444444444444445,
+            0.2706872825573296
           ],
           "brier": [
-            0.17364906370639802,
-            0.05836508858870998
+            0.15972554311156273,
+            0.07146565968765478
           ]
         },
-        "oof_auprc": 0.7194656515632721,
-        "oof_roc_auc": 0.8150798018712163
+        "oof_auprc": 0.7942906010677581,
+        "oof_roc_auc": 0.8439735828288387
       },
       "leave_one_event_out": {
         "fold_metrics_mean_std": {
@@ -392,34 +416,34 @@
             NaN
           ],
           "f1": [
-            0.248,
-            0.43185182644050485
+            0.264,
+            0.4407992740465892
           ],
           "roc_auc": [
             NaN,
             NaN
           ],
           "recall": [
-            0.248,
-            0.43185182644050485
+            0.264,
+            0.4407992740465892
           ],
           "brier": [
-            0.18156830089788856,
-            0.2830383025060543
+            0.15045138641647282,
+            0.2741311871971874
           ]
         },
-        "oof_auprc": 0.7384973784267956,
-        "oof_roc_auc": 0.8161805173362686
+        "oof_auprc": 0.7916129926384466,
+        "oof_roc_auc": 0.8654375343973583
       }
     }
   },
   "rq2_headline_comparison": {
     "remote_sensing_only_auprc": 0.4138013296928488,
-    "meteorology_only_auprc": 0.8066428417351056,
-    "full_model_auprc": 0.7235176780006581,
+    "meteorology_only_auprc": 0.7333905913831958,
+    "full_model_auprc": 0.7410846721712449,
     "best_single_modality": "meteorology_only",
-    "best_single_modality_auprc": 0.8066428417351056,
-    "full_model_gain_over_best_single_modality": -0.08312516373444745,
-    "interpretation": "RandomForest grouped-by-district OOF AUPRC: remote-sensing-only=0.414, meteorology-only=0.807, full (both)=0.724. The full model does not beat the best single modality (meteorology_only) by -0.083 AUPRC. This is a point estimate on n=125 events without a paired significance test across ablations (unlike the RandomForest-vs-fusion comparison, which does have one) \u2014 report the gap as descriptive evidence for which modality carries more signal, not as a statistically confirmed difference."
+    "best_single_modality_auprc": 0.7333905913831958,
+    "full_model_gain_over_best_single_modality": 0.007694080788049007,
+    "interpretation": "RandomForest grouped-by-district OOF AUPRC: remote-sensing-only=0.414, meteorology-only=0.733, full (both)=0.741. The full model beats the best single modality (meteorology_only) by +0.008 AUPRC. This is a point estimate on n=125 events without a paired significance test across ablations (unlike the RandomForest-vs-fusion comparison, which does have one) \u2014 report the gap as descriptive evidence for which modality carries more signal, not as a statistically confirmed difference."
   }
 }

@@ -33,6 +33,8 @@ REMOTE_SENSING_COLUMNS = ["sar_vv_db_mean", "sar_vh_db_mean", "ndvi_mean", "ndwi
 METEOROLOGY_COLUMNS = [
     "precip_mean_mm", "precip_max_mm", "precip_sum_mm", "precip_anomaly_mm",
     "rh_mean_pct", "rh_max_pct", "temp_mean_c", "vpd_mean_kpa", "wet_persistence_max_days",
+    "monsoon_precip_sum_mm", "monsoon_precip_anomaly_mm", "monsoon_rh_mean_pct",
+    "monsoon_temp_mean_c", "monsoon_vpd_mean_kpa", "monsoon_wet_persistence_max_days",
 ]
 FULL_COLUMNS = METEOROLOGY_COLUMNS + REMOTE_SENSING_COLUMNS
 

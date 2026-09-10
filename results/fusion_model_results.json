@@ -591,28 +591,28 @@
     }
   },
   "stage_3_4_decision": {
-    "best_classical_baseline": "RandomForest",
-    "best_classical_grouped_oof_auprc": 0.7235176780006581,
+    "best_classical_baseline": "XGBoost",
+    "best_classical_grouped_oof_auprc": 0.7740916902420197,
     "fusion_grouped_oof_auprc": 0.6610997558075853,
     "test_1_grouped_fold_auprc_diff": {
-      "mean_diff_fusion_minus_classical": -0.00852361296827242,
+      "mean_diff_fusion_minus_classical": -0.04914445836046436,
       "bootstrap_95pct_ci": [
-        -0.1507596102154926,
-        0.08409981995701814
+        -0.17675830819980448,
+        0.030593021602186167
       ],
       "n_folds_compared": 5
     },
     "test_2_paired_per_event_brier": {
       "n_events_compared": 125,
       "metric": "brier_score (lower is better)",
-      "mean_diff_classical_minus_fusion": -0.00827456619334093,
+      "mean_diff_classical_minus_fusion": -0.024731415329360733,
       "bootstrap_95pct_ci": [
-        -0.03778529925723247,
-        0.019416315914143528
+        -0.06343435801202213,
+        0.013700784495248211
       ],
-      "interpretation": "positive value / CI excluding zero above 0 means fusion has lower (better) Brier score than RandomForest across the 125 real leave-one-event-out predictions; CI including zero means no statistically distinguishable difference at the per-event level either."
+      "interpretation": "positive value / CI excluding zero above 0 means fusion has lower (better) Brier score than XGBoost across the 125 real leave-one-event-out predictions; CI including zero means no statistically distinguishable difference at the per-event level either."
     },
-    "primary_result": "RandomForest",
-    "rationale": "Per proposal Section 8's stage 3/4 decision point: even after switching the temporal branch to real 90-day daily sequences, TRUE nested hyperparameter tuning (independent per outer fold, not leaked from the test fold), and 5-seed averaging per fold, the fusion model's per-fold AUPRC advantage over RandomForest is -0.009 with a bootstrapped 95% CI of [-0.151, 0.084], which includes zero. The higher-powered 125-event paired Brier-score test corroborates this: mean diff -0.0083, 95% CI [-0.0378, 0.0194]. Neither test finds a statistically defensible fusion-model advantage on n=125 events. The classical baseline (RandomForest, grouped-by-district nested-tuned OOF AUPRC=0.724) remains the primary result. This is reported as a real negative finding after a genuine, methodologically hardened improvement attempt \u2014 not the original under-tuned, leakage-adjacent one."
+    "primary_result": "XGBoost",
+    "rationale": "Per proposal Section 8's stage 3/4 decision point: even after switching the temporal branch to real 90-day daily sequences, TRUE nested hyperparameter tuning (independent per outer fold, not leaked from the test fold), and 5-seed averaging per fold, the fusion model's per-fold AUPRC advantage over XGBoost is -0.049 with a bootstrapped 95% CI of [-0.177, 0.031], which includes zero. The higher-powered 125-event paired Brier-score test corroborates this: mean diff -0.0247, 95% CI [-0.0634, 0.0137]. Neither test finds a statistically defensible fusion-model advantage on n=125 events. The classical baseline (XGBoost, grouped-by-district nested-tuned OOF AUPRC=0.774) remains the primary result. This is reported as a real negative finding after a genuine, methodologically hardened improvement attempt \u2014 not the original under-tuned, leakage-adjacent one."
   }
 }

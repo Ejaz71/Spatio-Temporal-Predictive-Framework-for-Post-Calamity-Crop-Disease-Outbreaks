@@ -1,8 +1,20 @@
 {
   "n_rice_blast_events": 72,
   "leaf_blast_severity_pct": {
-    "n_significant_univariate_predictors": 8,
+    "n_significant_univariate_predictors": 14,
     "univariate_ols": [
+      {
+        "feature": "monsoon_temp_mean_c",
+        "n": 72,
+        "slope": 12.725836869165233,
+        "slope_95pct_ci": [
+          7.817939388825261,
+          17.633734349505204
+        ],
+        "intercept": -351.85790201835255,
+        "r_squared": 0.2764391057041776,
+        "p_value": 2.1090050433656504e-06
+      },
       {
         "feature": "precip_max_mm",
         "n": 72,
@@ -14,6 +26,42 @@
         "intercept": 17.94453809833034,
         "r_squared": 0.2959222405834222,
         "p_value": 7.863629251427552e-07
+      },
+      {
+        "feature": "monsoon_rh_mean_pct",
+        "n": 72,
+        "slope": -2.18286389185357,
+        "slope_95pct_ci": [
+          -3.0369066299654968,
+          -1.328821153741643
+        ],
+        "intercept": 203.80537974020126,
+        "r_squared": 0.27072487386113986,
+        "p_value": 2.8040758959853533e-06
+      },
+      {
+        "feature": "monsoon_wet_persistence_max_days",
+        "n": 72,
+        "slope": -0.24682637014546105,
+        "slope_95pct_ci": [
+          -0.3570333144744192,
+          -0.13661942581650285
+        ],
+        "intercept": 35.83711962857385,
+        "r_squared": 0.22181491581748136,
+        "p_value": 2.976083288709062e-05
+      },
+      {
+        "feature": "monsoon_vpd_mean_kpa",
+        "n": 72,
+        "slope": 43.15169185414506,
+        "slope_95pct_ci": [
+          25.519910616817903,
+          60.78347309147221
+        ],
+        "intercept": -9.467156124314144,
+        "r_squared": 0.2539350148542969,
+        "p_value": 6.403609746755672e-06
       },
       {
         "feature": "wet_persistence_max_days",
@@ -64,6 +112,18 @@
         "p_value": 0.00016759321244129723
       },
       {
+        "feature": "monsoon_precip_anomaly_mm",
+        "n": 72,
+        "slope": -0.9050054833902137,
+        "slope_95pct_ci": [
+          -1.355194481378732,
+          -0.4548164854016954
+        ],
+        "intercept": 14.641580434198286,
+        "r_squared": 0.18675656812469466,
+        "p_value": 0.00015021392146895605
+      },
+      {
         "feature": "rh_mean_pct",
         "n": 72,
         "slope": -0.5253226573678231,
@@ -88,6 +148,18 @@
         "p_value": 0.0080523182651477
       },
       {
+        "feature": "monsoon_precip_sum_mm",
+        "n": 72,
+        "slope": -0.003334816507406464,
+        "slope_95pct_ci": [
+          -0.006298700949328672,
+          -0.00037093206548425564
+        ],
+        "intercept": 17.4193355514532,
+        "r_squared": 0.06711103844147148,
+        "p_value": 0.02799414031938095
+      },
+      {
         "feature": "vpd_mean_kpa",
         "n": 72,
         "slope": 12.860749595624672,
@@ -102,95 +174,119 @@
     ],
     "collinearity_reduction": {
       "kept": [
+        "monsoon_temp_mean_c",
         "precip_max_mm",
         "wet_persistence_max_days",
         "precip_mean_mm",
-        "rh_mean_pct",
-        "rh_max_pct"
+        "monsoon_precip_anomaly_mm",
+        "rh_max_pct",
+        "vpd_mean_kpa"
       ],
       "dropped_redundant_with": {
+        "monsoon_rh_mean_pct": "monsoon_temp_mean_c",
+        "monsoon_wet_persistence_max_days": "monsoon_temp_mean_c",
+        "monsoon_vpd_mean_kpa": "monsoon_temp_mean_c",
         "precip_sum_mm": "precip_mean_mm",
         "precip_anomaly_mm": "precip_mean_mm",
-        "vpd_mean_kpa": "rh_mean_pct"
+        "rh_mean_pct": "monsoon_precip_anomaly_mm",
+        "monsoon_precip_sum_mm": "monsoon_precip_anomaly_mm"
       },
       "threshold_pearson_r": 0.8
     },
     "multiple_ols": {
       "n": 72,
       "features": [
+        "monsoon_temp_mean_c",
         "precip_max_mm",
         "wet_persistence_max_days",
         "precip_mean_mm",
-        "rh_mean_pct",
-        "rh_max_pct"
+        "monsoon_precip_anomaly_mm",
+        "rh_max_pct",
+        "vpd_mean_kpa"
       ],
-      "r_squared": 0.4076513463367307,
-      "adj_r_squared": 0.3627764483319377,
-      "f_pvalue": 1.307166444281036e-06,
+      "r_squared": 0.42831070753401124,
+      "adj_r_squared": 0.36578219117054367,
+      "f_pvalue": 4.483720530946946e-06,
       "coefficients": {
         "const": {
-          "coef": 20.139301344137184,
+          "coef": -84.49726614690178,
           "ci": [
-            -29.491463835356424,
-            69.77006652363079
+            -370.6064943452606,
+            201.61196205145706
           ],
-          "p_value": 0.4207534439528464
+          "p_value": 0.557272153884489
+        },
+        "monsoon_temp_mean_c": {
+          "coef": 4.411598724324385,
+          "ci": [
+            -4.834951287310696,
+            13.658148735959466
+          ],
+          "p_value": 0.3441093199774374
         },
         "precip_max_mm": {
-          "coef": -0.2894442904419231,
+          "coef": -0.28285750486514566,
           "ci": [
-            -0.4751157424672355,
-            -0.10377283841661072
+            -0.4534910760463204,
+            -0.11222393368397093
           ],
-          "p_value": 0.0027419238002156106
+          "p_value": 0.00152790519767009
         },
         "wet_persistence_max_days": {
-          "coef": -1.993866569861676,
+          "coef": -2.1401474164490666,
           "ci": [
-            -3.6938981115675613,
-            -0.2938350281557909
+            -3.858334326544732,
+            -0.4219605063534011
           ],
-          "p_value": 0.022226741972888712
+          "p_value": 0.015447483552331095
         },
         "precip_mean_mm": {
-          "coef": 5.68002936986746,
+          "coef": 7.842949077509873,
           "ci": [
-            -2.2138172504422,
-            13.573875990177122
+            -0.0334438843350906,
+            15.719342039354837
           ],
-          "p_value": 0.15554645488367877
+          "p_value": 0.050951659240441816
         },
-        "rh_mean_pct": {
-          "coef": 0.17324551166546556,
+        "monsoon_precip_anomaly_mm": {
+          "coef": 0.16595921300814048,
           "ci": [
-            -0.2454899495187369,
-            0.591980972849668
+            -0.7214102912328866,
+            1.0533287172491674
           ],
-          "p_value": 0.4117527141332036
+          "p_value": 0.7099196598155191
         },
         "rh_max_pct": {
-          "coef": -0.10617023382394358,
+          "coef": -0.15104964235656798,
           "ci": [
-            -0.6934442458189753,
-            0.48110377817108824
+            -0.7665604107859136,
+            0.4644611260727776
           ],
-          "p_value": 0.719290688898073
+          "p_value": 0.6256310366422861
+        },
+        "vpd_mean_kpa": {
+          "coef": -8.532698870100454,
+          "ci": [
+            -25.240556662384343,
+            8.175158922183435
+          ],
+          "p_value": 0.3114558539409597
         }
       }
     },
     "held_out_loo_cv": {
       "LinearRegression": {
-        "loo_rmse": 5.369489196561541,
-        "loo_r_squared": 0.3127012347910132
+        "loo_rmse": 5.4226715397591505,
+        "loo_r_squared": 0.2990190487570652
       },
       "Ridge_alpha1.0": {
-        "loo_rmse": 5.356711585754104,
-        "loo_r_squared": 0.315968430845043
+        "loo_rmse": 5.363454725782108,
+        "loo_r_squared": 0.31424520055758076
       }
     }
   },
   "neck_blast_severity_pct": {
-    "n_significant_univariate_predictors": 7,
+    "n_significant_univariate_predictors": 9,
     "univariate_ols": [
       {
         "feature": "sar_vv_db_mean",
@@ -215,6 +311,18 @@
         "intercept": 34.9344745789082,
         "r_squared": 0.131352127915083,
         "p_value": 0.0017566475910480211
+      },
+      {
+        "feature": "monsoon_temp_mean_c",
+        "n": 72,
+        "slope": 2.3414693730257516,
+        "slope_95pct_ci": [
+          0.12178498648010105,
+          4.561153759571402
+        ],
+        "intercept": -62.27087856939589,
+        "r_squared": 0.05947152959032409,
+        "p_value": 0.03898444227294732
       },
       {
         "feature": "precip_mean_mm",
@@ -275,19 +383,33 @@
         "intercept": 9.418703366401541,
         "r_squared": 0.06220703801926508,
         "p_value": 0.03461635233114813
+      },
+      {
+        "feature": "monsoon_rh_mean_pct",
+        "n": 72,
+        "slope": -0.3478135677833487,
+        "slope_95pct_ci": [
+          -0.7357700852311269,
+          0.040142949664429495
+        ],
+        "intercept": 35.24087406305003,
+        "r_squared": 0.04367905707983555,
+        "p_value": 0.07809288442884971
       }
     ],
     "collinearity_reduction": {
       "kept": [
         "sar_vv_db_mean",
         "temp_mean_c",
+        "monsoon_temp_mean_c",
         "precip_mean_mm",
         "precip_max_mm",
         "vpd_mean_kpa"
       ],
       "dropped_redundant_with": {
         "precip_sum_mm": "precip_mean_mm",
-        "precip_anomaly_mm": "precip_mean_mm"
+        "precip_anomaly_mm": "precip_mean_mm",
+        "monsoon_rh_mean_pct": "monsoon_temp_mean_c"
       },
       "threshold_pearson_r": 0.8
     },
@@ -296,72 +418,81 @@
       "features": [
         "sar_vv_db_mean",
         "temp_mean_c",
+        "monsoon_temp_mean_c",
         "precip_mean_mm",
         "precip_max_mm",
         "vpd_mean_kpa"
       ],
-      "r_squared": 0.20753672923833344,
-      "adj_r_squared": 0.14258072343819672,
-      "f_pvalue": 0.012581205036349527,
+      "r_squared": 0.22316833039557393,
+      "adj_r_squared": 0.1454851634351313,
+      "f_pvalue": 0.0158167976526922,
       "coefficients": {
         "const": {
-          "coef": 4.642345297171115,
+          "coef": -57.93745341978128,
           "ci": [
-            -30.027285945565783,
-            39.31197653990802
+            -177.0062555817907,
+            61.13134874222814
           ],
-          "p_value": 0.7897917422877155
+          "p_value": 0.3343015751153642
         },
         "sar_vv_db_mean": {
-          "coef": 0.1604491211518518,
+          "coef": 0.1499679418350754,
           "ci": [
-            -0.059126356587357626,
-            0.3800245988910612
+            -0.07013782253621206,
+            0.3700737062063628
           ],
-          "p_value": 0.14910012166045847
+          "p_value": 0.17800960945705321
         },
         "temp_mean_c": {
-          "coef": 0.6362440562950507,
+          "coef": 0.6495906752490229,
           "ci": [
-            -1.5841182245337266,
-            2.8566063371238277
+            -1.5678882768339486,
+            2.867069627331994
           ],
-          "p_value": 0.5687567307410207
+          "p_value": 0.5600939575999941
+        },
+        "monsoon_temp_mean_c": {
+          "coef": 2.1838132411440894,
+          "ci": [
+            -1.7917279748133494,
+            6.159354457101529
+          ],
+          "p_value": 0.27625017434491544
         },
         "precip_mean_mm": {
-          "coef": -0.6600891971625806,
+          "coef": 0.0688436475684237,
           "ci": [
-            -3.3043275307936018,
-            1.9841491364684405
+            -2.8864768270058003,
+            3.0241641221426474
           ],
-          "p_value": 0.6194537248914096
+          "p_value": 0.9629895144023892
         },
         "precip_max_mm": {
-          "coef": -0.06506936568981928,
+          "coef": -0.05519421622369223,
           "ci": [
-            -0.15933326778010956,
-            0.02919453640047101
+            -0.15103126470913436,
+            0.04064283226174991
           ],
-          "p_value": 0.17252610280952552
+          "p_value": 0.2538881262460333
         },
         "vpd_mean_kpa": {
-          "coef": -8.959062437916886,
+          "coef": -9.90771495043394,
           "ci": [
-            -18.31127802908534,
-            0.39315315325156774
+            -19.405552617423396,
+            -0.4098772834444855
           ],
-          "p_value": 0.06011144891955408
+          "p_value": 0.04118026355733024
         }
       }
     },
     "held_out_loo_cv": {
       "LinearRegression": {
-        "loo_rmse": 2.6105301162362577,
-        "loo_r_squared": -0.027195626641215
+        "loo_rmse": 2.6590473902783858,
+        "loo_r_squared": -0.06573174211258848
       },
       "Ridge_alpha1.0": {
-        "loo_rmse": 2.6289000157429103,
-        "loo_r_squared": -0.04170292623928318
+        "loo_rmse": 2.660997252963719,
+        "loo_r_squared": -0.06729530391105287
       }
     }
   }

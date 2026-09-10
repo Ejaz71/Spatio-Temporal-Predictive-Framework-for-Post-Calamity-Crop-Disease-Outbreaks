@@ -58,14 +58,25 @@ on three cross-validation schemes
 
 | Model | Split | OOF AUPRC | OOF ROC-AUC |
 |---|---|---|---|
-| **RandomForest** | **grouped-by-district** | **0.724** | **0.800** |
-| RandomForest | leave-one-event-out | 0.778 | 0.839 |
-| RandomForest | leave-one-year-out | 0.318 | 0.432 |
-| XGBoost | grouped-by-district | 0.720 | 0.815 |
-| XGBoost | leave-one-event-out | 0.739 | 0.816 |
-| XGBoost | leave-one-year-out | 0.310 | 0.404 |
+| **RandomForest** | **grouped-by-district** | **0.757** | **0.822** |
+| RandomForest | leave-one-event-out | 0.804 | 0.861 |
+| RandomForest | leave-one-year-out | 0.332 | 0.438 |
+| XGBoost | grouped-by-district | 0.774 | 0.838 |
+| XGBoost | leave-one-event-out | 0.803 | 0.868 |
+| XGBoost | leave-one-year-out | 0.338 | 0.343 |
 
 (Random-guess AUPRC at this class balance — 46/125 positive — is ~0.368.)
+
+RandomForest and XGBoost are statistically indistinguishable here (0.757 vs 0.774
+grouped, a gap well inside the fold-to-fold SD of ≈0.28); RandomForest is reported as
+primary for continuity with the proposal and because it is better calibrated (below).
+
+**Is 0.76 real, or luck with 125 events and 5 folds?** A label-permutation test (300
+shuffles, [`analysis/robustness_checks.py`](analysis/robustness_checks.py)) gives
+**p = 0.003** — observed AUPRC 0.81 against a null-distribution mean of 0.39. But the
+point estimate is imprecise: the cluster bootstrap over districts puts the 95% CI at
+**[0.48, 0.91]** (event-level bootstrap [0.63, 0.87]). The honest headline is "AUPRC
+≈ 0.76, 95% CI [0.48, 0.91], permutation p = 0.003" — a real signal, loosely pinned.
 
 At the standard 0.5 threshold on real leave-one-event-out predictions, RandomForest
 catches **32 of 46 real outbreaks (recall 0.70)** with 20 false alarms among 52 flagged
@@ -84,34 +95,39 @@ and each fold's prediction is averaged over 5 random seeds.
 
 | Model | Split | OOF AUPRC | OOF ROC-AUC |
 |---|---|---|---|
-| Fusion (CNN-LSTM + attention) | grouped-by-district | 0.520 | 0.699 |
-| Fusion (CNN-LSTM + attention) | leave-one-event-out | 0.645 | 0.765 |
-| Fusion (CNN-LSTM + attention) | leave-one-year-out | 0.334 | 0.478 |
+| Fusion (CNN-LSTM + attention) | grouped-by-district | 0.661 | 0.771 |
+| Fusion (CNN-LSTM + attention) | leave-one-event-out | 0.739 | 0.810 |
+| Fusion (CNN-LSTM + attention) | leave-one-year-out | 0.362 | 0.412 |
 
-Two independent significance tests, both including zero:
-- 5-fold AUPRC difference (fusion − RandomForest): **−0.102**, bootstrap 95% CI
-  **[−0.297, 0.015]**.
+Two independent significance tests, both including zero (compared against the *stronger*
+classical baseline, XGBoost at 0.774 — the harder benchmark for the fusion model):
+- 5-fold AUPRC difference (fusion − XGBoost): **−0.049**, bootstrap 95% CI
+  **[−0.177, 0.031]**.
 - Paired per-event Brier score across all 125 leave-one-event-out predictions:
-  **−0.027**, bootstrap 95% CI **[−0.057, 0.0007]**.
+  **−0.025**, bootstrap 95% CI **[−0.063, 0.014]**.
 
-**RandomForest remains the primary result**, per the decision rule fixed in advance.
-Notably, the gap *widened* when the dataset grew from 77 to 125 events — RandomForest
-improved (0.692 → 0.724) while the fusion model did not (0.551 → 0.520). This
-pre-empts the obvious objection: the neural model was not simply starved of data.
-This is reported as a real negative finding reached after a genuine, methodologically
-hardened improvement attempt.
+**The classical baseline remains the primary result**, per the decision rule fixed in
+advance. The fusion model has now been given: real 90-day daily sequences, true nested
+per-fold tuning, 5-seed averaging, 62% more data (77 → 125 events), and 6 additional
+temporal features — and still does not beat the classical baseline with any statistical
+margin. This is reported as a real negative finding after a genuine, methodologically
+hardened improvement attempt, not the original under-tuned one.
 
 ### Which modality carries the signal? (ablation)
 
 | Feature set | RandomForest AUPRC | XGBoost AUPRC |
 |---|---|---|
 | Remote sensing only (6 features) | 0.414 | 0.369 |
-| **Meteorology only (9 features)** | **0.807** | **0.809** |
-| Full (15 features) | 0.724 | 0.720 |
+| Meteorology only (15 features) | 0.733 | 0.827 |
+| Full (21 features) | 0.741 | 0.794 |
 
-Meteorology alone *outperforms* the full model — the remote-sensing features dilute
-rather than add signal at this sample size. This replicated and strengthened when the
-dataset grew.
+**Meteorology dominates remote sensing by a wide margin** (0.73–0.83 vs 0.37–0.41) —
+this is the stable finding across SHAP, Mann-Whitney U, this ablation, and fusion-model
+permutation importance. At the earlier 14-feature version, meteorology-only also
+*beat the full model* (the remote-sensing features actively diluted the signal); after
+6 preceding-monsoon features were added to the meteorology set that gap is no longer
+significant (paired cluster-bootstrap of meteorology-only − full = −0.024, 95% CI
+[−0.057, 0.042]), so the full RandomForest model is kept as primary.
 
 #### We tested the obvious objection, and it did not hold
 
@@ -142,8 +158,10 @@ help, and we checked that this wasn't just a representation artifact."
 Four independent methods — SHAP, Mann-Whitney U with FDR correction, the modality
 ablation above, and permutation importance on the fusion model — all agree that
 **meteorological variables dominate over remote sensing**. Top SHAP values
-(RandomForest): `precip_max_mm` (0.087), `precip_mean_mm` (0.045), `rh_max_pct`
-(0.037), `precip_sum_mm` (0.035), `temp_mean_c` (0.027). The strongest single test:
+(RandomForest): `precip_max_mm` (0.073), `precip_mean_mm` (0.041), `precip_sum_mm`
+(0.035), `precip_anomaly_mm` (0.030), `rh_max_pct` (0.026), then two preceding-monsoon
+features (`monsoon_precip_anomaly_mm`, `monsoon_rh_mean_pct`) — all above the top
+remote-sensing feature. The strongest single test:
 `precip_max_mm` differs between outbreak and non-outbreak events at
 **p = 1.0 × 10⁻⁸** (FDR-corrected q < 0.0001, rank-biserial r = −0.616, "very large").
 
@@ -160,6 +178,52 @@ rather than rainfall.
 This differs from what the earlier (fabricated) version of this project claimed — it
 had reported SAR backscatter as the strongest predictor.
 
+### The preceding monsoon carries a real, year-independent signal
+
+Every feature above describes the Dec–Mar dry season the outbreak is *observed* in. But
+the project's framing is post-calamity risk, so we also extracted NASA POWER + Sentinel-1
++ Landsat features over the Jun–Sep monsoon window immediately *before* each observation
+window ([`data/extract_preseason_features.py`](data/extract_preseason_features.py)).
+
+Six preceding-monsoon meteorology features passed pre-registered evidence gates
+(independent of their dry-season analogue, association survives FDR correction, and
+survives partial-correlation control for calendar year) and were added to the feature
+set. On the 72 rice-blast events their univariate association with outbreak is large
+(rank-biserial |r| 0.30–0.60, all q < 0.01) and **survives controlling for year** —
+`monsoon_rh_mean` raw ρ −0.51 → partial ρ|year −0.53; year explains only 10–24% of these
+features' variance, so they are mostly spatial, not calendar proxies. Direction: a
+**drier, hotter preceding monsoon precedes rice blast** — the same water-stress story as
+the dry-season finding. All monsoon *SAR and optical* features were rejected: monsoon SAR
+has a genuine Sentinel-1 archive gap for 2014 that falls entirely on label-0 events
+(imputing it would leak), and monsoon Landsat showed no FDR-surviving signal.
+
+Folding the 6 features into the classifier gives a small, consistent, within-noise lift
+(RandomForest grouped AUPRC 0.724 → 0.757, XGBoost 0.720 → 0.794; per-fold +0.031 ± 0.040
+against fold SD 0.28, 4/5 folds up). It does **not** fix cross-year generalization
+(leave-one-year-out 0.318 → 0.332, still below baseline). In the severity regression the
+monsoon features are non-redundant — `monsoon_temp_mean_c` and `monsoon_precip_anomaly_mm`
+survive collinearity reduction and enter the leaf-blast-severity model — but they raise
+only in-sample R² (0.408 → 0.428), not held-out R² (~0.31, unchanged). The consistent
+reading across the classifier and the regression: a **real univariate signal with no
+robust incremental predictive value**. The feature set was frozen by the pre-registered
+gates *before* any model number was seen, which is what makes even that modest, hedged
+result trustworthy rather than fished.
+
+### Robustness checks
+
+[`analysis/robustness_checks.py`](analysis/robustness_checks.py), on the primary model:
+
+| Check | Result |
+|---|---|
+| Label-permutation test (300 shuffles) | observed AUPRC 0.81 vs null mean 0.39, **p = 0.003** |
+| Bootstrap 95% CI on grouped AUPRC | **[0.48, 0.91]** cluster-over-districts; [0.63, 0.87] event-level |
+| Meteorology-only vs full model (paired bootstrap) | −0.024, 95% CI [−0.057, 0.042] — not distinguishable |
+| Rice label-threshold sensitivity | AUPRC 0.73–0.81 across the plausible LBI/NBI cutoff band |
+| Decision-curve analysis | model net benefit beats "treat all" and "treat none" at every threshold 0.10–0.60 |
+
+The permutation test is the reassuring one (the model has genuinely learned something);
+the wide bootstrap CI is the honest caveat (125 events pin the point estimate loosely).
+
 ---
 
 ## Known limitations, stated plainly
@@ -168,23 +232,28 @@ had reported SAR backscatter as the strongest predictor.
   cross-validation every model falls *below* the random baseline (best AUPRC 0.334 vs.
   baseline 0.368). Five seasons is too few, and their composition is unbalanced. The
   headline numbers show the model generalizes to unseen *places*, not unseen *years*.
-- **n = 125 is still small.** All results use grouped or leave-one-out cross-validation
-  specifically to guard against inflated performance from correlated events, but
-  confidence intervals on any individual number are wide, and mid-table feature
-  rankings shift between sample sizes.
+- **n = 125 is still small, and the confidence interval proves it.** The bootstrap 95%
+  CI on the primary grouped AUPRC is [0.48, 0.91] (cluster-over-districts). The
+  permutation test (p = 0.003) confirms the model beats chance, but any single
+  three-decimal number should be read as "≈ 0.76", and mid-table feature rankings shift
+  between sample sizes.
+- **The preceding-monsoon signal is rice-blast-specific and correlational.** It does not
+  survive FDR when rice and wheat events are pooled, and "controlling for year" rests on
+  only three rice seasons. It is reported as a real but modest, hedged finding.
 - **The fusion model's attention weights contradict the domain hypothesis.** The model
   attends away from high-humidity days for rice blast and toward them for wheat blast —
-  significant (p = 7.3 × 10⁻⁷) but opposite to the epidemiological pairing the study
-  hypothesized. This is reported as an open question and a reason for caution, not
-  explained away.
+  significant (p = 3.8 × 10⁻⁴, rank-biserial r = −0.37) but opposite to the
+  epidemiological pairing the study hypothesized. This is reported as an open question
+  and a reason for caution, not explained away.
 - **SAR features are missing for 4% of events**, median-imputed within folds. This
   remaining missingness shows no significant association with the outcome label
   (Fisher's exact p = 0.157) or year (p = 0.482).
 - **The wheat-blast "negative" districts (2016) are inferred** (not named in the
   outbreak report ⇒ assumed unaffected), not independently confirmed negative — flagged
   as such in `events.csv`'s `source` column.
-- **Severity regression is only partly successful.** Leaf blast severity is predictable
-  (held-out R² ≈ 0.31); neck blast severity is essentially not (held-out R² ≈ 0.05).
+- **Severity regression is only partly successful.** Leaf blast severity is weakly
+  predictable (held-out R² ≈ 0.31); neck blast severity is not (held-out R² ≈ −0.07,
+  worse than predicting the mean).
 
 ---
 
@@ -202,6 +271,8 @@ data/
   real_feature_pipeline.py     # Real NASA POWER + Sentinel-1 RTC + Landsat extraction
   retry_missing_scenes.py      # Re-attempts scene reads lost to transient network errors
   extract_daily_sequences.py   # Recovers real 90-day daily sequences from cached responses
+  add_water_extent_feature.py  # Backfills the dry-season SAR water-extent fraction
+  extract_preseason_features.py # Extracts preceding-monsoon (Jun-Sep) monsoon_* features
   merge_upazila_dataset.py     # Merges upazila rice blast + wheat blast into 125 events
   processed/real_event_features.csv    # 125 rows x real Option A summary features
   processed/real_daily_sequences.npz   # 125 x 90 x 6 real daily sequences (fusion input)
@@ -217,6 +288,9 @@ training/
 analysis/
   statistical_tests.py         # Descriptives, Mann-Whitney U + FDR, missingness, confusion matrix
   calibration_plot.py          # Calibration / reliability plot
+  water_extent_exploration.py  # Evidence gate for the dry-season SAR water feature
+  preseason_exploration.py     # Evidence gate for the preceding-monsoon features
+  robustness_checks.py         # Bootstrap CI, permutation test, threshold sensitivity, decision curve
 results/                       # All result JSONs, figures, and the persisted model
 app/                           # FastAPI dashboard serving the real model + real events
 tests/test_real_pipeline.py    # Label/feature/leakage/sanity checks
@@ -245,18 +319,23 @@ python3 data/extract_daily_sequences.py \
   --events data/raw_literature/sajbr2021/upazila_events.csv \
   --out data/processed/real_upazila_daily_sequences.npz
 python3 data/merge_upazila_dataset.py
+python3 data/add_water_extent_feature.py --features data/processed/real_event_features.csv
+python3 data/extract_preseason_features.py --features data/processed/real_event_features.csv
 ```
-The feature pipeline is resumable — safe to re-run if interrupted.
+Every extraction step is resumable — safe to re-run if interrupted.
 
 ### 3. Models and analysis
+Order matters: `statistical_tests` must run before `severity_regression` (which reads
+its output), and `classical_baselines` before `fusion_model_eval`.
 ```bash
 python3 -m training.classical_baselines          # primary result
-python3 -m training.fusion_model_eval            # fusion comparison + decision rule
 python3 -m training.rq2_ablations                # modality ablations
-python3 -m training.rq3_fusion_interpretability  # permutation importance + attention
-python3 -m training.severity_regression          # continuous severity targets
 python3 -m analysis.statistical_tests            # classical statistics layer
+python3 -m training.severity_regression          # continuous severity targets
+python3 -m training.fusion_model_eval            # fusion comparison + decision rule
+python3 -m training.rq3_fusion_interpretability  # permutation importance + attention
 python3 -m analysis.calibration_plot             # calibration / reliability plot
+python3 -m analysis.robustness_checks            # bootstrap CI, permutation test, decision curve
 ```
 
 ### 4. Dashboard
@@ -284,3 +363,16 @@ Collection 2 Level-2 via Microsoft Planetary Computer
 (<https://planetarycomputer.microsoft.com/>). Cached raw NASA POWER responses are
 included under `data/raw_authentic/`; satellite imagery is queried live rather than
 redistributed.
+
+---
+
+## License
+
+Code in this repository is released under the MIT License (see [`LICENSE`](LICENSE)).
+Third-party data products retain their own terms from their respective providers, as
+noted above and in `LICENSE`.
+
+## Authors
+
+Ejaz Chowdhury and Md Abdur Rahaman — BRAC University, CSE791 (Research Methodology),
+Group 13.

@@ -194,7 +194,7 @@ def predict(req: PredictionRequest):
             {"feature": name, "shap_value": round(val, 4), "direction": "increases risk" if val > 0 else "decreases risk"}
             for name, val in contributions[:6]
         ],
-        "model": "RandomForest (grouped-by-district nested-tuned CV AUPRC=0.724, ROC-AUC=0.800 on 125 real events)",
+        "model": "RandomForest (grouped-by-district nested-tuned CV AUPRC=0.757, ROC-AUC=0.822 on 125 real events; permutation-test p=0.003, bootstrap 95% CI [0.48, 0.91])",
     }
 
 

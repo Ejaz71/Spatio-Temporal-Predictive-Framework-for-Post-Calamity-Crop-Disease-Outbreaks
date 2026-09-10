@@ -50,6 +50,8 @@ FEATURE_COLUMNS = [
     "rh_mean_pct", "rh_max_pct", "temp_mean_c", "vpd_mean_kpa", "wet_persistence_max_days",
     "sar_vv_db_mean", "sar_vh_db_mean", "ndvi_mean", "ndwi_mean", "lst_celsius_mean",
     "water_extent_frac",
+    "monsoon_precip_sum_mm", "monsoon_precip_anomaly_mm", "monsoon_rh_mean_pct",
+    "monsoon_temp_mean_c", "monsoon_vpd_mean_kpa", "monsoon_wet_persistence_max_days",
 ]
 LEAKAGE_COLUMNS = [
     "leaf_blast_incidence_pct", "neck_blast_incidence_pct",
