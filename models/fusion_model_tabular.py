@@ -4,8 +4,9 @@ CNN-LSTM-style fusion model adapted to real data.
 Spatial branch: proposal Section 6.1 describes a convolutional branch over remote-
 sensing raster patches. Under Option A (the primary modeling unit per Section 6.2 —
 one feature vector per district-season event, not raster patches), there is no 2D
-pixel grid for a literal CNN to convolve over: this is a small MLP over the 5 real
-remote-sensing summary features (SAR VV/VH, NDVI, NDWI, LST) for that event.
+pixel grid for a literal CNN to convolve over: this is a small MLP over the 6 real
+remote-sensing summary features (SAR VV/VH, NDVI, NDWI, LST, dry-season water-extent
+fraction) for that event.
 
 Temporal branch: originally this ran over 9 pre-aggregated meteorological summary
 scalars reshaped into a fake length-9 "sequence" (proposal Section 8's suggested
@@ -21,12 +22,17 @@ import torch.nn.functional as F
 
 SPATIAL_FEATURES = ["sar_vv_db_mean", "sar_vh_db_mean", "ndvi_mean", "ndwi_mean", "lst_celsius_mean",
                     "water_extent_frac"]
-TEMPORAL_FEATURES = [
-    "precip_mean_mm", "precip_max_mm", "precip_sum_mm", "precip_anomaly_mm",
-    "rh_mean_pct", "rh_max_pct", "temp_mean_c", "vpd_mean_kpa", "wet_persistence_max_days",
-    "monsoon_precip_sum_mm", "monsoon_precip_anomaly_mm", "monsoon_rh_mean_pct",
-    "monsoon_temp_mean_c", "monsoon_vpd_mean_kpa", "monsoon_wet_persistence_max_days",
-]
+
+# The temporal branch consumes the REAL 90-day daily sequence defined below (one row per
+# day of the Dec-Mar observation window), NOT a list of pre-aggregated summary columns.
+# v1 of this model fed the temporal branch a length-9 pseudo-sequence of summary scalars
+# via a module-level TEMPORAL_FEATURES list; the v2 refactor (see fusion_model_eval.py)
+# replaced that with real_daily_sequences.npz, and nothing has consumed such a list since,
+# so it has been removed to avoid the impression that appending columns to it wires them
+# into the model. In particular, the 6 preceding-monsoon (monsoon_*) features added in
+# Phase D are inputs to the CLASSICAL feature set only
+# (training/classical_baselines.FEATURE_COLUMNS, 15 -> 21); the fusion model's inputs are
+# the 6 spatial scalars above plus the dry-season daily series below.
 DAILY_SEQUENCE_FEATURES = ["precip_mm", "precip_anomaly_mm", "temp_c", "rh_pct", "vpd_kpa", "wet_persistence_days"]
 
 

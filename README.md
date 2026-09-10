@@ -110,11 +110,14 @@ classical baseline, XGBoost at 0.774 — the harder benchmark for the fusion mod
   **−0.025**, bootstrap 95% CI **[−0.063, 0.014]**.
 
 **The classical baseline remains the primary result**, per the decision rule fixed in
-advance. The fusion model has now been given: real 90-day daily sequences, true nested
-per-fold tuning, 5-seed averaging, 62% more data (77 → 125 events), and 6 additional
-temporal features — and still does not beat the classical baseline with any statistical
-margin. This is reported as a real negative finding after a genuine, methodologically
-hardened improvement attempt, not the original under-tuned one.
+advance. The fusion model has now been given: real 90-day daily meteorological sequences
+(6 channels over the Dec–Mar window) alongside its 6 remote-sensing scalars, true nested
+per-fold tuning, 5-seed averaging, and 62% more data (77 → 125 events) — and still does
+not beat the classical baseline with any statistical margin. (The 6 preceding-monsoon
+features added in Phase D went into the *classical* feature set, not the fusion model's
+inputs — see the ablation and preceding-monsoon sections below.) This is reported as a
+real negative finding after a genuine, methodologically hardened improvement attempt, not
+the original under-tuned one.
 
 ### Which modality carries the signal? (ablation)
 

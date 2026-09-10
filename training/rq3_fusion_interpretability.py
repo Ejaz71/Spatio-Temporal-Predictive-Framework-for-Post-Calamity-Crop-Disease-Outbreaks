@@ -12,7 +12,7 @@ in-sample on that fit — standard practice for interpretability (not a claim ab
 held-out predictive skill, which is what fusion_model_eval.py's OOF metrics are for).
 
 Two analyses:
-1. Permutation importance: for each of the 5 spatial (remote-sensing) features and
+1. Permutation importance: for each of the 6 spatial (remote-sensing) features and
    each of the 6 real daily-sequence (meteorological) channels, shuffle that
    feature/channel across events K times, re-run inference through the already-fit
    ensemble (no retraining — a forward pass only), and report the mean AUPRC drop.

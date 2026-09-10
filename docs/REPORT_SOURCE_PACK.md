@@ -162,9 +162,13 @@ column-order sensitive; fixed 2026-09-10.)
     **[−0.063, +0.014]**.
 - Both include zero ⇒ **no statistically defensible fusion advantage**. Per the
   pre-registered stage-3/4 decision rule the classical baseline stays primary. The fusion
-  model was given real daily sequences, true nested tuning, 5-seed averaging, 62 % more
-  data, and 6 extra temporal features, and still does not win — reported as a real
-  negative after a genuine hardening attempt.
+  model was given real 90-day daily meteorological sequences (6 channels) alongside its 6
+  remote-sensing scalars, true nested tuning, 5-seed averaging, and 62 % more data, and
+  still does not win — reported as a real negative after a genuine hardening attempt. (The
+  6 preceding-monsoon features from Phase D are inputs to the *classical* model only —
+  `classical_baselines.FEATURE_COLUMNS`, 15 → 21 — not the fusion model, whose branches
+  are the 6 RS scalars + the dry-season daily series. The unused `TEMPORAL_FEATURES` list
+  in `fusion_model_tabular.py` was dead code since the v2 refactor and has been removed.)
 
 ### 4.4 Feature attribution
 
