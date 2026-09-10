@@ -2,12 +2,21 @@
 RQ2 ablations (proposal Section 9, "does fusing remote sensing + meteorology beat
 either modality alone?"): remote-sensing-only and meteorology-only classical models,
 evaluated with the exact same nested-tuned grouped-by-district + leave-one-event-out
-CV as the full 14-feature model in classical_baselines.py, so the three conditions
+CV as the full model in classical_baselines.py, so the three conditions
 (remote-sensing-only, meteorology-only, full) are directly comparable — same models,
 same tuning budget, same splits, same data.
 
 Reuses classical_baselines.py's build_model / select_hyperparams_for_indices /
 cross_validate unchanged — only the feature-column subset passed in differs.
+
+Column ORDER matters: RandomForest samples `max_features` columns per split using an
+index-based RNG seeded by `random_state`, so a different column order gives a different
+(still valid) model and a different AUPRC. To guarantee the `full_model` condition here
+is byte-identical to the primary result in classical_baselines.py, the three column
+sets below are derived as ORDER-PRESERVING partitions of that module's FEATURE_COLUMNS
+rather than being retyped. (Retyping them as METEOROLOGY + REMOTE_SENSING previously
+made `full_model` score 0.741 vs the primary's 0.757 — same features, same data, only
+the order differed.)
 """
 
 import json
@@ -19,6 +28,7 @@ import pandas as pd
 
 from training.classical_baselines import (
     FEATURES_CSV,
+    FEATURE_COLUMNS,
     cross_validate,
 )
 from sklearn.model_selection import GroupKFold, LeaveOneOut
@@ -28,15 +38,12 @@ logger = logging.getLogger("RQ2Ablations")
 
 RESULTS_DIR = "results"
 
-REMOTE_SENSING_COLUMNS = ["sar_vv_db_mean", "sar_vh_db_mean", "ndvi_mean", "ndwi_mean", "lst_celsius_mean",
-                          "water_extent_frac"]
-METEOROLOGY_COLUMNS = [
-    "precip_mean_mm", "precip_max_mm", "precip_sum_mm", "precip_anomaly_mm",
-    "rh_mean_pct", "rh_max_pct", "temp_mean_c", "vpd_mean_kpa", "wet_persistence_max_days",
-    "monsoon_precip_sum_mm", "monsoon_precip_anomaly_mm", "monsoon_rh_mean_pct",
-    "monsoon_temp_mean_c", "monsoon_vpd_mean_kpa", "monsoon_wet_persistence_max_days",
-]
-FULL_COLUMNS = METEOROLOGY_COLUMNS + REMOTE_SENSING_COLUMNS
+_REMOTE_SENSING = {"sar_vv_db_mean", "sar_vh_db_mean", "ndvi_mean", "ndwi_mean",
+                   "lst_celsius_mean", "water_extent_frac"}
+# Order-preserving partition of the canonical FEATURE_COLUMNS.
+REMOTE_SENSING_COLUMNS = [c for c in FEATURE_COLUMNS if c in _REMOTE_SENSING]
+METEOROLOGY_COLUMNS = [c for c in FEATURE_COLUMNS if c not in _REMOTE_SENSING]
+FULL_COLUMNS = list(FEATURE_COLUMNS)
 
 
 def load_data():

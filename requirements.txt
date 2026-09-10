@@ -9,6 +9,7 @@ statsmodels>=0.14.0
 xgboost>=2.0.0
 shap>=0.44.0
 joblib>=1.3.0
+matplotlib>=3.7.0  # calibration_plot.py, robustness_checks.py (decision curve)
 
 # Fusion model (secondary — see results/fusion_model_results.json for why it's not primary)
 torch>=2.0.0

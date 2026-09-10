@@ -85,9 +85,10 @@ The wheat "negatives" for 2016 are *inferred* (not named ⇒ assumed unaffected)
   fold via one internal `GroupShuffleSplit` — no tuning information reaches the outer test
   fold. Small grids (4 candidates/model) by design given n.
 - **Metrics.** Primary AUPRC (class imbalance); secondary ROC-AUC, F1@0.5, recall, Brier.
-- **Attribution.** SHAP (TreeExplainer, out-of-fold); Mann-Whitney U + rank-biserial
-  effect size + Benjamini-Hochberg FDR; permutation importance on the fusion model
-  (forward-pass only); LSTM attention-weight analysis.
+- **Attribution.** SHAP (TreeExplainer, **in-sample** — model fit on all 125 events,
+  a disclosed interpretability convention, not a CV estimate); Mann-Whitney U +
+  rank-biserial effect size + Benjamini-Hochberg FDR; permutation importance on the
+  fusion model (forward-pass only, also in-sample); LSTM attention-weight analysis.
 - **Rank-biserial sign convention:** `r = 2U/(n1·n2) − 1`; **positive r = feature higher
   in outbreak events**. (This was inverted in an earlier version — see §7.)
 
@@ -108,15 +109,22 @@ The wheat "negatives" for 2016 are *inferred* (not named ⇒ assumed unaffected)
 
 - Random-guess AUPRC at this balance ≈ **0.368**.
 - RF and XGB are **statistically indistinguishable** here (0.757 vs 0.774, gap ≪ the
-  fold-to-fold SD of ≈ 0.28). RF is reported primary for continuity and calibration.
+  fold-to-fold SD of ≈ 0.28). **RandomForest is the reported primary model** — the one
+  carried through the calibration analysis, the robustness layer
+  (`analysis/robustness_checks.py`), the persisted production model, and the dashboard.
+  `results/fusion_model_results.json` records this in its `reported_primary_model` field;
+  its `best_classical_baseline` field names XGBoost only because XGBoost is the *stronger*
+  bar the fusion model is measured against (not because XGBoost is the report's headline).
 - **Data scaling (real, not noise):** at n = 77 the RF grouped AUPRC was 0.692; at n = 125
   it is 0.757. Feature-engineering scaling (14 → 15 → 21 features) moved it 0.762 → 0.724
   → 0.757 — all within per-fold noise; the headline number is ≈ flat across the whole
   feature effort.
-- **Confusion matrix** (RF, real LOO predictions, 0.5 threshold): 32/46 outbreaks caught
-  (**recall 0.70**), 20 false alarms among 52 flagged (**precision 0.62**, F1 0.65,
-  TN 59, FP 20, FN 14, TP 32). Report emphasises recall (a missed outbreak costs more
-  than an unnecessary spray); precision reported alongside so the trade-off is visible.
+- **Confusion matrix** (RF, real leave-one-event-out predictions, 0.5 threshold,
+  `results/statistical_tests.json`): **TP 30, FP 16, FN 16, TN 63** →
+  **recall = precision = F1 = 0.65** (30/46 outbreaks caught, 16 false alarms among the
+  46 flagged). Report emphasises recall (a missed outbreak costs more than an
+  unnecessary spray); precision reported alongside so the trade-off is visible. A lower
+  decision threshold would trade precision for recall.
 
 ### 4.2 Modality ablation (`results/rq2_ablation_results.json`, grouped-by-district)
 
@@ -124,7 +132,12 @@ The wheat "negatives" for 2016 are *inferred* (not named ⇒ assumed unaffected)
 |---|---|---|
 | Remote sensing only (6) | 0.414 | 0.369 |
 | Meteorology only (15) | 0.733 | 0.827 |
-| Full (21) | 0.741 | 0.794 |
+| Full (21) | 0.757 | 0.774 |
+
+(The "full" row is byte-identical to §4.1's primary numbers — same features, column
+order, CV, and hyperparameters. An earlier version showed 0.741 / 0.794 here because
+`rq2_ablations` defined its column list in a different order and RandomForest is
+column-order sensitive; fixed 2026-09-10.)
 
 - **Meteorology dominates remote sensing** by a wide, stable margin across n = 77,
   n = 125 (14 features), and n = 125 (21 features).
@@ -301,7 +314,7 @@ survives FDR, (5) association survives partial-correlation control for **year**.
   calendar proxies.
 - **Effect of integration.** Univariate: large, year-independent (rice |r| 0.30–0.60,
   all q < 0.01; direction = **drier, hotter preceding monsoon → rice blast**, consistent
-  with the dry-season story). Classifier: RF full 0.724 → 0.757, XGB 0.720 → 0.794 —
+  with the dry-season story). Classifier: RF full 0.724 → 0.757, XGB full 0.720 → 0.774 —
   within per-fold noise (+0.031 ± 0.040 vs SD 0.28), consistent (4/5 folds up). LOYO
   0.318 → 0.332 (nudged up ⇒ not pure year leakage) but still below the 0.368 baseline.
   Severity regression: non-redundant, no held-out gain. **Net: a real signal with no

@@ -332,28 +332,44 @@ def main():
     # test 2's much higher n is reported alongside as corroboration, not cherry-picked
     # in whichever direction is more favorable.
     n_paired = paired_event_test["n_events_compared"]
+    # `outcome` describes the fusion-vs-classical decision only. The model the report
+    # headlines is a separate editorial choice recorded in `reported_primary_model`:
+    # RandomForest and XGBoost are within fold-level noise here (grouped AUPRC 0.757 vs
+    # 0.774, fold-to-fold SD ~0.28), and RandomForest is the model carried through the
+    # calibration analysis, the robustness layer (analysis/robustness_checks.py), the
+    # persisted production model, and the dashboard — so it stays the reported primary.
+    # `best_classical_baseline` is the stronger of the two, used only as the (harder)
+    # bar the fusion model is measured against.
+    decision["reported_primary_model"] = "RandomForest"
+    decision["reported_primary_note"] = (
+        "RandomForest is the reported primary model. It is statistically "
+        "indistinguishable from XGBoost on grouped-by-district AUPRC (0.757 vs 0.774, "
+        "within the ~0.28 fold-to-fold SD) and is the model used for calibration, the "
+        "robustness checks, the persisted model, and the dashboard. XGBoost is the "
+        "secondary classical baseline and the (stronger) bar for the fusion comparison."
+    )
     if ci_lo > 0:
-        decision["primary_result"] = "fusion_model"
+        decision["outcome"] = "fusion_model_adopted"
         decision["rationale"] = (
-            f"Fusion model (v2, real daily sequences + nested tuning + seed-averaging) exceeds "
+            f"Fusion model (real daily sequences + nested tuning + seed-averaging) exceeds "
             f"{best_classical_name}'s per-fold AUPRC by {mean_diff:.3f} (95% CI [{ci_lo:.3f}, {ci_hi:.3f}], "
             f"excludes zero) on grouped-by-district CV, corroborated by the {n_paired}-event paired Brier test "
             f"(mean diff {brier_mean_diff:.4f}, CI [{brier_ci_lo:.4f}, {brier_ci_hi:.4f}])."
         )
     else:
-        decision["primary_result"] = best_classical_name
+        decision["outcome"] = "classical_baseline_retained"
         decision["rationale"] = (
             f"Per proposal Section 8's stage 3/4 decision point: even after switching the temporal branch "
             f"to real 90-day daily sequences, TRUE nested hyperparameter tuning (independent per outer fold, "
             f"not leaked from the test fold), and 5-seed averaging per fold, the fusion model's per-fold AUPRC "
-            f"advantage over {best_classical_name} is {mean_diff:.3f} with a bootstrapped 95% CI of "
+            f"advantage over the strongest classical baseline ({best_classical_name}, grouped-by-district "
+            f"nested-tuned OOF AUPRC={best_classical_auprc:.3f}) is {mean_diff:.3f} with a bootstrapped 95% CI of "
             f"[{ci_lo:.3f}, {ci_hi:.3f}], which includes zero. The higher-powered {n_paired}-event paired "
             f"Brier-score test corroborates this: mean diff {brier_mean_diff:.4f}, 95% CI "
             f"[{brier_ci_lo:.4f}, {brier_ci_hi:.4f}]. Neither test finds a statistically defensible fusion-model "
-            f"advantage on n={n_paired} events. The classical "
-            f"baseline ({best_classical_name}, grouped-by-district nested-tuned OOF AUPRC={best_classical_auprc:.3f}) "
-            f"remains the primary result. This is reported as a real negative finding after a genuine, "
-            f"methodologically hardened improvement attempt — not the original under-tuned, leakage-adjacent one."
+            f"advantage on n={n_paired} events, so the classical approach is retained and the fusion model is "
+            f"not adopted. This is a real negative finding after a genuine, methodologically hardened "
+            f"improvement attempt — not the original under-tuned, leakage-adjacent one."
         )
 
     results["stage_3_4_decision"] = decision

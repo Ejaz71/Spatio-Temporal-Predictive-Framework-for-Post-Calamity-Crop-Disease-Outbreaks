@@ -68,8 +68,10 @@ on three cross-validation schemes
 (Random-guess AUPRC at this class balance — 46/125 positive — is ~0.368.)
 
 RandomForest and XGBoost are statistically indistinguishable here (0.757 vs 0.774
-grouped, a gap well inside the fold-to-fold SD of ≈0.28); RandomForest is reported as
-primary for continuity with the proposal and because it is better calibrated (below).
+grouped, a gap well inside the fold-to-fold SD of ≈0.28). RandomForest is reported as
+primary — it is the model carried through the calibration analysis, the robustness
+checks, the persisted production model, and the dashboard. XGBoost is the secondary
+baseline and the (stronger) bar the fusion model is measured against.
 
 **Is 0.76 real, or luck with 125 events and 5 folds?** A label-permutation test (300
 shuffles, [`analysis/robustness_checks.py`](analysis/robustness_checks.py)) gives
@@ -79,10 +81,11 @@ point estimate is imprecise: the cluster bootstrap over districts puts the 95% C
 ≈ 0.76, 95% CI [0.48, 0.91], permutation p = 0.003" — a real signal, loosely pinned.
 
 At the standard 0.5 threshold on real leave-one-event-out predictions, RandomForest
-catches **32 of 46 real outbreaks (recall 0.70)** with 20 false alarms among 52 flagged
-events (**precision 0.62**). We emphasize recall because a missed outbreak is more
-costly than an unnecessary fungicide application; precision is reported alongside it so
-the cost of that trade-off is visible.
+catches **30 of 46 real outbreaks** with **16 false alarms among the 46 flagged**
+events — recall, precision and F1 all ≈ **0.65**. We emphasize recall because a missed
+outbreak is more costly than an unnecessary fungicide application; precision is reported
+alongside it so the cost of that trade-off is visible. A lower decision threshold trades
+precision for recall.
 
 ### The neural fusion model — a documented negative finding
 
@@ -119,7 +122,10 @@ hardened improvement attempt, not the original under-tuned one.
 |---|---|---|
 | Remote sensing only (6 features) | 0.414 | 0.369 |
 | Meteorology only (15 features) | 0.733 | 0.827 |
-| Full (21 features) | 0.741 | 0.794 |
+| Full (21 features) | 0.757 | 0.774 |
+
+(The "full" row equals the headline primary result exactly — same features, order, CV,
+and hyperparameters.)
 
 **Meteorology dominates remote sensing by a wide margin** (0.73–0.83 vs 0.37–0.41) —
 this is the stable finding across SHAP, Mann-Whitney U, this ablation, and fusion-model
@@ -198,7 +204,7 @@ has a genuine Sentinel-1 archive gap for 2014 that falls entirely on label-0 eve
 (imputing it would leak), and monsoon Landsat showed no FDR-surviving signal.
 
 Folding the 6 features into the classifier gives a small, consistent, within-noise lift
-(RandomForest grouped AUPRC 0.724 → 0.757, XGBoost 0.720 → 0.794; per-fold +0.031 ± 0.040
+(RandomForest grouped AUPRC 0.724 → 0.757, XGBoost 0.720 → 0.774; per-fold +0.031 ± 0.040
 against fold SD 0.28, 4/5 folds up). It does **not** fix cross-year generalization
 (leave-one-year-out 0.318 → 0.332, still below baseline). In the severity regression the
 monsoon features are non-redundant — `monsoon_temp_mean_c` and `monsoon_precip_anomaly_mm`
